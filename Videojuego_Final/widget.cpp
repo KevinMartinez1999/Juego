@@ -23,22 +23,22 @@ void Widget::on_login_clicked()
     ifstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
     if (!file.is_open())
     {
+        QMessageBox::critical(this, "Login", "Login fallido");
+        ui->usuario->clear();
+        ui->clave->clear();
         return;
     }
-    //qDebug()<<"Entraste!!";
     string usuario, clave;
     file>>usuario;
     file>>clave;
     file.close();
     if (user.toStdString() == usuario and pass.toStdString() == clave)
     {
-        //qDebug()<<"Login correcto!!";
         QMessageBox::information(this, "Login", "Login exitoso!");
     }
     else
     {
-        //qDebug()<<"Login incorrecto!!";
-        QMessageBox::information(this, "Login", "Login fallido");
+        QMessageBox::critical(this, "Login", "Login fallido");
         ui->usuario->clear();
         ui->clave->clear();
     }
