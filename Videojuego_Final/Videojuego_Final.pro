@@ -17,12 +17,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cpp \
+    registrarse.cpp \
     widget.cpp
 
 HEADERS += \
+    registrarse.h \
     widget.h
 
 FORMS += \
+    registrarse.ui \
     widget.ui
 
 # Default rules for deployment.
