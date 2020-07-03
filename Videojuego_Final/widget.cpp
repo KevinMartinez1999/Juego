@@ -1,6 +1,9 @@
 #include "widget.h"
 #include "ui_widget.h"
 #include "registrarse.h"
+#include "menu_partida.h"
+
+QString user, pass;
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
@@ -17,7 +20,6 @@ Widget::~Widget()
 
 void Widget::on_login_clicked()
 {
-    QString user, pass;
     user = ui->usuario->toPlainText();
     pass = ui->clave->toPlainText();
     ifstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
@@ -35,6 +37,9 @@ void Widget::on_login_clicked()
     if (user.toStdString() == usuario and pass.toStdString() == clave)
     {
         QMessageBox::information(this, "Login", "Login exitoso!");
+        Menu_partida *menu = new Menu_partida;
+        menu->show();
+        close();
     }
     else
     {

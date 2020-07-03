@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Menu_partida</class>
+ <widget class="QWidget" name="Menu_partida">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>400</width>
+    <height>300</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QGraphicsView" name="graphicsView">
+   <property name="geometry">
+    <rect>
+     <x>5</x>
+     <y>10</y>
+     <width>391</width>
+     <height>281</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="un_jugador">
+   <property name="geometry">
+    <rect>
+     <x>120</x>
+     <y>220</y>
+     <width>82</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>1 Jugador</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="dos_jugadores">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>220</y>
+     <width>82</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>2 Jugadores</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>61</x>
+     <y>251</y>
+     <width>271</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QPushButton" name="nueva_partida">
+      <property name="text">
+       <string>Nueva partida</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="cargar_partida">
+      <property name="text">
+       <string>Cargar partida</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="volver">
+      <property name="text">
+       <string>Volver</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
