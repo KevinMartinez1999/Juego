@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Imagenes/MUROS.png</file>
+        <file>Imagenes/MAPA.png</file>
+        <file>Imagenes/OBJETOS.png</file>
+        <file>Font/Red Right Hand.ttf</file>
+    </qresource>
+</RCC>

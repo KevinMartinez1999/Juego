@@ -1,7 +1,6 @@
 #include "mapa_gameplay.h"
 #include "ui_mapa_gameplay.h"
-
-#include <QGraphicsRectItem>
+#include <QDebug>
 
 extern int num_jugadores;
 extern QString user, pass;
@@ -14,45 +13,68 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     nombre = user;
 
     escena=new QGraphicsScene(this);
-    escena->setSceneRect(0, 0, 782, 582);
+    escena->setSceneRect(0, 0,2239,2235);
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setFixedSize(782,582);
     ui->graphicsView->setScene(escena);
 
+    mapa=new QGraphicsPixmapItem;
+    mapa->setPos(0,0);
+    mapa->setPixmap(QPixmap(":/Imagenes/MAPA.png"));
+    escena->addItem(mapa);
+
     jugador = new Jugador;
-    jugador->setRect(0,0,50,50);
-    jugador->setPos(escena->width()/2, escena->height()/2);
+    jugador->setRect(0,0,30,50);
+    jugador->setPos(770,2155);
+    jugador->setBrush(Qt::red);
+
+    timer=new QTimer;
+    connect(timer,SIGNAL(timeout()),this,SLOT(ActualizarEscena()));
+    timer->start(25);
+
     escena->addItem(jugador);
+
+    objetos=new QGraphicsPixmapItem;
+    objetos->setPos(0,0);
+    objetos->setPixmap(QPixmap(":/Imagenes/OBJETOS.png"));
+    escena->addItem(objetos);
+
 }
 
 Mapa_GamePlay::~Mapa_GamePlay()
 {
+    delete timer;
     delete ui;
 }
 
 void Mapa_GamePlay::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_W)
-        jugador->setBanUp();
-    else if (event->key() == Qt::Key_S)
-        jugador->setBanDown();
-    else if (event->key() == Qt::Key_A)
-        jugador->setBanLeft();
-    else if (event->key() == Qt::Key_D)
-        jugador->setBanRight();
+    if (event->key() == Qt::Key_W){
+        jugador->setBanUp();}
+    else if (event->key() == Qt::Key_S){
+        jugador->setBanDown();}
+    else if (event->key() == Qt::Key_A){
+        jugador->setBanLeft();}
+    else if (event->key() == Qt::Key_D){
+        jugador->setBanRight();}
 }
 
 void Mapa_GamePlay::keyReleaseEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_W)
-        jugador->resetBanUp();
-    else if (event->key() == Qt::Key_S)
-        jugador->resetBanDown();
-    else if (event->key() == Qt::Key_A)
-        jugador->resetBanLeft();
-    else if (event->key() == Qt::Key_D)
-        jugador->resetBanRight();
+    if (event->key() == Qt::Key_W){
+        jugador->resetBanUp();}
+    else if (event->key() == Qt::Key_S){
+        jugador->resetBanDown();}
+    else if (event->key() == Qt::Key_A){
+        jugador->resetBanLeft();}
+    else if (event->key() == Qt::Key_D){
+        jugador->resetBanRight();}
+}
+
+void Mapa_GamePlay::ActualizarEscena()
+{
+    ui->graphicsView->centerOn(jugador->x(),jugador->y());
 }
 
 

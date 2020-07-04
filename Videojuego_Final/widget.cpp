@@ -10,6 +10,9 @@ Widget::Widget(QWidget *parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
+    QFontDatabase::addApplicationFont(":/Font/Red Right Hand.ttf");
+    QFont font = QFont("Red Right Hand", 12, 1);
+    setFont(font);
 }
 
 Widget::~Widget()

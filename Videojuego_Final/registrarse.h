@@ -22,6 +22,7 @@ public:
 
 private slots:
     void on_registrarse_clicked();
+    void on_volver_clicked();
 
 private:
     Ui::Registrarse *ui;

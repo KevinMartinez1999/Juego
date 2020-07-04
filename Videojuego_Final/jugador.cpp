@@ -13,6 +13,7 @@ Jugador::Jugador(QObject *parent) : QObject(parent)
     connect(timer, SIGNAL(timeout()), this, SLOT(moveUp()));
     connect(timer, SIGNAL(timeout()), this, SLOT(moveDown()));
     timer->start(25);
+
 }
 
 void Jugador::moveLeft()

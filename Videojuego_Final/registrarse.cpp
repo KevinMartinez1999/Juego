@@ -7,6 +7,8 @@ Registrarse::Registrarse(QWidget *parent) :
     ui(new Ui::Registrarse)
 {
     ui->setupUi(this);
+    QFont font = QFont("Red Right Hand", 12, 1);
+    setFont(font);
 }
 
 Registrarse::~Registrarse()
@@ -24,6 +26,13 @@ void Registrarse::on_registrarse_clicked()
     file.flush();
     file.close();
     QMessageBox::information(this, "Registro", "Registrado correctamente");
+    Widget *w = new Widget;
+    w->show();
+    close();
+}
+
+void Registrarse::on_volver_clicked()
+{
     Widget *w = new Widget;
     w->show();
     close();

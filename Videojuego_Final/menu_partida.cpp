@@ -4,7 +4,6 @@
 #include "mapa_gameplay.h"
 
 int num_jugadores;
-
 extern QString user, pass;
 
 Menu_partida::Menu_partida(QWidget *parent) :
@@ -12,11 +11,10 @@ Menu_partida::Menu_partida(QWidget *parent) :
     ui(new Ui::Menu_partida)
 {
     ui->setupUi(this);
-
     ui->un_jugador->setChecked(true);
-
+    QFont font = QFont("Red Right Hand", 12, 1);
+    setFont(font);
     int cont = 0;
-    string var;
 
     ifstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
     if (!file.is_open())

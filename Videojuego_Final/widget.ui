@@ -49,20 +49,20 @@
     </rect>
    </property>
    <property name="text">
-    <string>Contraseña:</string>
+    <string>CONTRASEÑA:</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>80</x>
+     <x>70</x>
      <y>170</y>
-     <width>121</width>
-     <height>17</height>
+     <width>141</width>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
-    <string>No estas registrado?</string>
+    <string>NO ESTAS REGISTRADO?</string>
    </property>
   </widget>
   <widget class="QPushButton" name="registrarse">
@@ -71,11 +71,11 @@
      <x>210</x>
      <y>170</y>
      <width>111</width>
-     <height>20</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
-    <string>Registrarse</string>
+    <string>REGISTRARSE</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -88,30 +88,30 @@
     </rect>
    </property>
    <property name="text">
-    <string>Usuario:</string>
+    <string>USUARIO:</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>77</x>
      <y>240</y>
      <width>241</width>
-     <height>27</height>
+     <height>29</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <widget class="QPushButton" name="login">
       <property name="text">
-       <string>Login</string>
+       <string>LOGIN</string>
       </property>
      </widget>
     </item>
     <item>
      <widget class="QPushButton" name="salir">
       <property name="text">
-       <string>Salir</string>
+       <string>SALIR</string>
       </property>
      </widget>
     </item>

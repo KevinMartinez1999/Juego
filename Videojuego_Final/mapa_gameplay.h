@@ -4,7 +4,8 @@
 #include <QWidget>
 #include <QGraphicsScene>
 #include <QKeyEvent>
-
+#include <QGraphicsPixmapItem>
+#include <QTimer>
 #include "jugador.h"
 
 namespace Ui {
@@ -23,9 +24,14 @@ public:
 
 private:
     Ui::Mapa_GamePlay *ui;
+    QTimer *timer;
     QString nombre;
     QGraphicsScene *escena;
     Jugador *jugador;
+    QGraphicsPixmapItem *mapa;
+    QGraphicsPixmapItem *objetos;
+ private slots:
+    void ActualizarEscena();
 };
 
 #endif // MAPA_GAMEPLAY_H
