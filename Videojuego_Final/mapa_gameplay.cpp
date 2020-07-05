@@ -5,18 +5,20 @@
 extern int num_jugadores;
 extern QString user, pass;
 Muro *muro;
+Jugador *jugador, *jugador2;
+
 Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Mapa_GamePlay)
 {
     ui->setupUi(this);
     nombre = user;
+    pj2 = false;
 
     escena=new QGraphicsScene(this);
     escena->setSceneRect(0, 0,2239,2235);
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-//    setFixedSize(782,582);
     ui->graphicsView->setScene(escena);
 
     muro= new Muro;
@@ -28,22 +30,37 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     mapa->setPixmap(QPixmap(":/Imagenes/MAPA.png"));
     escena->addItem(mapa);
 
-    jugador = new Jugador;
-    jugador->setRect(0,0,30,30);
-    jugador->setPos(770,2155);
-    jugador->setBrush(Qt::red);
+    if (num_jugadores == 1){
+        jugador = new Jugador(this);
+        jugador->setRect(0,0,30,30);
+        jugador->setPos(770,2155);
+        jugador->setBrush(Qt::red);
+        escena->addItem(jugador);
+    }
+    else if (num_jugadores == 2){
+        pj2 = true;
+
+        jugador = new Jugador(this);
+        jugador->setRect(0,0,30,30);
+        jugador->setPos(770,2155);
+        jugador->setBrush(Qt::red);
+        escena->addItem(jugador);
+
+        jugador2 = new Jugador(jugador);
+        jugador2->setRect(0,0,30,30);
+        jugador2->setPos(820,2155);
+        jugador2->setBrush(Qt::blue);
+        escena->addItem(jugador2);
+    }
 
     timer=new QTimer;
     connect(timer,SIGNAL(timeout()),this,SLOT(ActualizarEscena()));
-    timer->start(25);
-
-    escena->addItem(jugador);
+    timer->start();
 
     objetos=new QGraphicsPixmapItem;
     objetos->setPos(0,0);
     objetos->setPixmap(QPixmap(":/Imagenes/OBJETOS.png"));
     escena->addItem(objetos);
-
 }
 
 Mapa_GamePlay::~Mapa_GamePlay()
@@ -54,30 +71,70 @@ Mapa_GamePlay::~Mapa_GamePlay()
 void Mapa_GamePlay::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_W){
-        jugador->setBanUp();}
+        jugador->setBanUp();
+    }
     else if (event->key() == Qt::Key_S){
-        jugador->setBanDown();}
+        jugador->setBanDown();
+    }
     else if (event->key() == Qt::Key_A){
-        jugador->setBanLeft();}
+        jugador->setBanLeft();
+    }
     else if (event->key() == Qt::Key_D){
-        jugador->setBanRight();}
+        jugador->setBanRight();
+    }
+    else if(event->key()==Qt::Key_J){
+        if(pj2)
+            jugador2->setBanLeft();
+    }
+    else if(event->key()==Qt::Key_L){
+        if(pj2)
+            jugador2->setBanRight();
+    }
+    else if(event->key()==Qt::Key_I){
+        if(pj2)
+            jugador2->setBanUp();
+    }
+    else if(event->key()==Qt::Key_K){
+        if(pj2)
+            jugador2->setBanDown();
+    }
 }
 
 void Mapa_GamePlay::keyReleaseEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_W){
-        jugador->resetBanUp();}
+        jugador->resetBanUp();
+    }
     else if (event->key() == Qt::Key_S){
-        jugador->resetBanDown();}
+        jugador->resetBanDown();
+    }
     else if (event->key() == Qt::Key_A){
-        jugador->resetBanLeft();}
+        jugador->resetBanLeft();
+    }
     else if (event->key() == Qt::Key_D){
-        jugador->resetBanRight();}
+        jugador->resetBanRight();
+    }
+    else if(event->key()==Qt::Key_J){
+        if(pj2)
+            jugador2->resetBanLeft();
+    }
+    else if(event->key()==Qt::Key_L){
+        if(pj2)
+            jugador2->resetBanRight();
+    }
+    else if(event->key()==Qt::Key_I){
+        if(pj2)
+            jugador2->resetBanUp();
+    }
+    else if(event->key()==Qt::Key_K){
+        if(pj2)
+            jugador2->resetBanDown();
+    }
 }
 
 void Mapa_GamePlay::ActualizarEscena()
 {
-    ui->graphicsView->centerOn(jugador->x(),jugador->y());
+    ui->graphicsView->centerOn(jugador);
 }
 
 

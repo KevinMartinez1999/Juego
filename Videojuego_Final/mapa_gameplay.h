@@ -28,9 +28,10 @@ private:
     QTimer *timer;
     QString nombre;
     QGraphicsScene *escena;
-    Jugador *jugador;
     QGraphicsPixmapItem *mapa;
     QGraphicsPixmapItem *objetos;
+    bool pj2;
+
  private slots:
     void ActualizarEscena();
 };
