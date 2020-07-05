@@ -4,7 +4,7 @@
 
 extern int num_jugadores;
 extern QString user, pass;
-
+Muro *muro;
 Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Mapa_GamePlay)
@@ -16,8 +16,12 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     escena->setSceneRect(0, 0,2239,2235);
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setFixedSize(782,582);
+//    setFixedSize(782,582);
     ui->graphicsView->setScene(escena);
+
+    muro= new Muro;
+    muro->setPos(0,0);
+    escena->addItem(muro);
 
     mapa=new QGraphicsPixmapItem;
     mapa->setPos(0,0);
@@ -25,7 +29,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     escena->addItem(mapa);
 
     jugador = new Jugador;
-    jugador->setRect(0,0,30,50);
+    jugador->setRect(0,0,30,30);
     jugador->setPos(770,2155);
     jugador->setBrush(Qt::red);
 
@@ -44,7 +48,6 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
 
 Mapa_GamePlay::~Mapa_GamePlay()
 {
-    delete timer;
     delete ui;
 }
 

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QGraphicsRectItem>
 #include <QTimer>
+#include "muro.h"
 
 class Jugador : public QObject, public QGraphicsRectItem
 {

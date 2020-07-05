@@ -20,6 +20,7 @@ SOURCES += \
     main.cpp \
     mapa_gameplay.cpp \
     menu_partida.cpp \
+    muro.cpp \
     registrarse.cpp \
     widget.cpp
 
@@ -27,6 +28,7 @@ HEADERS += \
     jugador.h \
     mapa_gameplay.h \
     menu_partida.h \
+    muro.h \
     registrarse.h \
     widget.h
 

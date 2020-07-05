@@ -7,6 +7,7 @@
 #include <QGraphicsPixmapItem>
 #include <QTimer>
 #include "jugador.h"
+#include "muro.h"
 
 namespace Ui {
 class Mapa_GamePlay;
