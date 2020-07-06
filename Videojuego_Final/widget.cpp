@@ -10,9 +10,14 @@ Widget::Widget(QWidget *parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
+
     QFontDatabase::addApplicationFont(":/Font/Red Right Hand.ttf");
     QFont font = QFont("Red Right Hand", 12, 1);
     setFont(font);
+
+    QRegExp rx("^[\\w'\\-,.][^_!¡' '?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\\]]{2,}$");
+    QRegExpValidator * val = new QRegExpValidator(rx, this);
+    ui->usuario->setValidator(val);
 }
 
 Widget::~Widget()
@@ -23,8 +28,8 @@ Widget::~Widget()
 
 void Widget::on_login_clicked()
 {
-    user = ui->usuario->toPlainText();
-    pass = ui->clave->toPlainText();
+    user = ui->usuario->text();
+    pass = ui->clave->text();
     ifstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
     if (!file.is_open())
     {
