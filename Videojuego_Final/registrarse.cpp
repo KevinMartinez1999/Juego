@@ -9,6 +9,14 @@ Registrarse::Registrarse(QWidget *parent) :
     ui->setupUi(this);
     QFont font = QFont("Red Right Hand", 12, 1);
     setFont(font);
+
+    QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
+    QCursor cursor = QCursor(Pixmap_Cursor,0,0);
+    setCursor(cursor);
+
+    QRegExp rx("^[\\w'\\-,.][^_!¡' '?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\\]]{2,}$");
+    QRegExpValidator * val = new QRegExpValidator(rx, this);
+    ui->usuario->setValidator(val);
 }
 
 Registrarse::~Registrarse()
@@ -19,8 +27,8 @@ Registrarse::~Registrarse()
 void Registrarse::on_registrarse_clicked()
 {
     QString user, pass;
-    user = ui->usuario->toPlainText();
-    pass = ui->clave->toPlainText();
+    user = ui->usuario->text();
+    pass = ui->clave->text();
     ofstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
     file<<user.toStdString()<<"\n"<<pass.toStdString();
     file.flush();

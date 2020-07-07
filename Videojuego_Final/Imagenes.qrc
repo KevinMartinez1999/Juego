@@ -1,9 +1,15 @@
 <RCC>
     <qresource prefix="/">
         <file>Imagenes/MUROS.png</file>
-        <file>Imagenes/MAPA.png</file>
         <file>Imagenes/OBJETOS.png</file>
         <file>Font/Red Right Hand.ttf</file>
         <file>Imagenes/LOGO.png</file>
+        <file>Imagenes/MAPA.png</file>
+        <file>Imagenes/CURSOR.png</file>
+        <file>Imagenes/ICONO.png</file>
+        <file>Imagenes/Boton.png</file>
+        <file>Imagenes/BotonHover.png</file>
+        <file>Imagenes/BotonPush.png</file>
+        <file>Imagenes/SpritePlayer.png</file>
     </qresource>
 </RCC>

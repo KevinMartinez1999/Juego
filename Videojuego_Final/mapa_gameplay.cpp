@@ -12,6 +12,11 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     ui(new Ui::Mapa_GamePlay)
 {
     ui->setupUi(this);
+
+    QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
+    QCursor cursor = QCursor(Pixmap_Cursor,0,0);
+    setCursor(cursor);
+
     nombre = user;
     pj2 = false;
 

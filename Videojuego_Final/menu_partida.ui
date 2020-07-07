@@ -16,8 +16,15 @@
     <height>582</height>
    </size>
   </property>
+  <property name="cursor">
+   <cursorShape>ArrowCursor</cursorShape>
+  </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>HellBurn</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="Imagenes.qrc">
+    <normaloff>:/Imagenes/ICONO.png</normaloff>:/Imagenes/ICONO.png</iconset>
   </property>
   <widget class="QGraphicsView" name="graphicsView">
    <property name="geometry">
@@ -95,6 +102,8 @@
    </property>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="Imagenes.qrc"/>
+ </resources>
  <connections/>
 </ui>

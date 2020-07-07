@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iostream>
 #include <QMessageBox>
+#include <QRegExpValidator>
 
 using namespace std;
 

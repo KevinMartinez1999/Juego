@@ -1,4 +1,4 @@
-#include "widget.h"
+ #include "widget.h"
 #include "ui_widget.h"
 #include "registrarse.h"
 #include "menu_partida.h"
@@ -14,6 +14,10 @@ Widget::Widget(QWidget *parent)
     QFontDatabase::addApplicationFont(":/Font/Red Right Hand.ttf");
     QFont font = QFont("Red Right Hand", 12, 1);
     setFont(font);
+
+    QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
+    QCursor cursor = QCursor(Pixmap_Cursor,0,0);
+    setCursor(cursor);
 
     QRegExp rx("^[\\w'\\-,.][^_!¡' '?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\\]]{2,}$");
     QRegExpValidator * val = new QRegExpValidator(rx, this);

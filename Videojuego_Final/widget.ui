@@ -17,7 +17,14 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Widget</string>
+   <string>HellBurn</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="Imagenes.qrc">
+    <normaloff>:/Imagenes/ICONO.png</normaloff>:/Imagenes/ICONO.png</iconset>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
   </property>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
@@ -54,6 +61,10 @@
      <height>31</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">
+</string>
+   </property>
    <property name="text">
     <string>REGISTRARSE</string>
    </property>
@@ -70,32 +81,6 @@
    <property name="text">
     <string>USUARIO:</string>
    </property>
-  </widget>
-  <widget class="QWidget" name="layoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>77</x>
-     <y>240</y>
-     <width>241</width>
-     <height>29</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QPushButton" name="login">
-      <property name="text">
-       <string>LOGIN</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="salir">
-      <property name="text">
-       <string>SALIR</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
   </widget>
   <widget class="QLineEdit" name="usuario">
    <property name="geometry">
@@ -117,8 +102,36 @@
     </rect>
    </property>
   </widget>
+  <widget class="QPushButton" name="login">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>230</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>LOGIN</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="salir">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>230</y>
+     <width>121</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>SALIR</string>
+   </property>
+  </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="Imagenes.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>salir</sender>
