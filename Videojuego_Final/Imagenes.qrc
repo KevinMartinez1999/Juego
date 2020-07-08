@@ -8,8 +8,8 @@
         <file>Imagenes/CURSOR.png</file>
         <file>Imagenes/ICONO.png</file>
         <file>Imagenes/Boton.png</file>
-        <file>Imagenes/BotonHover.png</file>
         <file>Imagenes/BotonPush.png</file>
+        <file>Imagenes/BotonHover.png</file>
         <file>Imagenes/SpritePlayer.png</file>
     </qresource>
 </RCC>

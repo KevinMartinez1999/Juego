@@ -6,15 +6,14 @@ extern int num_jugadores;
 extern QString user, pass;
 Muro *muro;
 Jugador *jugador, *jugador2;
-
+int Fila;
 Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Mapa_GamePlay)
 {
     ui->setupUi(this);
 
-    QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
-    QCursor cursor = QCursor(Pixmap_Cursor,0,0);
+    QCursor cursor = QCursor(Qt::BlankCursor);
     setCursor(cursor);
 
     nombre = user;
@@ -37,24 +36,18 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
 
     if (num_jugadores == 1){
         jugador = new Jugador(this);
-        jugador->setRect(0,0,30,30);
         jugador->setPos(770,2155);
-        jugador->setBrush(Qt::red);
         escena->addItem(jugador);
     }
     else if (num_jugadores == 2){
         pj2 = true;
 
         jugador = new Jugador(this);
-        jugador->setRect(0,0,30,30);
         jugador->setPos(770,2155);
-        jugador->setBrush(Qt::red);
         escena->addItem(jugador);
 
         jugador2 = new Jugador(jugador);
-        jugador2->setRect(0,0,30,30);
         jugador2->setPos(820,2155);
-        jugador2->setBrush(Qt::blue);
         escena->addItem(jugador2);
     }
 
@@ -109,16 +102,16 @@ void Mapa_GamePlay::keyReleaseEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_W){
         jugador->resetBanUp();
-    }
+    Fila=84;}
     else if (event->key() == Qt::Key_S){
         jugador->resetBanDown();
-    }
+    Fila=0;}
     else if (event->key() == Qt::Key_A){
         jugador->resetBanLeft();
-    }
+    Fila=168;}
     else if (event->key() == Qt::Key_D){
         jugador->resetBanRight();
-    }
+    Fila=252;}
     else if(event->key()==Qt::Key_J){
         if(pj2)
             jugador2->resetBanLeft();

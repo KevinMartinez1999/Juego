@@ -17,6 +17,19 @@
    <iconset resource="Imagenes.qrc">
     <normaloff>:/Imagenes/ICONO.png</normaloff>:/Imagenes/ICONO.png</iconset>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton{
+	border-image:url(:/Imagenes/Boton.png);
+}
+
+QPushButton:hover{
+	border-image:url(:/Imagenes/BotonHover.png);
+}
+
+QPushButton:pressed{
+	border-image:url(:/Imagenes/BotonPush.png);
+}</string>
+  </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>

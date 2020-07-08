@@ -6,7 +6,6 @@
 #include <fstream>
 #include <iostream>
 #include <QRegExpValidator>
-#include <QFontDatabase>
 
 using namespace std;
 

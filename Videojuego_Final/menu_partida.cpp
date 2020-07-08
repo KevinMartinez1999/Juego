@@ -12,8 +12,6 @@ Menu_partida::Menu_partida(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->un_jugador->setChecked(true);
-    QFont font = QFont("Red Right Hand", 12, 1);
-    setFont(font);
 
     QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
     QCursor cursor = QCursor(Pixmap_Cursor,0,0);

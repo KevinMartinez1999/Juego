@@ -11,10 +11,6 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
 
-    QFontDatabase::addApplicationFont(":/Font/Red Right Hand.ttf");
-    QFont font = QFont("Red Right Hand", 12, 1);
-    setFont(font);
-
     QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
     QCursor cursor = QCursor(Pixmap_Cursor,0,0);
     setCursor(cursor);

@@ -26,6 +26,19 @@
    <iconset resource="Imagenes.qrc">
     <normaloff>:/Imagenes/ICONO.png</normaloff>:/Imagenes/ICONO.png</iconset>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton{
+	border-image:url(:/Imagenes/Boton.png);
+}
+
+QPushButton:hover{
+	border-image:url(:/Imagenes/BotonHover.png);
+}
+
+QPushButton:pressed{
+	border-image:url(:/Imagenes/BotonPush.png);
+}</string>
+  </property>
   <widget class="QGraphicsView" name="graphicsView">
    <property name="geometry">
     <rect>
@@ -39,7 +52,7 @@
   <widget class="QRadioButton" name="un_jugador">
    <property name="geometry">
     <rect>
-     <x>311</x>
+     <x>320</x>
      <y>490</y>
      <width>91</width>
      <height>21</height>
@@ -52,7 +65,7 @@
   <widget class="QRadioButton" name="dos_jugadores">
    <property name="geometry">
     <rect>
-     <x>400</x>
+     <x>410</x>
      <y>490</y>
      <width>101</width>
      <height>21</height>
@@ -65,9 +78,9 @@
   <widget class="QPushButton" name="nueva_partida">
    <property name="geometry">
     <rect>
-     <x>250</x>
+     <x>210</x>
      <y>520</y>
-     <width>91</width>
+     <width>120</width>
      <height>31</height>
     </rect>
    </property>
@@ -78,9 +91,9 @@
   <widget class="QPushButton" name="cargar_partida">
    <property name="geometry">
     <rect>
-     <x>350</x>
+     <x>340</x>
      <y>520</y>
-     <width>101</width>
+     <width>120</width>
      <height>31</height>
     </rect>
    </property>
@@ -91,9 +104,9 @@
   <widget class="QPushButton" name="volver">
    <property name="geometry">
     <rect>
-     <x>460</x>
+     <x>470</x>
      <y>520</y>
-     <width>91</width>
+     <width>120</width>
      <height>31</height>
     </rect>
    </property>

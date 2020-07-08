@@ -2,11 +2,12 @@
 #define JUGADOR_H
 
 #include <QObject>
-#include <QGraphicsRectItem>
+#include <QGraphicsItem>
 #include <QTimer>
+#include <QPainter>
 #include "muro.h"
 
-class Jugador : public QObject, public QGraphicsRectItem
+class Jugador : public QObject, public QGraphicsItem
 {
     Q_OBJECT
 public:
@@ -19,10 +20,16 @@ public:
     inline bool resetBanRight() {return banRight = false;}
     inline bool resetBanUp() {return banUp = false;}
     inline bool resetBanDown() {return banDown = false;}
+    QTimer *timer;
+    QPixmap *pixmap;
+    float columnas,ancho,alto;
+    QRectF boundingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 signals:
 
 public slots:
+    void Actualizacion();
     void moveLeft();
     void moveRight();
     void moveUp();
@@ -33,7 +40,6 @@ private:
     bool banRight;
     bool banUp;
     bool banDown;
-
 };
 
 #endif // JUGADOR_H
