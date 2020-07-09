@@ -30,5 +30,6 @@ private slots:
 
 private:
     Ui::Widget *ui;
+    QMovie *movie;
 };
 #endif // WIDGET_H

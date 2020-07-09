@@ -6,6 +6,8 @@
 #include <iostream>
 #include <QMessageBox>
 #include <QRegExpValidator>
+#include <QLabel>
+#include <QMovie>
 
 using namespace std;
 
@@ -27,6 +29,7 @@ private slots:
 
 private:
     Ui::Registrarse *ui;
+    QMovie *movie;
 };
 
 #endif // REGISTRARSE_H

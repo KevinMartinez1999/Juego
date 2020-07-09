@@ -141,7 +141,7 @@ border-image:url(:/Imagenes/TEXT-INPUT.png);
 }</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_3">
+  <widget class="QLabel" name="Interfaz">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -160,7 +160,7 @@ border-image:url(:/Imagenes/TEXT-INPUT.png);
     <bool>true</bool>
    </property>
   </widget>
-  <zorder>label_3</zorder>
+  <zorder>Interfaz</zorder>
   <zorder>label</zorder>
   <zorder>label_2</zorder>
   <zorder>registrarse</zorder>

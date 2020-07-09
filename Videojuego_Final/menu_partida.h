@@ -20,7 +20,6 @@ class Menu_partida : public QWidget
 public:
     explicit Menu_partida(QWidget *parent = nullptr);
     ~Menu_partida();
-
 private slots:
     void on_volver_clicked();
 
@@ -30,6 +29,7 @@ private slots:
 
 private:
     Ui::Menu_partida *ui;
+    QMovie *movie;
 };
 
 #endif // MENU_PARTIDA_H
