@@ -10,6 +10,21 @@ Widget::Widget(QWidget *parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
+    QLabel *w = new QLabel(this);
+    w->resize(1000,650);
+    QMovie *movie = new QMovie(":/Imagenes/GIF1.gif");
+    movie->setScaledSize(QSize(1000,650));
+    w->setMovie(movie);
+    movie->start ();
+
+    ui->Interfaz->raise();
+    ui->usuario->raise();
+    ui->clave->raise();
+    ui->label->raise();
+    ui->label_2->raise();
+    ui->login->raise();
+    ui->salir->raise();
+    ui->registrarse->raise();
 
     QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
     QCursor cursor = QCursor(Pixmap_Cursor,0,0);

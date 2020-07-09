@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     QTimer::singleShot(5500,&w,SLOT(show()));
 
     QFontDatabase::addApplicationFont(":/Font/Red Right Hand.ttf");
-    QFont font = QFont("Red Right Hand", 12, 1);
+    QFont font = QFont("Red Right Hand", 14, 1);
     a.setFont(font);
 
     return a.exec();

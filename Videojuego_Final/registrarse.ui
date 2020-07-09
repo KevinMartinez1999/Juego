@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>1000</width>
+    <height>650</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,26 +18,19 @@
     <normaloff>:/Imagenes/ICONO.png</normaloff>:/Imagenes/ICONO.png</iconset>
   </property>
   <property name="styleSheet">
-   <string notr="true">QPushButton{
-	border-image:url(:/Imagenes/Boton.png);
-}
-
-QPushButton:hover{
-	border-image:url(:/Imagenes/BotonHover.png);
-}
-
-QPushButton:pressed{
-	border-image:url(:/Imagenes/BotonPush.png);
-}</string>
+   <string notr="true"/>
   </property>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>50</y>
-     <width>171</width>
-     <height>17</height>
+     <x>250</x>
+     <y>40</y>
+     <width>100</width>
+     <height>20</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>Usuario:</string>
@@ -46,11 +39,14 @@ QPushButton:pressed{
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>140</y>
-     <width>171</width>
-     <height>17</height>
+     <x>690</x>
+     <y>40</y>
+     <width>100</width>
+     <height>20</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
     <string>Contraseña:</string>
@@ -59,11 +55,26 @@ QPushButton:pressed{
   <widget class="QPushButton" name="registrarse">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>240</y>
-     <width>80</width>
-     <height>31</height>
+     <x>440</x>
+     <y>20</y>
+     <width>130</width>
+     <height>50</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#registrarse{
+color: rgb(255, 255, 255);
+border-image: url(:/Imagenes/Boton.png);
+}
+#registrarse:hover
+{
+border-image: url(:/Imagenes/BotonHover.png);
+}
+#registrarse:pressed
+{
+border-image: url(:/Imagenes/BotonPush.png);
+}
+</string>
    </property>
    <property name="text">
     <string>Registrarse</string>
@@ -72,11 +83,27 @@ QPushButton:pressed{
   <widget class="QPushButton" name="volver">
    <property name="geometry">
     <rect>
-     <x>200</x>
-     <y>240</y>
-     <width>81</width>
-     <height>31</height>
+     <x>600</x>
+     <y>590</y>
+     <width>100</width>
+     <height>50</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#volver{
+color: rgb(255, 255, 255);
+border-image: url(:/Imagenes/BOTONGRIS.png);
+}
+#volver:hover
+{
+border-image: url(:/Imagenes/BOTONGRISHOVER.png);
+}
+#volver:pressed
+{
+border-image: url(:/Imagenes/BOTONGRISPUSH.png);
+}
+
+</string>
    </property>
    <property name="text">
     <string>Volver</string>
@@ -85,23 +112,61 @@ QPushButton:pressed{
   <widget class="QLineEdit" name="usuario">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>80</y>
-     <width>151</width>
-     <height>31</height>
+     <x>330</x>
+     <y>30</y>
+     <width>100</width>
+     <height>35</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#usuario{
+	color: rgb(255, 255, 255);
+border-image:url(:/Imagenes/TEXT-INPUT.png);
+}</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="clave">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>170</y>
-     <width>151</width>
-     <height>31</height>
+     <x>580</x>
+     <y>30</y>
+     <width>100</width>
+     <height>35</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">#clave{
+	color: rgb(255, 255, 255);
+border-image:url(:/Imagenes/TEXT-INPUT.png);
+}</string>
+   </property>
   </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1000</width>
+     <height>650</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="Imagenes.qrc">:/Imagenes/INTERFAZ.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <zorder>label_3</zorder>
+  <zorder>label</zorder>
+  <zorder>label_2</zorder>
+  <zorder>registrarse</zorder>
+  <zorder>usuario</zorder>
+  <zorder>volver</zorder>
+  <zorder>clave</zorder>
  </widget>
  <resources>
   <include location="Imagenes.qrc"/>

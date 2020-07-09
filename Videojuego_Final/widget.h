@@ -6,6 +6,8 @@
 #include <fstream>
 #include <iostream>
 #include <QRegExpValidator>
+#include <QMovie>
+#include <QLabel>
 
 using namespace std;
 

@@ -11,5 +11,14 @@
         <file>Imagenes/BotonPush.png</file>
         <file>Imagenes/BotonHover.png</file>
         <file>Imagenes/SpritePlayer.png</file>
+        <file>Imagenes/GIF.gif</file>
+        <file>Imagenes/BOTONGRIS.png</file>
+        <file>Imagenes/BOTONGRISHOVER.png</file>
+        <file>Imagenes/BOTONGRISPUSH.png</file>
+        <file>Imagenes/INTERFAZ.png</file>
+        <file>Imagenes/TEXT-INPUT.png</file>
+        <file>Imagenes/GIF1.gif</file>
+        <file>Imagenes/RADIOCHECKED.png</file>
+        <file>Imagenes/RADIOEMPTY.png</file>
     </qresource>
 </RCC>

@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <iostream>
 #include <fstream>
+#include <QLabel>
+#include <QMovie>
 
 using namespace std;
 
