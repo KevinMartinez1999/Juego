@@ -6,12 +6,16 @@
 #include <QTimer>
 #include <QPainter>
 #include "muro.h"
+#include "hitbox.h"
 
 class Jugador : public QObject, public QGraphicsItem
 {
     Q_OBJECT
 public:
     explicit Jugador(QObject *parent = nullptr);
+
+    // Estas funciones son las banderas de movimiento
+
     inline bool setBanLeft() {return banLeft = true;}
     inline bool setBanRight() {return banRight = true;}
     inline bool setBanUp() {return banUp= true;}
@@ -20,6 +24,13 @@ public:
     inline bool resetBanRight() {return banRight = false;}
     inline bool resetBanUp() {return banUp = false;}
     inline bool resetBanDown() {return banDown = false;}
+
+    HitBox *box;
+    void crear_hitBox(); //Crea el HiteBox del jugador que sigue sus pies para las colisiones
+
+    //Los sig. metodos y atributos son los necesarios para crear la animacion de
+    //movimiento del jugador
+
     QTimer *timer;
     QPixmap *pixmap;
     float columnas,ancho,alto;
@@ -29,7 +40,10 @@ public:
 signals:
 
 public slots:
-    void Actualizacion();
+    void Actualizacion(); //Actualiza el sprite
+
+    //Señales para el movimiento del jugador
+
     void moveLeft();
     void moveRight();
     void moveUp();
