@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QGraphicsRectItem>
-#include <QBrush>
 #include <QTimer>
 
 class HitBox : public QObject, public QGraphicsRectItem

@@ -1,31 +1,28 @@
 #include "jugador.h"
 #include "mapa_gameplay.h"
 
-extern int Fila;
 extern Muro *muro;
 
 Jugador::Jugador(QObject *parent) : QObject(parent)
 {
+    //Inicialzacion de las banderas de movimiento
     banLeft = false;
     banRight = false;
     banUp = false;
     banDown = false;
 
     // Se crea el timer que va a estar asociado al movimiento del jugador
-
     QTimer *timer1 = new QTimer;
     connect(timer1, SIGNAL(timeout()), this, SLOT(moveLeft()));
     connect(timer1, SIGNAL(timeout()), this, SLOT(moveRight()));
     connect(timer1, SIGNAL(timeout()), this, SLOT(moveUp()));
     connect(timer1, SIGNAL(timeout()), this, SLOT(moveDown()));
-    timer1->start(25);
+    timer1->start(50);
 
     //Timer para las actualización y dibujo del sprite.
-
-    timer = new QTimer();
+    timer = new QTimer(this);
     columnas = 0;
-
-    pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER.png");
+    fila = 0;
 
     //Ancho y alto del sprite del jugador
     ancho = 84;
@@ -35,7 +32,7 @@ Jugador::Jugador(QObject *parent) : QObject(parent)
     timer->start(150);
 }
 
-//AQui es donde se crea la caa que colisiona con el mapa y se hace invisble en la escena
+//Aqui es donde se crea la caa que colisiona con el mapa y se hace invisble en la escena
 
 void Jugador::crear_hitBox()
 {
@@ -64,7 +61,9 @@ void Jugador::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     lo que se dibujara y tambien, se le pasara constantemente en la funcion actualizar la columna que representara el cuadro 84x84
     que se dibujara en el momento. La variable fila representa el grupo de frames que se quiere realizar dependiendo a las acciones del
     jugador, esta variable cambia cuando el usuario activa un KeyEvent.*/
-    painter->drawPixmap(-ancho/2,-alto/2,*pixmap,columnas,Fila,ancho,alto);
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+    painter->drawPixmap(-ancho/2,-alto/2,*pixmap,columnas,fila,ancho,alto);
 }
 
 void Jugador::Actualizacion()
@@ -98,7 +97,7 @@ void Jugador::moveLeft()
 
     if (banLeft)
     {
-        Fila = 420; //Actualiza el sprite
+        fila = 420; //Actualiza el sprite
         if(x()>0){ //Condiciones del borde de las escena
             setPos(x()-5,y()); //Movimiento del jugador
             box->setPos(x()-20,y()+12); //Movimiento del hiteBox que colisiona
@@ -121,7 +120,7 @@ void Jugador::moveRight()
 {
     if (banRight)
     {
-        Fila = 504;//Actualiza el sprite
+        fila = 504;//Actualiza el sprite
         if(x()<2209){//Condiciones del borde de las escena
             setPos(x()+5,y());//Movimiento del jugador
             box->setPos(x()-10,y()+12);//Movimiento del hiteBox que colisiona
@@ -140,7 +139,7 @@ void Jugador::moveUp()
 {
     if (banUp)
     {
-        Fila = 588;//Actualiza el sprite
+        fila = 588;//Actualiza el sprite
         if(y()>0){//Condiciones del borde de las escena
             setPos(x(),y()-5);//Movimiento del jugador
             box->setPos(x()-15,y()+7);//Movimiento del hiteBox que colisiona
@@ -159,7 +158,7 @@ void Jugador::moveDown()
 {
     if (banDown)
     {
-        Fila = 336;//Actualiza el sprite
+        fila = 336;//Actualiza el sprite
         if(y()<2205){//Condiciones del borde de las escena
             setPos(x(),y()+5);//Movimiento del hiteBox que colisiona
             box->setPos(x()-15,y()+17);

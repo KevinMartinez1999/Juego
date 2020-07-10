@@ -64,6 +64,7 @@ Menu_partida::Menu_partida(QWidget *parent) :
     while(file.good())
         if(file.get()=='\n')
             cont++;
+    file.close();
 
     if (cont <= 1)
         ui->cargar_partida->setEnabled(false);
@@ -78,7 +79,7 @@ Menu_partida::~Menu_partida()
 
 void Menu_partida::on_volver_clicked()
 {
-    boton->play();
+    boton->play(); //Sonido del botón
 
     /*Si por alguna razon al entrar al menu de nueva-cargar partida deseamos cerrar sesion y volver al menu principal simplemente
     se cerrara la ventana y se creara un nuevo widget y se abrira.*/
@@ -89,14 +90,8 @@ void Menu_partida::on_volver_clicked()
 
 void Menu_partida::on_nueva_partida_clicked()
 {
-    //boton->play();
-    musica->stop();
-    delete musica;
-
-    QMediaPlayer * ambiente = new QMediaPlayer(this);
-    ambiente->setMedia(QUrl("qrc:/Musica/ambiente.ogg"));
-    ambiente->setVolume(50);
-    ambiente->play();
+    musica->stop(); //Se detiene la musica del menú
+    delete musica; //Se libera la memoria
 
     /*Cuando le damos a una nueva partida anteriormente seleccionamos cuantas pesonas
      van a jugar, por defecto una, y al iniciar se toman esos datos para saber cuantos
@@ -112,8 +107,6 @@ void Menu_partida::on_nueva_partida_clicked()
 
 void Menu_partida::on_cargar_partida_clicked()
 {
-    boton->play();
-
     /*Botón en el que se implementara la función que nos permitirá leer los datos guardados del
      jugador y así generar una partida exactamente igual a como se guardó.*/
 }

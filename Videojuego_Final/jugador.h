@@ -15,15 +15,14 @@ public:
     explicit Jugador(QObject *parent = nullptr);
 
     // Estas funciones son las banderas de movimiento
-
     inline bool setBanLeft() {return banLeft = true;}
     inline bool setBanRight() {return banRight = true;}
     inline bool setBanUp() {return banUp= true;}
     inline bool setBanDown() {return banDown = true;}
-    inline bool resetBanLeft() {return banLeft = false;}
-    inline bool resetBanRight() {return banRight = false;}
-    inline bool resetBanUp() {return banUp = false;}
-    inline bool resetBanDown() {return banDown = false;}
+    inline bool resetBanLeft() {fila=168; return banLeft = false;}
+    inline bool resetBanRight() {fila=252; return banRight = false;}
+    inline bool resetBanUp() {fila=84; return banUp = false;}
+    inline bool resetBanDown() {fila=0; return banDown = false;}
 
     HitBox *box;
     void crear_hitBox(); //Crea el HiteBox del jugador que sigue sus pies para las colisiones
@@ -33,7 +32,7 @@ public:
 
     QTimer *timer;
     QPixmap *pixmap;
-    float columnas,ancho,alto;
+    float columnas,fila,ancho,alto;
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 

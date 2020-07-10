@@ -62,7 +62,7 @@ Registrarse::~Registrarse()
 void Registrarse::on_registrarse_clicked()
 {
 
-    boton->play();
+    boton->play(); //Sonido del botón
 
     /*En esta función el usuario llena unas casillas con sus datos para registrarlo
      y paso seguido se toman esos datos y se llevan a la base de datos de los jugadores
@@ -88,7 +88,7 @@ void Registrarse::on_registrarse_clicked()
 
 void Registrarse::on_volver_clicked()
 {
-    boton->play();
+    boton->play(); //Sonido del botón
 
     /*Si deseamos registrarnos en el sistema, al presionar el botón se procederá a cerrar la ventana actual y se  creara una
     nueva ventana de registro y se abrirá.*/

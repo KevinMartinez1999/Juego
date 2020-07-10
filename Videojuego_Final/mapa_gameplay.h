@@ -6,6 +6,7 @@
 #include <QKeyEvent>
 #include <QGraphicsPixmapItem>
 #include <QTimer>
+#include <QMediaPlayer>
 #include "jugador.h"
 #include "muro.h"
 
@@ -28,6 +29,7 @@ public:
 
 private: //Atributos de la clase
     Ui::Mapa_GamePlay *ui;
+    QMediaPlayer * ambiente;
     QTimer *timer;
     QString nombre;
     QGraphicsScene *escena;
@@ -37,6 +39,7 @@ private: //Atributos de la clase
 
  private slots:
     void ActualizarEscena(); //Centra constantemente la grafica en el jugador
+    void iniciar() {ambiente->play();}
 };
 
 #endif // MAPA_GAMEPLAY_H

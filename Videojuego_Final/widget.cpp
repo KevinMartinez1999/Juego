@@ -2,7 +2,6 @@
 #include "ui_widget.h"
 #include "registrarse.h"
 #include "menu_partida.h"
-#include <QFileDialog>
 
 QString user, pass;
 
@@ -27,7 +26,7 @@ Widget::Widget(QWidget *parent)
     movie->setFileName(":/Imagenes/GIF.gif");
     movie->setScaledSize(QSize(1000,650));//Tamaño de la ventana.
     w->setMovie(movie);//Asignamos el gif al Label.
-    movie->start ();//Iniciamos la reproducción del gif.
+    movie->start();//Iniciamos la reproducción del gif.
 
     /*Ya que estamos creando el gif por código, siempre aparecerá en la ventana por encima de todos los elementos agregados en el .ui,
     para arreglar esto haremos uso de la función .raise(); que traerá al frente los elementos de la interfaz grafica
