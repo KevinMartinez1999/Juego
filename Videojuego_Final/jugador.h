@@ -6,7 +6,7 @@
 #include <QTimer>
 #include <QPainter>
 #include "muro.h"
-#include "hitebox.h"
+#include "hitbox.h"
 
 class Jugador : public QObject, public QGraphicsItem
 {
@@ -25,8 +25,8 @@ public:
     inline bool resetBanUp() {return banUp = false;}
     inline bool resetBanDown() {return banDown = false;}
 
-    HiteBox *box;
-    void crear_hiteBox(); //Crea el HiteBox del jugador que sigue sus pies para las colisiones
+    HitBox *box;
+    void crear_hitBox(); //Crea el HiteBox del jugador que sigue sus pies para las colisiones
 
     //Los sig. metodos y atributos son los necesarios para crear la animacion de
     //movimiento del jugador

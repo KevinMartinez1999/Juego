@@ -30,23 +30,23 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setScene(escena);
 
-    //El diseño del mapa esta divido em tres capas; la primera es la de los muros que es MUROS.png
-    //esta imagen es es la qe hace de los muros del castillo, arboles,, rocas y demas cosas que el
-    //jugador no puede atravesar; La segunda capa es del mapa completo, se incluye la imagen MAPA.png
+    //El diseño del mapa esta divido en tres capas; la primera es la de los muros que es MUROS.png
+    //esta imagen es la que representa las colisiones del jugador con el castillo, las rocas, los arboles y demas objetos.
+    //La segunda capa es del mapa completo, se incluye la imagen MAPA.png
     //sobre la imagen anterior y esta va mostrar lo que el mapa donde nos vamos a mover; La tarcera capa
     //es de las estructuras del mapa como castillos, rocas y demas cosas, se implementa con el fin de
     //crear una sensasion de pasar justo por debajo de puertas o estar detras de estructuras  y no
-    //siemore por encima como se veria si solo usamos una imagen completa del mapa.
+    //siempre por encima como se veria si solo usamos una imagen completa del mapa.
 
     //NOTA: Para generar dicha sensasion es necesario crear al jugador justo despues de la capa dos, despues
-    //del mapa completo y antes de mapa de las estructuras.
+    //del mapa completo y antes del mapa de las estructuras.
 
     //Primera capa del mapa
     muro= new Muro;
     muro->setPos(0,0);
     escena->addItem(muro);
 
-    //SEgunda capa del mapa
+    //Segunda capa del mapa
     mapa=new QGraphicsPixmapItem;
     mapa->setPos(0,0);
     mapa->setPixmap(QPixmap(":/Imagenes/MAPA.png"));
@@ -61,9 +61,10 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
 
     if (num_jugadores == 1){ //Solo un jugador
         jugador = new Jugador(this);
+        jugador->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
         jugador->setPos(770,2155);
         escena->addItem(jugador);
-        jugador->crear_hiteBox();
+        jugador->crear_hitBox();
     }
     else if (num_jugadores == 2){ //Dos jugadores
         pj2 = true; //Se activa la presencia de un jugador dos en mapa
@@ -72,12 +73,16 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
         //a ser los jugadores 1 y 2
 
         jugador = new Jugador(this);
+        jugador->pixmap= new QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
         jugador->setPos(770,2155);
         escena->addItem(jugador);
+        jugador->crear_hitBox();//Se crea el hitbox del primer jugador
 
         jugador2 = new Jugador(jugador);
+        jugador2->pixmap= new QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
         jugador2->setPos(820,2155);
         escena->addItem(jugador2);
+        jugador2->crear_hitBox();//Se crea el hitbox del segundo jugador
     }
 
     //Timer para actualizar la escena y centrarla en el jugador

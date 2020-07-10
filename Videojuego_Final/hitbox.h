@@ -6,11 +6,11 @@
 #include <QBrush>
 #include <QTimer>
 
-class HiteBox : public QObject, public QGraphicsRectItem
+class HitBox : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
 public:
-    explicit HiteBox(QObject *parent = nullptr);
+    explicit HitBox(QObject *parent = nullptr);
 
 signals:
 

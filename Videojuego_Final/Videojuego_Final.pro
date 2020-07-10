@@ -16,7 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    hitebox.cpp \
+    hitbox.cpp \
     jugador.cpp \
     main.cpp \
     mapa_gameplay.cpp \
@@ -26,7 +26,7 @@ SOURCES += \
     widget.cpp
 
 HEADERS += \
-    hitebox.h \
+    hitbox.h \
     jugador.h \
     mapa_gameplay.h \
     menu_partida.h \
