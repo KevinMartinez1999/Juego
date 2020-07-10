@@ -10,6 +10,6 @@
         <file>Imagenes/Boton.png</file>
         <file>Imagenes/BotonPush.png</file>
         <file>Imagenes/BotonHover.png</file>
-        <file>Imagenes/SpritePlayer.png</file>
+        <file>Imagenes/SPRITEPLAYER.png</file>
     </qresource>
 </RCC>

@@ -20,10 +20,13 @@ class Mapa_GamePlay : public QWidget
 public:
     explicit Mapa_GamePlay(QWidget *parent = nullptr);
     ~Mapa_GamePlay();
+
+    //Funciones detectoras de del teclado
+
     void keyPressEvent(QKeyEvent * event);
     void keyReleaseEvent(QKeyEvent *event);
 
-private:
+private: //Atributos de la clase
     Ui::Mapa_GamePlay *ui;
     QTimer *timer;
     QString nombre;
@@ -33,7 +36,7 @@ private:
     bool pj2;
 
  private slots:
-    void ActualizarEscena();
+    void ActualizarEscena(); //Centra constantemente la grafica en el jugador
 };
 
 #endif // MAPA_GAMEPLAY_H
