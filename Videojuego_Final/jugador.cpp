@@ -24,6 +24,9 @@ Jugador::Jugador(QObject *parent) : QObject(parent)
 
     timer = new QTimer();
     columnas = 0;
+
+    pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER.png");
+
     //Ancho y alto del sprite del jugador
     ancho = 84;
     alto  = 84;

@@ -6,6 +6,9 @@
 #include <fstream>
 #include <iostream>
 #include <QRegExpValidator>
+#include <QMovie>
+#include <QLabel>
+#include <QMediaPlayer>
 
 using namespace std;
 
@@ -26,7 +29,11 @@ private slots:
 
     void on_registrarse_clicked();
 
+    void on_mostrar_stateChanged(int arg1);
+
 private:
     Ui::Widget *ui;
+    QMovie *movie;
+    QMediaPlayer *boton;
 };
 #endif // WIDGET_H

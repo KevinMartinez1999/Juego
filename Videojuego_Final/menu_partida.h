@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <iostream>
 #include <fstream>
+#include <QLabel>
+#include <QMovie>
+#include <QMediaPlayer>
 
 using namespace std;
 
@@ -18,7 +21,6 @@ class Menu_partida : public QWidget
 public:
     explicit Menu_partida(QWidget *parent = nullptr);
     ~Menu_partida();
-
 private slots:
     void on_volver_clicked();
 
@@ -28,6 +30,8 @@ private slots:
 
 private:
     Ui::Menu_partida *ui;
+    QMovie *movie;
+    QMediaPlayer *boton;
 };
 
 #endif // MENU_PARTIDA_H

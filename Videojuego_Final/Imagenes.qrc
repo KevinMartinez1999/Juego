@@ -10,6 +10,18 @@
         <file>Imagenes/Boton.png</file>
         <file>Imagenes/BotonPush.png</file>
         <file>Imagenes/BotonHover.png</file>
+        <file>Imagenes/GIF.gif</file>
+        <file>Imagenes/BOTONGRIS.png</file>
+        <file>Imagenes/BOTONGRISHOVER.png</file>
+        <file>Imagenes/BOTONGRISPUSH.png</file>
+        <file>Imagenes/INTERFAZ.png</file>
+        <file>Imagenes/TEXT-INPUT.png</file>
+        <file>Imagenes/GIF1.gif</file>
+        <file>Imagenes/RADIOCHECKED.png</file>
+        <file>Imagenes/RADIOEMPTY.png</file>
         <file>Imagenes/SPRITEPLAYER.png</file>
+        <file>Musica/boton.mp3</file>
+        <file>Musica/Menu.mp3</file>
+        <file>Musica/ambiente.ogg</file>
     </qresource>
 </RCC>
