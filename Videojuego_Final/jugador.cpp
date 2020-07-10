@@ -18,7 +18,7 @@ Jugador::Jugador(QObject *parent) : QObject(parent)
 
     timer = new QTimer();
     columnas = 0;
-    pixmap = new QPixmap(":/Imagenes/SpritePlayer.png");
+    pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER.png");
     ancho = 84;
     alto  = 84;
     connect(timer,SIGNAL(timeout()),this,SLOT(Actualizacion()));

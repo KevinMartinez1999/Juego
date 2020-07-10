@@ -8,6 +8,7 @@
 #include <QRegExpValidator>
 #include <QLabel>
 #include <QMovie>
+#include <QMediaPlayer>
 
 using namespace std;
 
@@ -30,6 +31,7 @@ private slots:
 private:
     Ui::Registrarse *ui;
     QMovie *movie;
+    QMediaPlayer *boton;
 };
 
 #endif // REGISTRARSE_H

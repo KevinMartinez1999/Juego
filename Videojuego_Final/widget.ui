@@ -178,7 +178,7 @@ border-image: url(:/Imagenes/BOTONGRISPUSH.png);
   <widget class="QLabel" name="Interfaz">
    <property name="geometry">
     <rect>
-     <x>0</x>
+     <x>10</x>
      <y>0</y>
      <width>1000</width>
      <height>651</height>
@@ -194,6 +194,19 @@ border-image: url(:/Imagenes/BOTONGRISPUSH.png);
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="QCheckBox" name="mostrar">
+   <property name="geometry">
+    <rect>
+     <x>660</x>
+     <y>40</y>
+     <width>16</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
   <zorder>Interfaz</zorder>
   <zorder>clave</zorder>
   <zorder>label</zorder>
@@ -202,6 +215,7 @@ border-image: url(:/Imagenes/BOTONGRISPUSH.png);
   <zorder>registrarse</zorder>
   <zorder>salir</zorder>
   <zorder>usuario</zorder>
+  <zorder>mostrar</zorder>
  </widget>
  <resources>
   <include location="Imagenes.qrc"/>

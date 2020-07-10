@@ -6,6 +6,7 @@
 #include <fstream>
 #include <QLabel>
 #include <QMovie>
+#include <QMediaPlayer>
 
 using namespace std;
 
@@ -30,6 +31,7 @@ private slots:
 private:
     Ui::Menu_partida *ui;
     QMovie *movie;
+    QMediaPlayer *boton;
 };
 
 #endif // MENU_PARTIDA_H

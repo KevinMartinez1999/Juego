@@ -7,13 +7,20 @@ Registrarse::Registrarse(QWidget *parent) :
     ui(new Ui::Registrarse)
 {
     ui->setupUi(this);
+
+    //Sonido al presionar los botones
+    boton = new QMediaPlayer(this);
+    boton->setMedia(QUrl("qrc:/Musica/boton.mp3"));
+    boton->setVolume(100);
+
     /*Sistema de reproducción de gif en el menú:
     Para reproducir un gif primeramente se creara un nuevo QLabel al cual le asignaremos las dimensiones de la ventana, posterior a eso
     crearemos una variable QMovie con el gif a reproducir y también le asignaremos el tamaño de la pantalla, luego con
     la función setMovie le asignaremos al Label que contenga el gif y se reproduzca.*/
     QLabel *w = new QLabel(this);
     w->resize(1000,650);//Tamaño de la ventana.
-    movie = new QMovie(":/Imagenes/GIF1.gif");
+    movie = new QMovie(this);
+    movie->setFileName(":/Imagenes/GIF.gif");
     movie->setScaledSize(QSize(1000,650));//Tamaño de la ventana.
     w->setMovie(movie);//Asignamos el gif al Label.
     movie->start();//Iniciamos la reproducción del gif.
@@ -36,6 +43,12 @@ Registrarse::Registrarse(QWidget *parent) :
     QCursor cursor = QCursor(Pixmap_Cursor,0,0);
     setCursor(cursor);
 
+    /*Aqui se valida la informacion que el usuario entra en la casilla de nombre de usuario;
+    El QRegExp o registro de expresion es una cadena de caracteres que contiene los caracteres
+    que no debeen ser usados en un nombre de usuario o cualquier otra cosa commo una contraseña,
+    e-mail, numero de telefono, etcétera. Luego de tener esta expresion el QRegExpValidator la toma
+    y no deja que en esa casilla de nombre de usuario aparezcan esos caracteres aunque el usuario
+    los presione*/
     QRegExp rx("^[\\w'\\-,.][^_!¡' '?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\\]]{2,}$");
     QRegExpValidator * val = new QRegExpValidator(rx, this);
     ui->usuario->setValidator(val);
@@ -48,26 +61,38 @@ Registrarse::~Registrarse()
 
 void Registrarse::on_registrarse_clicked()
 {
+
+    boton->play();
+
+    /*En esta función el usuario llena unas casillas con sus datos para registrarlo
+     y paso seguido se toman esos datos y se llevan a la base de datos de los jugadores
+     registrados*/
     QString user, pass;
+
+    //Se toman los datos
     user = ui->usuario->text();
     pass = ui->clave->text();
+
+    //Se abre y se llevan los datos ingresados al archivo
     ofstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
     file<<user.toStdString()<<"\n"<<pass.toStdString();
     file.flush();
     file.close();
+
+    //Ventana emergente que notifica que el registro fue exitoso
     QMessageBox::information(this, "Registro", "Registrado correctamente");
     Widget *w = new Widget;
     w->show();
-    movie->stop();//Se detendrá la reproducción de la variable QMovie que contiene al gif del menú para evitar problemas de memoria.
     close();
 }
 
 void Registrarse::on_volver_clicked()
 {
+    boton->play();
+
     /*Si deseamos registrarnos en el sistema, al presionar el botón se procederá a cerrar la ventana actual y se  creara una
     nueva ventana de registro y se abrirá.*/
     Widget *w = new Widget;
     w->show();
-    movie->stop();//Se detendrá la reproducción de la variable QMovie que contiene al gif del menú para evitar problemas de memoria.
     close();
 }
