@@ -44,6 +44,9 @@ Registrarse::Registrarse(QWidget *parent) :
     QCursor cursor = QCursor(Pixmap_Cursor,0,0);
     setCursor(cursor);
 
+    //Enfoca por defecto la casilla del usuario para hacer el login mas rapido
+    ui->usuario->setFocus();
+
     /*Aqui se valida la informacion que el usuario entra en la casilla de nombre de usuario;
     El QRegExp o registro de expresion es una cadena de caracteres que contiene los caracteres
     que no debeen ser usados en un nombre de usuario o cualquier otra cosa commo una contraseña,

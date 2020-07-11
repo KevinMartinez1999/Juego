@@ -2,13 +2,13 @@
 #define JUGADOR_H
 
 #include <QObject>
-#include <QGraphicsItem>
+#include <QGraphicsPixmapItem>
 #include <QTimer>
 #include <QPainter>
 #include "muro.h"
 #include "hitbox.h"
 
-class Jugador : public QObject, public QGraphicsItem
+class Jugador : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 public:
@@ -23,6 +23,8 @@ public:
     inline bool resetBanRight() {fila=252; return banRight = false;}
     inline bool resetBanUp() {fila=84; return banUp = false;}
     inline bool resetBanDown() {fila=0; return banDown = false;}
+    inline bool setBanAttack() {return banAttack = true;}
+    inline bool resetBanAttack() {return banAttack = false;}
 
     HitBox *box;
     void crear_hitBox(); //Crea el HiteBox del jugador que sigue sus pies para las colisiones
@@ -47,12 +49,15 @@ public slots:
     void moveRight();
     void moveUp();
     void moveDown();
+    void Attack();
 
 private:
     bool banLeft;
     bool banRight;
     bool banUp;
     bool banDown;
+    bool banAttack;
+    short int ultimoEstado;
 };
 
 #endif // JUGADOR_H

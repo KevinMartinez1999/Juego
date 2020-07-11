@@ -1,5 +1,6 @@
 #include "jugador.h"
 #include "mapa_gameplay.h"
+#include <QDebug>
 
 extern Muro *muro;
 
@@ -10,6 +11,8 @@ Jugador::Jugador(QObject *parent) : QObject(parent)
     banRight = false;
     banUp = false;
     banDown = false;
+    banAttack = false;
+    ultimoEstado = 1;
 
     // Se crea el timer que va a estar asociado al movimiento del jugador
     QTimer *timer1 = new QTimer;
@@ -17,7 +20,8 @@ Jugador::Jugador(QObject *parent) : QObject(parent)
     connect(timer1, SIGNAL(timeout()), this, SLOT(moveRight()));
     connect(timer1, SIGNAL(timeout()), this, SLOT(moveUp()));
     connect(timer1, SIGNAL(timeout()), this, SLOT(moveDown()));
-    timer1->start(25);
+    connect(timer1, SIGNAL(timeout()), this, SLOT(Attack()));
+    timer1->start(30);
 
     //Timer para las actualización y dibujo del sprite.
     timer = new QTimer(this);
@@ -72,10 +76,12 @@ void Jugador::Actualizacion()
     accion diferente hecha por el jugador, y las columnas son frames que permiten que esa accion se vea con movimiento, entonces mediante
     un timer estaremos constantemente interactuando en las columnas de determinada fila para asi ir generando una animacion fluida y
     continua.*/
-    columnas +=84;
-    if(columnas >=336)//El archivo consta de 6 columnas de 84x84, cuando se llegue a la sexta columna se iniciara de nuevo
+    if(columnas >= 336 or (fila >= 672 and columnas >= 168))//El archivo consta de 6 columnas de 84x84, cuando se llegue a la sexta columna se iniciara de nuevo
     {
-        columnas =0;
+        columnas = 84;
+    }
+    else{
+        columnas += 84;
     }
     this->update(-ancho/2,-alto/2,ancho,alto);/*La funcion update constantemente actualiza el boundingRect del jugador para que su
     origen siempre sea la mitad de la imagen actual.*/
@@ -97,8 +103,9 @@ void Jugador::moveLeft()
 
     if (banLeft)
     {
+        ultimoEstado = 2;
         fila = 420; //Actualiza el sprite
-        if(x()>0){ //Condiciones del borde de las escena
+        if(x()>42){ //Condiciones del borde de las escena
             setPos(x()-5,y()); //Movimiento del jugador
             box->setPos(x()-20,y()+12); //Movimiento del hiteBox que colisiona
             if (box->collidesWithItem(muro)){ //Verifica la colision
@@ -120,8 +127,9 @@ void Jugador::moveRight()
 {
     if (banRight)
     {
+        ultimoEstado = 4;
         fila = 504;//Actualiza el sprite
-        if(x()<2209){//Condiciones del borde de las escena
+        if(x()<2197){//Condiciones del borde de las escena
             setPos(x()+5,y());//Movimiento del jugador
             box->setPos(x()-10,y()+12);//Movimiento del hiteBox que colisiona
             if (box->collidesWithItem(muro)){//Verifica la colision
@@ -139,8 +147,9 @@ void Jugador::moveUp()
 {
     if (banUp)
     {
+        ultimoEstado = 3;
         fila = 588;//Actualiza el sprite
-        if(y()>0){//Condiciones del borde de las escena
+        if(y() > 42){//Condiciones del borde de las escena
             setPos(x(),y()-5);//Movimiento del jugador
             box->setPos(x()-15,y()+7);//Movimiento del hiteBox que colisiona
             if (box->collidesWithItem(muro)){//Verifica la colision
@@ -158,8 +167,9 @@ void Jugador::moveDown()
 {
     if (banDown)
     {
+        ultimoEstado = 1;
         fila = 336;//Actualiza el sprite
-        if(y()<2205){//Condiciones del borde de las escena
+        if(y()<2193){//Condiciones del borde de las escena
             setPos(x(),y()+5);//Movimiento del hiteBox que colisiona
             box->setPos(x()-15,y()+17);
             if (box->collidesWithItem(muro)){//Verifica la colision
@@ -169,6 +179,28 @@ void Jugador::moveDown()
                 setPos(x(),y()-5);
                 box->setPos(x(),y()-5);
             }
+        }
+    }
+}
+
+void Jugador::Attack()
+{
+    if (banAttack){
+        switch (ultimoEstado) {
+        case 1:
+            fila = 672;
+            break;
+        case 2:
+            fila = 840;
+            break;
+        case 3:
+            fila = 756;
+            break;
+        case 4:
+            fila = 924;
+            break;
+        default:
+            break;
         }
     }
 }

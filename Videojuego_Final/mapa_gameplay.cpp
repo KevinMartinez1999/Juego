@@ -133,6 +133,10 @@ void Mapa_GamePlay::keyPressEvent(QKeyEvent *event)
     else if (event->key() == Qt::Key_D){
         jugador->setBanRight();
     }
+    else if (event->key() == Qt::Key_F){
+        jugador->setBanAttack();
+    }
+
     //Estas son las teclas de movimiento para el jugador 2.
     //Solo estan habilitadas (o habilitadas) si asi lo quiere el usuario.
     else if(event->key()==Qt::Key_J){
@@ -150,6 +154,10 @@ void Mapa_GamePlay::keyPressEvent(QKeyEvent *event)
     else if(event->key()==Qt::Key_K){
         if(pj2)
             jugador2->setBanDown();
+    }
+    else if (event->key() == Qt::Key_H){
+        if (pj2)
+            jugador2->setBanAttack();
     }
 }
 
@@ -173,6 +181,10 @@ void Mapa_GamePlay::keyReleaseEvent(QKeyEvent *event)
     else if (event->key() == Qt::Key_D){
         jugador->resetBanRight();
     }
+    else if (event->key() == Qt::Key_F){
+        jugador->resetBanAttack();
+    }
+
     //Estas son las teclas de movimiento para el jugador 2.
     //Solo estan habilitadas (o habilitadas) si asi lo quiere el usuario.
     else if(event->key()==Qt::Key_J){
@@ -190,6 +202,10 @@ void Mapa_GamePlay::keyReleaseEvent(QKeyEvent *event)
     else if(event->key()==Qt::Key_K){
         if(pj2)
             jugador2->resetBanDown();
+    }
+    else if (event->key() == Qt::Key_H){
+        if (pj2)
+            jugador2->resetBanAttack();
     }
 }
 
