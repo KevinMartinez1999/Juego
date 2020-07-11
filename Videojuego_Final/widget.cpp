@@ -13,7 +13,7 @@ Widget::Widget(QWidget *parent)
 
     //Sonido al presionar los botones
     boton = new QMediaPlayer(this);
-    boton->setMedia(QUrl("qrc:/Musica/boton.mp3"));
+    boton->setMedia(QUrl("qrc:/Musica/Boton.mp3"));
     boton->setVolume(100);
 
     /*Sistema de reproducción de gif en el menú:
@@ -23,7 +23,7 @@ Widget::Widget(QWidget *parent)
     QLabel *w = new QLabel(this);
     w->resize(1000,650);//Tamaño de la ventana.
     movie = new QMovie(this);
-    movie->setFileName(":/Imagenes/GIF.gif");
+    movie->setFileName(":/Imagenes/GIF1.gif");
     movie->setScaledSize(QSize(1000,650));//Tamaño de la ventana.
     w->setMovie(movie);//Asignamos el gif al Label.
     movie->start();//Iniciamos la reproducción del gif.
@@ -132,7 +132,7 @@ void Widget::on_registrarse_clicked()
 
 void Widget::on_mostrar_stateChanged(int arg1)
 {
-    /*Cuando la casi esta marcada la contraseña se va mostrar y cuando
+    /*Cuando la casilla esta marcada la contraseña se va mostrar y cuando
      la casilla está desmarcada la contraseña va a estar oculta, la fuente se
      cabia por las mismas razones qe se explicó en el constructor de la clase*/
     if (arg1){

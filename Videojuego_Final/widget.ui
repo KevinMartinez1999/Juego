@@ -121,7 +121,7 @@ border-image:url(:/Imagenes/TEXT-INPUT.png);
   <widget class="QPushButton" name="login">
    <property name="geometry">
     <rect>
-     <x>450</x>
+     <x>440</x>
      <y>20</y>
      <width>130</width>
      <height>50</height>
@@ -178,7 +178,7 @@ border-image: url(:/Imagenes/BOTONGRISPUSH.png);
   <widget class="QLabel" name="Interfaz">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>0</x>
      <y>0</y>
      <width>1000</width>
      <height>651</height>

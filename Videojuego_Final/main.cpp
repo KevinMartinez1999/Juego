@@ -4,6 +4,7 @@
 #include <QTimer>
 #include <QFontDatabase>
 #include <QMediaPlayer>
+#include <QMediaPlaylist>
 
 QMediaPlayer * musica;
 
@@ -11,8 +12,11 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
+    QMediaPlaylist *Lista = new QMediaPlaylist;
+    Lista->addMedia(QUrl("qrc:/Musica/Menu.mp3"));
+    Lista->setPlaybackMode(QMediaPlaylist::Loop);
     musica = new QMediaPlayer;
-    musica->setMedia(QUrl("qrc:/Musica/Menu.mp3"));
+    musica->setPlaylist(Lista);
     musica->setVolume(50);
     musica->play();
 
@@ -23,6 +27,7 @@ int main(int argc, char *argv[])
     QSplashScreen *splash = new QSplashScreen;
     splash->setPixmap(QPixmap(":/Imagenes/LOGO.png").scaled(406,610));
     splash->show();
+
     Widget w;
     QTimer::singleShot(5000,splash,SLOT(close()));
     QTimer::singleShot(5500,&w,SLOT(show()));

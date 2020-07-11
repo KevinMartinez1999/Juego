@@ -15,7 +15,7 @@ Menu_partida::Menu_partida(QWidget *parent) :
 
     //Sonido al presionar los botones
     boton = new QMediaPlayer(this);
-    boton->setMedia(QUrl("qrc:/Musica/boton.mp3"));
+    boton->setMedia(QUrl("qrc:/Musica/Boton.mp3"));
     boton->setVolume(100);
 
     /*Sistema de reproducción de gif en el menú:
@@ -25,7 +25,7 @@ Menu_partida::Menu_partida(QWidget *parent) :
     QLabel *w = new QLabel(this);
     w->resize(1000,650);//Tamaño de la ventana.
     movie = new QMovie(this);
-    movie->setFileName(":/Imagenes/GIF1.gif");
+    movie->setFileName(":/Imagenes/GIF2.gif");
     movie->setScaledSize(QSize(1000,650));//Tamaño de la ventana.
     w->setMovie(movie);//Asignamos el gif al Label.
     movie->start();//Iniciamos la reproducción del gif.
@@ -90,6 +90,7 @@ void Menu_partida::on_volver_clicked()
 
 void Menu_partida::on_nueva_partida_clicked()
 {
+    boton->play();//Sonido del botón
     musica->stop(); //Se detiene la musica del menú
     delete musica; //Se libera la memoria
 
@@ -109,4 +110,5 @@ void Menu_partida::on_cargar_partida_clicked()
 {
     /*Botón en el que se implementara la función que nos permitirá leer los datos guardados del
      jugador y así generar una partida exactamente igual a como se guardó.*/
+    boton->play();//Sonido del botón
 }

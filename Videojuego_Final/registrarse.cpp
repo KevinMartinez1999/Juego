@@ -10,7 +10,7 @@ Registrarse::Registrarse(QWidget *parent) :
 
     //Sonido al presionar los botones
     boton = new QMediaPlayer(this);
-    boton->setMedia(QUrl("qrc:/Musica/boton.mp3"));
+    boton->setMedia(QUrl("qrc:/Musica/Boton.mp3"));
     boton->setVolume(100);
 
     /*Sistema de reproducción de gif en el menú:
@@ -34,6 +34,7 @@ Registrarse::Registrarse(QWidget *parent) :
     ui->label->raise();
     ui->label_2->raise();
     ui->registrarse->raise();
+    ui->mostrar->raise();
     ui->volver->raise();
 
     /*Creacion del cursor del videojuego: con ayuda de QCursor podremos brindarle al cursor la imagen que deseamos.
@@ -52,6 +53,14 @@ Registrarse::Registrarse(QWidget *parent) :
     QRegExp rx("^[\\w'\\-,.][^_!¡' '?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\\]]{2,}$");
     QRegExpValidator * val = new QRegExpValidator(rx, this);
     ui->usuario->setValidator(val);
+
+    /*Se inicializa la casilla de contraseña en forma de Password para que sea imposible saber
+     cual es; hay una opcion en la misma casilla de ver contraseña*/
+    ui->clave->setEchoMode(QLineEdit::Password);
+
+    /*Se cambia la letra porque la fuente usada es grande y los circulos de la contraseña
+    se ven mucho mas grandes*/
+    ui->clave->setFont(QFont("Arial", 10, 1));
 }
 
 Registrarse::~Registrarse()
@@ -72,13 +81,18 @@ void Registrarse::on_registrarse_clicked()
     //Se toman los datos
     user = ui->usuario->text();
     pass = ui->clave->text();
-
+    if(user==NULL || pass==NULL){
+        QMessageBox::critical(this, "Registro", "Registro invalido.");
+        ui->usuario->clear();
+        ui->clave->clear();
+        return;
+    }
     //Se abre y se llevan los datos ingresados al archivo
+
     ofstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
     file<<user.toStdString()<<"\n"<<pass.toStdString();
     file.flush();
     file.close();
-
     //Ventana emergente que notifica que el registro fue exitoso
     QMessageBox::information(this, "Registro", "Registrado correctamente");
     Widget *w = new Widget;
@@ -95,4 +109,19 @@ void Registrarse::on_volver_clicked()
     Widget *w = new Widget;
     w->show();
     close();
+}
+
+void Registrarse::on_mostrar_stateChanged(int arg1)
+{
+    /*Cuando la casilla esta marcada la contraseña se va mostrar y cuando
+     la casilla está desmarcada la contraseña va a estar oculta, la fuente se
+     cabia por las mismas razones qe se explicó en el constructor de la clase*/
+    if (arg1){
+        ui->clave->setFont(QFont("Red Right Hand", 14, 1));
+        ui->clave->setEchoMode(QLineEdit::Normal);
+    }
+    else{
+        ui->clave->setFont(QFont("Arial", 10, 1));
+        ui->clave->setEchoMode(QLineEdit::Password);
+    }
 }

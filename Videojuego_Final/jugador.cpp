@@ -17,7 +17,7 @@ Jugador::Jugador(QObject *parent) : QObject(parent)
     connect(timer1, SIGNAL(timeout()), this, SLOT(moveRight()));
     connect(timer1, SIGNAL(timeout()), this, SLOT(moveUp()));
     connect(timer1, SIGNAL(timeout()), this, SLOT(moveDown()));
-    timer1->start(50);
+    timer1->start(25);
 
     //Timer para las actualización y dibujo del sprite.
     timer = new QTimer(this);

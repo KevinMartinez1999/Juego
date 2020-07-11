@@ -160,6 +160,19 @@ border-image:url(:/Imagenes/TEXT-INPUT.png);
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="QCheckBox" name="mostrar">
+   <property name="geometry">
+    <rect>
+     <x>660</x>
+     <y>40</y>
+     <width>16</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
   <zorder>Interfaz</zorder>
   <zorder>label</zorder>
   <zorder>label_2</zorder>
@@ -167,6 +180,7 @@ border-image:url(:/Imagenes/TEXT-INPUT.png);
   <zorder>usuario</zorder>
   <zorder>volver</zorder>
   <zorder>clave</zorder>
+  <zorder>mostrar</zorder>
  </widget>
  <resources>
   <include location="Imagenes.qrc"/>

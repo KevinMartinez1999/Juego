@@ -19,7 +19,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
 
     //Musica de fondo
     ambiente = new QMediaPlayer(this);
-    ambiente->setMedia(QUrl("qrc:/Musica/ambiente.ogg"));
+    ambiente->setMedia(QUrl("qrc:/Musica/Ambiente.mp3"));
     ambiente->setVolume(50);
     ambiente->play();
 
@@ -89,7 +89,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
         jugador->crear_hitBox();//Se crea el hitbox del primer jugador
 
         jugador2 = new Jugador(jugador);
-        jugador2->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
+        jugador2->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER2.png");//Asignamos el determinado sprite al jugador
         jugador2->setPos(820,2155);
         escena->addItem(jugador2);
         jugador2->crear_hitBox();//Se crea el hitbox del segundo jugador
@@ -133,7 +133,6 @@ void Mapa_GamePlay::keyPressEvent(QKeyEvent *event)
     else if (event->key() == Qt::Key_D){
         jugador->setBanRight();
     }
-
     //Estas son las teclas de movimiento para el jugador 2.
     //Solo estan habilitadas (o habilitadas) si asi lo quiere el usuario.
     else if(event->key()==Qt::Key_J){
@@ -174,7 +173,6 @@ void Mapa_GamePlay::keyReleaseEvent(QKeyEvent *event)
     else if (event->key() == Qt::Key_D){
         jugador->resetBanRight();
     }
-
     //Estas son las teclas de movimiento para el jugador 2.
     //Solo estan habilitadas (o habilitadas) si asi lo quiere el usuario.
     else if(event->key()==Qt::Key_J){

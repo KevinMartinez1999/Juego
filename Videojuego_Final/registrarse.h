@@ -28,6 +28,8 @@ private slots:
     void on_registrarse_clicked();
     void on_volver_clicked();
 
+    void on_mostrar_stateChanged(int arg1);
+
 private:
     Ui::Registrarse *ui;
     QMovie *movie;

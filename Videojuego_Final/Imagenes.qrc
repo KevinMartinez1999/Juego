@@ -20,8 +20,10 @@
         <file>Imagenes/RADIOCHECKED.png</file>
         <file>Imagenes/RADIOEMPTY.png</file>
         <file>Imagenes/SPRITEPLAYER.png</file>
-        <file>Musica/boton.mp3</file>
         <file>Musica/Menu.mp3</file>
-        <file>Musica/ambiente.ogg</file>
+        <file>Imagenes/SPRITEPLAYER2.png</file>
+        <file>Imagenes/GIF2.gif</file>
+        <file>Musica/Ambiente.mp3</file>
+        <file>Musica/Boton.mp3</file>
     </qresource>
 </RCC>
