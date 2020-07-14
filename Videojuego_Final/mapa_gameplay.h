@@ -45,6 +45,7 @@ private: //Atributos de la clase
 
  private slots:
     void Nivel();
+    void ingreso_batalla();
     void ActualizarEscena(); //Centra constantemente la grafica en el jugador
     void iniciar() {ambiente->play();}
 };

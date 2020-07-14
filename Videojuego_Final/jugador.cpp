@@ -78,7 +78,7 @@ void Jugador::Actualizacion()
     continua.*/
     if(columnas >= 336 or (fila >= 672 and columnas >= 168))//El archivo consta de 6 columnas de 84x84, cuando se llegue a la sexta columna se iniciara de nuevo
     {
-        columnas = 0;
+        columnas = 84;
     }
     else{
         columnas += 84;
@@ -105,7 +105,7 @@ void Jugador::moveLeft()
     {
         ultimoEstado = 2;
         fila = 420; //Actualiza el sprite
-        if(x()>42){ //Condiciones del borde de las escena
+        if(x()>25){ //Condiciones del borde de las escena
             setPos(x()-5,y()); //Movimiento del jugador
             box->setPos(x()-20,y()+12); //Movimiento del hiteBox que colisiona
             if (box->collidesWithItem(muro)){ //Verifica la colision
@@ -129,7 +129,7 @@ void Jugador::moveRight()
     {
         ultimoEstado = 4;
         fila = 504;//Actualiza el sprite
-        if(x()<2197){//Condiciones del borde de las escena
+        if(x()<2214){//Condiciones del borde de las escena
             setPos(x()+5,y());//Movimiento del jugador
             box->setPos(x()-10,y()+12);//Movimiento del hiteBox que colisiona
             if (box->collidesWithItem(muro)){//Verifica la colision
@@ -149,7 +149,7 @@ void Jugador::moveUp()
     {
         ultimoEstado = 3;
         fila = 588;//Actualiza el sprite
-        if(y() > 42){//Condiciones del borde de las escena
+        if(y() > 25){//Condiciones del borde de las escena
             setPos(x(),y()-5);//Movimiento del jugador
             box->setPos(x()-15,y()+7);//Movimiento del hiteBox que colisiona
             if (box->collidesWithItem(muro)){//Verifica la colision
@@ -169,7 +169,7 @@ void Jugador::moveDown()
     {
         ultimoEstado = 1;
         fila = 336;//Actualiza el sprite
-        if(y()<2193){//Condiciones del borde de las escena
+        if(y()<2210){//Condiciones del borde de las escena
             setPos(x(),y()+5);//Movimiento del hiteBox que colisiona
             box->setPos(x()-15,y()+17);
             if (box->collidesWithItem(muro)){//Verifica la colision

@@ -105,6 +105,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     //Timer para actualizar la escena y centrarla en el jugador
     timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(ActualizarEscena()));
+    connect(timer,SIGNAL(timeout()),this,SLOT(ingreso_batalla()));
     timer->start();
 
     //Tercera capa del mapa
@@ -116,7 +117,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     //Aviso decorativo que se mostrara al momento de estar en la entrada de una batalla contra un Boss
     aviso = new QLabel(this);
     aviso->setPixmap(QPixmap(":/Imagenes/LETRERO.png"));
-    aviso->setScaledContents(true);
+    aviso->setScaledContents(true); //Ajusta la imagen al label
     aviso->setGeometry(290,270,200,110);
     aviso->hide();//Por defecto se encontrara escondido para simplemente mostrarse cuando se este en una entrada
 
@@ -245,12 +246,7 @@ void Mapa_GamePlay::Nivel()
     close();
 }
 
-/*Esta funcion actualiza el mapa constantemente con un timer para centrarlo en el jugador y dar la
-  sensasion de que la camara sigue al personaje.
-  Ademas de esto, la funcion verifica si dentro de la escena el personaje se encuentra parado en las determinadas
-  entradas a los niveles de batallas contra Bosses, para asi, poder preguntarle si esta listo para entrar.*/
-
-void Mapa_GamePlay::ActualizarEscena()
+void Mapa_GamePlay::ingreso_batalla()
 {
     Xpos=jugador->x();
     YPos=jugador->y();
@@ -277,8 +273,15 @@ void Mapa_GamePlay::ActualizarEscena()
         QCursor cursor = QCursor(Qt::BlankCursor);
         setCursor(cursor);
     }
+}
+
+/*Esta funcion actualiza el mapa constantemente con un timer para centrarlo en el jugador y dar la
+  sensasion de que la camara sigue al personaje.
+  Ademas de esto, la funcion verifica si dentro de la escena el personaje se encuentra parado en las determinadas
+  entradas a los niveles de batallas contra Bosses, para asi, poder preguntarle si esta listo para entrar.*/
+
+void Mapa_GamePlay::ActualizarEscena()
+{
     //Centrado de la grafica en el jugador
     ui->graphicsView->centerOn(jugador);
 }
-
-
