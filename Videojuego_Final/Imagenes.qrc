@@ -25,5 +25,7 @@
         <file>Imagenes/GIF2.gif</file>
         <file>Musica/Ambiente.mp3</file>
         <file>Musica/Boton.mp3</file>
+        <file>Imagenes/LETRERO.png</file>
+        <file>Imagenes/MARCO.png</file>
     </qresource>
 </RCC>

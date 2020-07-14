@@ -78,7 +78,7 @@ void Jugador::Actualizacion()
     continua.*/
     if(columnas >= 336 or (fila >= 672 and columnas >= 168))//El archivo consta de 6 columnas de 84x84, cuando se llegue a la sexta columna se iniciara de nuevo
     {
-        columnas = 84;
+        columnas = 0;
     }
     else{
         columnas += 84;

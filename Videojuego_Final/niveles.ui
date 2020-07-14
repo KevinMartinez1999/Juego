@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Mapa_GamePlay</class>
- <widget class="QWidget" name="Mapa_GamePlay">
+ <class>Niveles</class>
+ <widget class="QWidget" name="Niveles">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>782</width>
-    <height>582</height>
+    <width>1000</width>
+    <height>650</height>
    </rect>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1000</width>
+    <height>650</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>HellBurn</string>
@@ -17,39 +23,23 @@
    <iconset resource="Imagenes.qrc">
     <normaloff>:/Imagenes/ICONO.png</normaloff>:/Imagenes/ICONO.png</iconset>
   </property>
-  <property name="styleSheet">
-   <string notr="true">QPushButton{
-color: rgb(255, 255, 255);
-border-image: url(:/Imagenes/BOTONGRIS.png);
-}
-QPushButton:hover
-{
-border-image: url(:/Imagenes/BOTONGRISHOVER.png);
-}
-QPushButtonr:pressed
-{
-border-image: url(:/Imagenes/BOTONGRISPUSH.png);
-}
-
-</string>
-  </property>
   <widget class="QGraphicsView" name="graphicsView">
    <property name="geometry">
     <rect>
      <x>9</x>
      <y>9</y>
-     <width>764</width>
-     <height>564</height>
+     <width>982</width>
+     <height>632</height>
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" name="label">
+  <widget class="QLabel" name="Marco">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>782</width>
-     <height>582</height>
+     <width>1000</width>
+     <height>650</height>
     </rect>
    </property>
    <property name="text">
