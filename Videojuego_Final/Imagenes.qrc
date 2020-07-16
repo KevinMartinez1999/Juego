@@ -27,5 +27,8 @@
         <file>Musica/Boton.mp3</file>
         <file>Imagenes/LETRERO.png</file>
         <file>Imagenes/MARCO.png</file>
+        <file>Imagenes/NIVEL1.png</file>
+        <file>Imagenes/NIVEL2.png</file>
+        <file>Imagenes/TUTORIAL.png</file>
     </qresource>
 </RCC>

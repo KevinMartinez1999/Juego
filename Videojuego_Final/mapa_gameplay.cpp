@@ -238,7 +238,7 @@ void Mapa_GamePlay::Nivel()
     botonSound->play();
     if(Xpos>=325 && Xpos<=405 && YPos>=2193 && YPos<=2215) nivel=1;//Verifica si se esta en la entrada del tutorial
     else if(Xpos>=755 && Xpos<=815 && YPos<=1465 && YPos>=1405) nivel=2;//Verifica si se esta en la entrada del nivel 1
-    else if(Xpos>=1610 && Xpos<=1735 && YPos<=1355 && YPos>=1290) nivel=3;//Verifica si se esta en la entrada del nivel 2
+    else if(Xpos>=1565 && Xpos<=1690 && YPos<=1825 && YPos>=1760) nivel=3;//Verifica si se esta en la entrada del nivel 2
     else if(Xpos>=2075 && Xpos<=2200 && YPos<=645 && YPos>=585) nivel=4;//Verifica si se esta en la entrada del nivel 3
     //Se abre la ventana determinada para las batallas contra Bosses
     Niveles * batalla = new Niveles;
@@ -255,7 +255,7 @@ void Mapa_GamePlay::ingreso_batalla()
     seleccionar y clickear el boton.*/
     if((Xpos>=325 && Xpos<=405 && YPos>=2193 && YPos<=2215)or
             (Xpos>=755 && Xpos<=815 && YPos<=1465 && YPos>=1405)or
-            (Xpos>=1610 && Xpos<=1735 && YPos<=1355 && YPos>=1290)or
+            (Xpos>=1565 && Xpos<=1690 && YPos<=1825 && YPos>=1760)or
             (Xpos>=2075 && Xpos<=2200 && YPos<=645 && YPos>=585)){
         //Se le muestra al usuario el aviso y el boton para asi seleccionarlo.
         aviso->show();

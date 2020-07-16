@@ -4,7 +4,8 @@
 #include <QWidget>
 #include <QGraphicsScene>
 #include <QKeyEvent>
-#include <mapa_gameplay.h>
+#include <QGraphicsPixmapItem>
+#include "jugadorbatalla.h"
 
 namespace Ui {
 class Niveles;
@@ -18,9 +19,14 @@ public:
     explicit Niveles(QWidget *parent = nullptr);
     ~Niveles();
 
+    void keyPressEvent(QKeyEvent * event);
+    void keyReleaseEvent(QKeyEvent *event);
+
 private:
     Ui::Niveles *ui;
     QGraphicsScene *escena;
+    QGraphicsPixmapItem *fondo;
+    bool pj2;
 };
 
 #endif // NIVELES_H

@@ -18,6 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     hitbox.cpp \
     jugador.cpp \
+    jugadorbatalla.cpp \
     main.cpp \
     mapa_gameplay.cpp \
     menu_partida.cpp \
@@ -29,6 +30,7 @@ SOURCES += \
 HEADERS += \
     hitbox.h \
     jugador.h \
+    jugadorbatalla.h \
     mapa_gameplay.h \
     menu_partida.h \
     muro.h \
