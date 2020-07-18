@@ -9,6 +9,7 @@
 #include <QMediaPlayer>
 #include "jugador.h"
 #include "muro.h"
+#include "enemigo.h"
 
 namespace Ui {
 class Mapa_GamePlay;
@@ -32,7 +33,6 @@ private: //Atributos de la clase
     QMediaPlayer ambiente;
     QTimer loop, timer;
     QString nombre;
-    QGraphicsScene escena;
     QGraphicsPixmapItem *mapa;
     QGraphicsPixmapItem *objetos;
     bool pj2;

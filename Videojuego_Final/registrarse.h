@@ -9,6 +9,7 @@
 #include <QLabel>
 #include <QMovie>
 #include <QMediaPlayer>
+#include "widget.h"
 
 using namespace std;
 

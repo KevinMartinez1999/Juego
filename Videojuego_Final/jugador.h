@@ -5,6 +5,7 @@
 #include <QGraphicsPixmapItem>
 #include <QTimer>
 #include <QPainter>
+#include <cmath>
 #include "muro.h"
 
 class Jugador : public QObject, public QGraphicsPixmapItem
@@ -25,6 +26,15 @@ public:
     inline void resetBanUp() {banUp = false;}
     inline void resetBanDown() {banDown = false;}
     inline void resetBanAttack() {banAttack = false;}
+
+    void reset_golpe();
+    bool golpe_izq = false;
+    bool golpe_der = false;
+    bool golpe_arr = false;
+    bool golpe_aba = false;
+
+    QGraphicsRectItem box, vida;
+    int health;
 
     //Los sig. metodos y atributos son los necesarios para crear la animacion de
     //movimiento del jugador
@@ -54,7 +64,6 @@ private:
     bool banAttack;
     short int ultimoEstado;
     QPoint posAnterior;
-    QGraphicsRectItem box;
     QTimer timer, timer1;
     float columnas,fila,ancho,alto;
 };

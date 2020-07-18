@@ -1,7 +1,5 @@
 #include "menu_partida.h"
 #include "ui_menu_partida.h"
-#include "widget.h"
-#include "mapa_gameplay.h"
 
 int num_jugadores;
 extern QString user, pass;

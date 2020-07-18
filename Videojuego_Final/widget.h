@@ -10,6 +10,8 @@
 #include <QLabel>
 #include <QMediaPlayer>
 #include <QTimer>
+#include "registrarse.h"
+#include "menu_partida.h"
 
 using namespace std;
 

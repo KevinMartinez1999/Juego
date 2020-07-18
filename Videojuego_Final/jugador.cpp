@@ -1,5 +1,7 @@
 #include "jugador.h"
-#include "mapa_gameplay.h"
+#include <QDebug>
+
+#define X 5
 
 extern Muro *muro;
 
@@ -13,6 +15,7 @@ Jugador::Jugador(QObject *parent) : QObject(parent)
     banAttack = false;
     ultimoEstado = 1;
     posAnterior = QPoint(0,0);
+    health = 50;
 
     //Ancho y alto del sprite del jugador (inicialización de variables para el sprite)
     ancho = 84;
@@ -34,8 +37,14 @@ Jugador::Jugador(QObject *parent) : QObject(parent)
     connect(&timer,SIGNAL(timeout()),this,SLOT(Actualizacion()));
     timer.start(200);
 
+    //Se crea el HitBox
     box.setRect(0,0,25,25);
     box.setPos(755,2167);
+
+    //Barra de vida
+    vida.setRect(0,0,health,5);
+    vida.setBrush(Qt::red);
+    vida.setPos(755,2167);
 }
 
 QRectF Jugador::boundingRect() const
@@ -80,6 +89,16 @@ void Jugador::Actualizacion()
     this->update(-ancho/2,-alto/2,ancho,alto);
 }
 
+//Cuando el jugador se mueve se resetean todas las banderas de ataque en todas
+//las posiciones.
+void Jugador::reset_golpe()
+{
+    golpe_izq = false;
+    golpe_der = false;
+    golpe_arr = false;
+    golpe_aba = false;
+}
+
 //Las siguientes son las señales de movimiento que funcionan con un timer;
 //El jugador únicamente se va a mover cuando se respectiva bandera esté activada, por ejemplo,
 //para moverse a la izquierda, banLeft debe ser true.
@@ -93,21 +112,21 @@ void Jugador::Actualizacion()
 
 void Jugador::moveLeft()
 {
-
     if (banLeft)
     {
+        reset_golpe();
         ultimoEstado = 2;
         fila = 420; //Actualiza el sprite
         if(x()>42){ //Condiciones del borde de las escena
-            setPos(x()-5,y()); //Movimiento del jugador
-            box.setPos(x()-20,y()+12); //Movimiento del hiteBox que colisiona
+            setPos(x()-X,y()); //Movimiento del jugador
+            box.setPos(x()-15-X,y()+12); //Movimiento del hiteBox que colisiona
+            vida.setPos(x()-30-X,y()-50);
             if (box.collidesWithItem(muro)){ //Verifica la colision
 
                 //En este punto con el fin de no intersectar al jugador con los objetos del mapa
                 //lo que se hace es retroceder al jugador y a su vez a las caja que lo sigue una
                 //vez esta colisiona con alguna part del mapa.
-
-                setPos(x()+5,y());;
+                setPos(x()+X,y());
             }
         }
     }
@@ -119,16 +138,18 @@ void Jugador::moveRight()
 {
     if (banRight)
     {
+        reset_golpe();
         ultimoEstado = 4;
         fila = 504;//Actualiza el sprite
         if(x()<2197){//Condiciones del borde de las escena
-            setPos(x()+5,y());//Movimiento del jugador
-            box.setPos(x()-10,y()+12);//Movimiento del hiteBox que colisiona
+            setPos(x()+X,y());//Movimiento del jugador
+            box.setPos(x()-15+X,y()+12);//Movimiento del hiteBox que colisiona
+            vida.setPos(x()-30+X,y()-50);
             if (box.collidesWithItem(muro)){//Verifica la colision
                 //En este punto con el fin de no intersectar al jugador con los objetos del mapa
                 //lo que se hace es retroceder al jugador y a su vez a las caja que lo sigue una
                 //vez esta colisiona con alguna part del mapa.
-                setPos(x()-5,y());
+                setPos(x()-X,y());
             }
         }
     }
@@ -138,16 +159,18 @@ void Jugador::moveUp()
 {
     if (banUp)
     {
+        reset_golpe();
         ultimoEstado = 3;
         fila = 588;//Actualiza el sprite
         if(y() > 42){//Condiciones del borde de las escena
-            setPos(x(),y()-5);//Movimiento del jugador
-            box.setPos(x()-15,y()+7);//Movimiento del hiteBox que colisiona
+            setPos(x(),y()-X);//Movimiento del jugador
+            box.setPos(x()-15,y()+12-X);//Movimiento del hiteBox que colisiona
+            vida.setPos(x()-30,y()-50-X);
             if (box.collidesWithItem(muro)){//Verifica la colision
                 //En este punto con el fin de no intersectar al jugador con los objetos del mapa
                 //lo que se hace es retroceder al jugador y a su vez a las caja que lo sigue una
                 //vez esta colisiona con alguna part del mapa.
-                setPos(x(),y()+5);
+                setPos(x(),y()+X);
             }
         }
     }
@@ -157,16 +180,18 @@ void Jugador::moveDown()
 {
     if (banDown)
     {
+        reset_golpe();
         ultimoEstado = 1;
         fila = 336;//Actualiza el sprite
         if(y()<2193){//Condiciones del borde de las escena
-            setPos(x(),y()+5);//Movimiento del hiteBox que colisiona
-            box.setPos(x()-15,y()+17);
+            setPos(x(),y()+X);//Movimiento del hiteBox que colisiona
+            box.setPos(x()-15,y()+12+X);
+            vida.setPos(x()-30,y()-50+X);
             if (box.collidesWithItem(muro)){//Verifica la colision
                 //En este punto con el fin de no intersectar al jugador con los objetos del mapa
                 //lo que se hace es retroceder al jugador y a su vez a las caja que lo sigue una
                 //vez esta colisiona con alguna part del mapa.
-                setPos(x(),y()-5);
+                setPos(x(),y()-X);
             }
         }
     }
@@ -176,20 +201,21 @@ void Jugador::moveDown()
 void Jugador::Attack()
 {
     if (banAttack){
-        if (fila != 672 and fila != 840 and fila != 756 and fila != 924)
-            columnas = 0; /*Se reinicia columnas ya que puede estar en valor distinto de 0 y por ende la animacion
-                            se va a mostrar mal. Esto solo pasa una vez antes de empezar la animacion de la espada.*/
         switch (ultimoEstado) {
         case 1: //abajo
+            golpe_aba = true;
             fila = 672;
             break;
         case 2: //izquierda
+            golpe_izq = true;
             fila = 840;
             break;
         case 3: //arriba
+            golpe_arr = true;
             fila = 756;
             break;
         case 4: //derecha
+            golpe_der = true;
             fila = 924;
             break;
         default:

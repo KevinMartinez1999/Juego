@@ -10,6 +10,12 @@
     <height>650</height>
    </rect>
   </property>
+  <property name="maximumSize">
+   <size>
+    <width>1000</width>
+    <height>650</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>HellBurn</string>
   </property>

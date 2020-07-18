@@ -1,6 +1,5 @@
 #include "registrarse.h"
 #include "ui_registrarse.h"
-#include "widget.h"
 
 Registrarse::Registrarse(QWidget *parent) :
     QWidget(parent),

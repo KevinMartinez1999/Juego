@@ -36,10 +36,11 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     //Aqui se añade la escena; la escena es bastante grande ya que el mapa del juego no es una pantalla fija
     //sino que el jugador se mueve por todo el mapa y la escena se actualiza con un timer y se centra en
     //nuestro jugador.
-    escena.setSceneRect(0, 0,2239,2235);
+    QGraphicsScene *escena = new QGraphicsScene(this);
+    escena->setSceneRect(0, 0,2239,2235);
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->graphicsView->setScene(&escena);
+    ui->graphicsView->setScene(escena);
 
     /*El diseño del mapa esta divido en tres capas; la primera es la de los muros que es MUROS.png
     esta imagen es la que representa las colisiones del jugador con el castillo, las rocas, los arboles y demas objetos.
@@ -55,13 +56,13 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     //Primera capa del mapa
     muro = new Muro;
     muro->setPos(0,0);
-    escena.addItem(muro);
+    escena->addItem(muro);
 
     //Segunda capa del mapa
     mapa = new QGraphicsPixmapItem;
     mapa->setPos(0,0);
     mapa->setPixmap(QPixmap(":/Imagenes/MAPA.png"));
-    escena.addItem(mapa);
+    escena->addItem(mapa);
 
     /*Con la variable global num_jugadores que viene de la clase menu_partida sabemos cuantos
     jugadores escogió el usuario y aqui se va a hacer uso de eso; si es 1 se crea un
@@ -79,25 +80,40 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
         jugador = new Jugador(this);
         jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
         jugador->setPos(770,2155);
-        escena.addItem(jugador);
+        escena->addItem(jugador);
 
         jugador2 = new Jugador(this);
         jugador2->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER2.png");//Asignamos el determinado sprite al jugador
         jugador2->setPos(820,2155);
-        escena.addItem(jugador2);
+        escena->addItem(jugador2);
     }
     else{
         jugador = new Jugador(this);
         jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
         jugador->setPos(770,2155);
-        escena.addItem(jugador);
+        escena->addItem(jugador);
     }
 
     //Tercera capa del mapa
     objetos = new QGraphicsPixmapItem;
     objetos->setPos(0,0);
     objetos->setPixmap(QPixmap(":/Imagenes/OBJETOS.png"));
-    escena.addItem(objetos);
+    escena->addItem(objetos);
+
+    //Añadir barras de vida
+    if (num_jugadores == 2){
+        escena->addItem(&jugador->vida);
+        escena->addItem(&jugador2->vida);
+    }
+    else{
+        escena->addItem(&jugador->vida);
+    }
+
+    /*
+    //Añadir un enemigo
+    Enemigo *enemigo = new Enemigo(this);
+    escena->addItem(enemigo);
+    */
 }
 
 Mapa_GamePlay::~Mapa_GamePlay()

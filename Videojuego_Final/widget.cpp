@@ -1,7 +1,5 @@
 #include "widget.h"
 #include "ui_widget.h"
-#include "registrarse.h"
-#include "menu_partida.h"
 
 QString user, pass;
 
