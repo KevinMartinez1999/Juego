@@ -120,11 +120,9 @@ void Registrarse::on_mostrar_stateChanged(int arg1)
      la casilla está desmarcada la contraseña va a estar oculta, la fuente se
      cabia por las mismas razones qe se explicó en el constructor de la clase*/
     if (arg1){
-        ui->clave->setFont(QFont("Red Right Hand", 14, 1));
         ui->clave->setEchoMode(QLineEdit::Normal);
     }
     else{
-        ui->clave->setFont(QFont("Arial", 10, 1));
         ui->clave->setEchoMode(QLineEdit::Password);
     }
 }

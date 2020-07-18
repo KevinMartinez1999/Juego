@@ -15,16 +15,17 @@ public:
     explicit Jugador(QObject *parent = nullptr);
 
     // Estas funciones son las banderas de movimiento
-    inline bool setBanLeft() {return banLeft = true;}
-    inline bool setBanRight() {return banRight = true;}
-    inline bool setBanUp() {return banUp= true;}
-    inline bool setBanDown() {return banDown = true;}
-    inline bool resetBanLeft() {fila=168; return banLeft = false;}
-    inline bool resetBanRight() {fila=252; return banRight = false;}
-    inline bool resetBanUp() {fila=84; return banUp = false;}
-    inline bool resetBanDown() {fila=0; return banDown = false;}
-    inline bool setBanAttack() {return banAttack = true;}
-    inline bool resetBanAttack() {return banAttack = false;}
+    inline void setBanLeft() {banLeft = true;}
+    inline void setBanRight() {banRight = true;}
+    inline void setBanUp() {banUp= true;}
+    inline void setBanDown() {banDown = true;}
+    inline void setBanAttack() {banAttack = true;}
+
+    inline void resetBanLeft() {banLeft = false;}
+    inline void resetBanRight() {banRight = false;}
+    inline void resetBanUp() {banUp = false;}
+    inline void resetBanDown() {banDown = false;}
+    inline void resetBanAttack() {banAttack = false;}
 
     HitBox *box;
     void crear_hitBox(); //Crea el HiteBox del jugador que sigue sus pies para las colisiones
@@ -50,6 +51,7 @@ public slots:
     void moveUp();
     void moveDown();
     void Attack();
+    void pos();
 
 private:
     bool banLeft;
@@ -58,6 +60,7 @@ private:
     bool banDown;
     bool banAttack;
     short int ultimoEstado;
+    QPoint posAnterior;
 };
 
 #endif // JUGADOR_H

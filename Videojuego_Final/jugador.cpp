@@ -13,58 +13,68 @@ Jugador::Jugador(QObject *parent) : QObject(parent)
     banDown = false;
     banAttack = false;
     ultimoEstado = 1;
+    posAnterior = QPoint(0,0);
+
+    //Ancho y alto del sprite del jugador (inicialización de variables para el sprite)
+    ancho = 84;
+    alto  = 84;
+    columnas = 0;
+    fila = 0;
 
     // Se crea el timer que va a estar asociado al movimiento del jugador
-    QTimer *timer1 = new QTimer;
+    QTimer *timer1 = new QTimer(this);
     connect(timer1, SIGNAL(timeout()), this, SLOT(moveLeft()));
     connect(timer1, SIGNAL(timeout()), this, SLOT(moveRight()));
     connect(timer1, SIGNAL(timeout()), this, SLOT(moveUp()));
     connect(timer1, SIGNAL(timeout()), this, SLOT(moveDown()));
     connect(timer1, SIGNAL(timeout()), this, SLOT(Attack()));
+    connect(timer1, SIGNAL(timeout()), this, SLOT(pos()));
     timer1->start(30);
 
     //Timer para las actualización y dibujo del sprite.
-    timer = new QTimer(this);
-    columnas = 0;
-    fila = 0;
-
-    //Ancho y alto del sprite del jugador
-    ancho = 84;
-    alto  = 84;
-    connect(timer,SIGNAL(timeout()),this,SLOT(Actualizacion()));
     /*Este timer nos permitira la constante actualizacion de la imagen de nuestro jugador*/
-    timer->start(150);
+    timer = new QTimer(this);
+    connect(timer,SIGNAL(timeout()),this,SLOT(Actualizacion()));
+    timer->start(200);
 }
 
 //Aqui es donde se crea la caa que colisiona con el mapa y se hace invisble en la escena
 
 void Jugador::crear_hitBox()
 {
-    /*Hitbox es una clase auxiliar que constara de un rect que constantemente actualizara su posicion para estar siempre situado en los
-    pies del jugador, el objetivo de esto es que el sprite diseñado es muy grande para nuestro mapa (83x84) entonces hacer las colisiones
-    correctamente seria un problema, para esto agregamos un hitbox, esta es una tactica altamente conocida y usada en el mundo de los
-    videojuego; Con este rectangulo estamos revisando las colisiones del jugador.*/
+    /*Hitbox es una clase auxiliar que constara de un rect que constantemente actualizara
+     su posicion para estar siempre situado en los pies del jugador, el objetivo de esto
+     es que el sprite diseñado es muy grande para nuestro mapa (83x84) entonces hacer las colisiones
+     correctamente seria un problema, para esto agregamos un hitbox, esta es una tactica altamente
+     conocida y usada en el mundo de los videojuego; Con este rectangulo estamos revisando
+     las colisiones del jugador.*/
     box = new HitBox(this);
     box->setPos(755,2167);
     scene()->addItem(box);
-    /*Hacemos uso de la funcion hide() que nos permite ocultar el objeto hitbox pero aun asi tenerlo presente para revisar las colisiones.*/
+
+    /*Hacemos uso de la funcion hide() que nos permite ocultar el objeto
+     hitbox pero aun asi tenerlo presente para revisar las colisiones.*/
     box->hide();
 }
 
 QRectF Jugador::boundingRect() const
 {
-    /*La funcion propia de qt bodingRect, crea y retorna el rectangulo que conforma la figura del jugador y en el cual pintaremos nuestra
-    imagen. -ancho/2,-alto/2 permite que el punto de origen del rectangulo siempre sea le centro de la imagen y no la esquina superior.*/
+    /*La funcion propia de qt bodingRect, crea y retorna el rectangulo
+     que conforma la figura del jugador y en el cual pintaremos nuestra
+     imagen. -ancho/2,-alto/2 permite que el punto de origen del rectangulo
+     siempre sea le centro de la imagen y no la esquina superior.*/
     return QRectF(-ancho/2,-alto/2,ancho,alto);
 }
 
 void Jugador::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    /*Funcion propia de Qt que nos permite dibujar dentro del boundingRect la imagen que queramos, para hacer esto debemos introducirle
-    al drawPixmap algunos datos como el punto en el que queremos que empiece a dibujar, el pixmap a dibujar, el ancho y alto de
-    lo que se dibujara y tambien, se le pasara constantemente en la funcion actualizar la columna que representara el cuadro 84x84
-    que se dibujara en el momento. La variable fila representa el grupo de frames que se quiere realizar dependiendo a las acciones del
-    jugador, esta variable cambia cuando el usuario activa un KeyEvent.*/
+    /*Funcion propia de Qt que nos permite dibujar dentro del boundingRect la imagen
+     que queramos, para hacer esto debemos introducirle al drawPixmap algunos datos como el
+     punto en el que queremos que empiece a dibujar, el pixmap a dibujar, el ancho y alto de
+     lo que se dibujara y tambien, se le pasara constantemente en la funcion actualizar la columna
+     que representara el cuadro 84x84 que se dibujara en el momento. La variable fila representa
+     el grupo de frames que se quiere realizar dependiendo a las acciones del
+     jugador, esta variable cambia cuando el usuario activa un KeyEvent.*/
     Q_UNUSED(option);
     Q_UNUSED(widget);
     painter->drawPixmap(-ancho/2,-alto/2,*pixmap,columnas,fila,ancho,alto);
@@ -72,19 +82,21 @@ void Jugador::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 
 void Jugador::Actualizacion()
 {
-    /*La imagen sprite del jugador es una imagen que estaba dividida por filas y por columnas, cada fila determina un movimiento o
-    accion diferente hecha por el jugador, y las columnas son frames que permiten que esa accion se vea con movimiento, entonces mediante
-    un timer estaremos constantemente interactuando en las columnas de determinada fila para asi ir generando una animacion fluida y
-    continua.*/
-    if(columnas >= 336 or (fila >= 672 and columnas >= 168))//El archivo consta de 6 columnas de 84x84, cuando se llegue a la sexta columna se iniciara de nuevo
+    /*La imagen sprite del jugador es una imagen que estaba dividida por filas y por columnas, cada fila
+     determina un movimiento o accion diferente hecha por el jugador, y las columnas son frames que
+     permiten que esa accion se vea con movimiento, entonces mediante un timer estaremos constantemente
+     interactuando en las columnas de determinada fila para asi ir generando una animacion fluida y continua.*/
+    if(columnas >= 336 or (fila >= 672 and columnas >= 168))
+        //El archivo consta de 6 columnas de 84x84, cuando se llegue a la sexta columna se iniciara de nuevo
     {
         columnas = 84;
     }
     else{
         columnas += 84;
     }
-    this->update(-ancho/2,-alto/2,ancho,alto);/*La funcion update constantemente actualiza el boundingRect del jugador para que su
-    origen siempre sea la mitad de la imagen actual.*/
+    /*La funcion update constantemente actualiza el boundingRect del jugador para que su
+     origen siempre sea la mitad de la imagen actual.*/
+    this->update(-ancho/2,-alto/2,ancho,alto);
 }
 
 //Las siguientes son las señales de movimiento que funcionan con un timer;
@@ -114,8 +126,7 @@ void Jugador::moveLeft()
                 //lo que se hace es retroceder al jugador y a su vez a las caja que lo sigue una
                 //vez esta colisiona con alguna part del mapa.
 
-                setPos(x()+5,y());
-                box->setPos(x()+5,y());
+                setPos(x()+5,y());;
             }
         }
     }
@@ -137,7 +148,6 @@ void Jugador::moveRight()
                 //lo que se hace es retroceder al jugador y a su vez a las caja que lo sigue una
                 //vez esta colisiona con alguna part del mapa.
                 setPos(x()-5,y());
-                box->setPos(x()-5,y());
             }
         }
     }
@@ -157,7 +167,6 @@ void Jugador::moveUp()
                 //lo que se hace es retroceder al jugador y a su vez a las caja que lo sigue una
                 //vez esta colisiona con alguna part del mapa.
                 setPos(x(),y()+5);
-                box->setPos(x(),y()+5);
             }
         }
     }
@@ -177,30 +186,56 @@ void Jugador::moveDown()
                 //lo que se hace es retroceder al jugador y a su vez a las caja que lo sigue una
                 //vez esta colisiona con alguna part del mapa.
                 setPos(x(),y()-5);
-                box->setPos(x(),y()-5);
             }
         }
     }
 }
 
+//Dependiendo de la posicion anterior el jugador va a hacer una animacion de ataque
 void Jugador::Attack()
 {
     if (banAttack){
         switch (ultimoEstado) {
-        case 1:
+        case 1: //abajo
             fila = 672;
             break;
-        case 2:
+        case 2: //izquierda
             fila = 840;
             break;
-        case 3:
+        case 3: //arriba
             fila = 756;
             break;
-        case 4:
+        case 4: //derecha
             fila = 924;
             break;
         default:
             break;
         }
     }
+}
+
+/*Esta función determina la posicion anterior del personaje para saber si el jugador está quieto*/
+void Jugador::pos()
+{
+    if (banAttack) //Cuando este atacando no debe hacer la animacion de estar quieto
+        return;
+    if (posAnterior == QPoint(x(),y())){ //Si se cumple es porque el jugador está quieto
+        switch (ultimoEstado) {
+        case 1:
+            fila=0;
+            break;
+        case 2:
+            fila=168;
+            break;
+        case 3:
+            fila=84;
+            break;
+        case 4:
+            fila=252;
+            break;
+        default:
+            break;
+        }
+    }
+    posAnterior = QPoint(x(),y());
 }
