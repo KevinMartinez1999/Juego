@@ -24,44 +24,57 @@ Niveles::Niveles(QWidget *parent) :
     ui->graphicsView->setScene(escena);
     fondo = new QGraphicsPixmapItem;
     fondo->setPos(0,0);
-    if(nivel==1)fondo->setPixmap(QPixmap(":/Imagenes/TUTORIAL.png").scaled(1132,650));
-    if(nivel==2)fondo->setPixmap(QPixmap(":/Imagenes/NIVEL1.png").scaled(1000,632));
-    if(nivel==3)fondo->setPixmap(QPixmap(":/Imagenes/NIVEL2.png").scaled(1000,650));
     escena->addItem(fondo);
-
     if (num_jugadores == 1){ //Solo un jugador
-        jugadorBatalla= new JugadorBatalla(this);
-        jugadorBatalla->setRect(0,550,50,50);
-        if(nivel==1) jugadorBatalla->setPos(120,-60);
-        if(nivel==2) jugadorBatalla->setPos(50,-20);
-        if(nivel==3) jugadorBatalla->setPos(20,-140);
-        jugadorBatalla->setBrush(QBrush(Qt::red));
+        jugadorBatalla = new JugadorBatalla(this);
+        jugadorBatalla->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER.png");
         escena->addItem(jugadorBatalla);
+        NivelSetup();
     }
     else if (num_jugadores == 2){ //Dos jugadores
         pj2 = true;
         jugadorBatalla = new JugadorBatalla(this);
-        jugadorBatalla->setBrush(QBrush(Qt::red));
-        jugadorBatalla->setRect(0,550,50,50);
-        if(nivel==1) jugadorBatalla->setPos(120,-60);
-        if(nivel==2) jugadorBatalla->setPos(50,-20);
-        if(nivel==3) jugadorBatalla->setPos(20,-140);
+        jugadorBatalla->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER.png");
         escena->addItem(jugadorBatalla);
 
         jugadorBatalla2 = new JugadorBatalla(jugadorBatalla);
-        jugadorBatalla2->setBrush(QBrush(Qt::blue));
-        jugadorBatalla2->setRect(0,550,50,50);
-        if(nivel==1) jugadorBatalla2->setPos(250,-60);
-        if(nivel==2) jugadorBatalla2->setPos(140,-20);
-        if(nivel==3) jugadorBatalla2->setPos(135,-140);
+        jugadorBatalla2->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER2.png");
         escena->addItem(jugadorBatalla2);
-
+        NivelSetup();
     }
 }
 
 Niveles::~Niveles()
 {
     delete ui;
+}
+
+void Niveles::NivelSetup()
+{
+    if(nivel==1){
+        fondo->setPixmap(QPixmap(":/Imagenes/TUTORIAL.png").scaled(1132,650));
+        jugadorBatalla->setPos(120,490);
+        if(num_jugadores==2)jugadorBatalla2->setPos(250,490);
+        boss = new Boss(this);
+        boss->pixmap = new QPixmap(":/Imagenes/BOSS1.png");
+        boss->setPos(900,490);
+        escena->addItem(boss);
+    }
+    if(nivel==2){
+        fondo->setPixmap(QPixmap(":/Imagenes/NIVEL1.png").scaled(1000,650));
+        jugadorBatalla->setPos(50,545);
+        if(num_jugadores==2)jugadorBatalla2->setPos(140,545);
+    }
+    if(nivel==3){
+        fondo->setPixmap(QPixmap(":/Imagenes/NIVEL2.png").scaled(1000,650));
+        jugadorBatalla->setPos(20,408);
+        if(num_jugadores==2)jugadorBatalla2->setPos(135,408);
+    }
+    if(nivel==4){
+        fondo->setPixmap(QPixmap(":/Imagenes/NIVEL3.png").scaled(1000,650));
+        jugadorBatalla->setPos(20,550);
+        if(num_jugadores==2)jugadorBatalla2->setPos(135,550);
+    }
 }
 
 void Niveles::keyPressEvent(QKeyEvent *event)

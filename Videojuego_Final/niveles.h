@@ -6,6 +6,7 @@
 #include <QKeyEvent>
 #include <QGraphicsPixmapItem>
 #include "jugadorbatalla.h"
+#include "boss.h"
 
 namespace Ui {
 class Niveles;
@@ -18,13 +19,14 @@ class Niveles : public QWidget
 public:
     explicit Niveles(QWidget *parent = nullptr);
     ~Niveles();
-
+    void NivelSetup();
     void keyPressEvent(QKeyEvent * event);
     void keyReleaseEvent(QKeyEvent *event);
 
 private:
     Ui::Niveles *ui;
     QGraphicsScene *escena;
+    Boss *boss;
     QGraphicsPixmapItem *fondo;
     bool pj2;
 };

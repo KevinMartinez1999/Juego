@@ -30,5 +30,7 @@
         <file>Imagenes/NIVEL1.png</file>
         <file>Imagenes/NIVEL2.png</file>
         <file>Imagenes/TUTORIAL.png</file>
+        <file>Imagenes/NIVEL3.png</file>
+        <file>Imagenes/BOSS1.png</file>
     </qresource>
 </RCC>
