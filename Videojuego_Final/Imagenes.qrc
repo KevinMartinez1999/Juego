@@ -25,5 +25,6 @@
         <file>Imagenes/GIF2.gif</file>
         <file>Musica/Ambiente.mp3</file>
         <file>Musica/Boton.mp3</file>
+        <file>Musica/knifes_boton.mp3</file>
     </qresource>
 </RCC>

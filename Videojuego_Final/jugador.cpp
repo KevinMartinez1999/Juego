@@ -1,6 +1,5 @@
 #include "jugador.h"
 #include "mapa_gameplay.h"
-#include <QDebug>
 
 extern Muro *muro;
 
@@ -22,39 +21,21 @@ Jugador::Jugador(QObject *parent) : QObject(parent)
     fila = 0;
 
     // Se crea el timer que va a estar asociado al movimiento del jugador
-    QTimer *timer1 = new QTimer(this);
-    connect(timer1, SIGNAL(timeout()), this, SLOT(moveLeft()));
-    connect(timer1, SIGNAL(timeout()), this, SLOT(moveRight()));
-    connect(timer1, SIGNAL(timeout()), this, SLOT(moveUp()));
-    connect(timer1, SIGNAL(timeout()), this, SLOT(moveDown()));
-    connect(timer1, SIGNAL(timeout()), this, SLOT(Attack()));
-    connect(timer1, SIGNAL(timeout()), this, SLOT(pos()));
-    timer1->start(30);
+    connect(&timer1, SIGNAL(timeout()), this, SLOT(moveLeft()));
+    connect(&timer1, SIGNAL(timeout()), this, SLOT(moveRight()));
+    connect(&timer1, SIGNAL(timeout()), this, SLOT(moveUp()));
+    connect(&timer1, SIGNAL(timeout()), this, SLOT(moveDown()));
+    connect(&timer1, SIGNAL(timeout()), this, SLOT(Attack()));
+    connect(&timer1, SIGNAL(timeout()), this, SLOT(pos()));
+    timer1.start(30);
 
     //Timer para las actualización y dibujo del sprite.
     /*Este timer nos permitira la constante actualizacion de la imagen de nuestro jugador*/
-    timer = new QTimer(this);
-    connect(timer,SIGNAL(timeout()),this,SLOT(Actualizacion()));
-    timer->start(200);
-}
+    connect(&timer,SIGNAL(timeout()),this,SLOT(Actualizacion()));
+    timer.start(200);
 
-//Aqui es donde se crea la caa que colisiona con el mapa y se hace invisble en la escena
-
-void Jugador::crear_hitBox()
-{
-    /*Hitbox es una clase auxiliar que constara de un rect que constantemente actualizara
-     su posicion para estar siempre situado en los pies del jugador, el objetivo de esto
-     es que el sprite diseñado es muy grande para nuestro mapa (83x84) entonces hacer las colisiones
-     correctamente seria un problema, para esto agregamos un hitbox, esta es una tactica altamente
-     conocida y usada en el mundo de los videojuego; Con este rectangulo estamos revisando
-     las colisiones del jugador.*/
-    box = new HitBox(this);
-    box->setPos(755,2167);
-    scene()->addItem(box);
-
-    /*Hacemos uso de la funcion hide() que nos permite ocultar el objeto
-     hitbox pero aun asi tenerlo presente para revisar las colisiones.*/
-    box->hide();
+    box.setRect(0,0,25,25);
+    box.setPos(755,2167);
 }
 
 QRectF Jugador::boundingRect() const
@@ -77,7 +58,7 @@ void Jugador::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
      jugador, esta variable cambia cuando el usuario activa un KeyEvent.*/
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    painter->drawPixmap(-ancho/2,-alto/2,*pixmap,columnas,fila,ancho,alto);
+    painter->drawPixmap(-ancho/2,-alto/2,pixmap,columnas,fila,ancho,alto);
 }
 
 void Jugador::Actualizacion()
@@ -115,12 +96,14 @@ void Jugador::moveLeft()
 
     if (banLeft)
     {
+        if (fila != 420)
+            columnas = 0;
         ultimoEstado = 2;
         fila = 420; //Actualiza el sprite
         if(x()>42){ //Condiciones del borde de las escena
             setPos(x()-5,y()); //Movimiento del jugador
-            box->setPos(x()-20,y()+12); //Movimiento del hiteBox que colisiona
-            if (box->collidesWithItem(muro)){ //Verifica la colision
+            box.setPos(x()-20,y()+12); //Movimiento del hiteBox que colisiona
+            if (box.collidesWithItem(muro)){ //Verifica la colision
 
                 //En este punto con el fin de no intersectar al jugador con los objetos del mapa
                 //lo que se hace es retroceder al jugador y a su vez a las caja que lo sigue una
@@ -138,12 +121,14 @@ void Jugador::moveRight()
 {
     if (banRight)
     {
+        if (fila != 504)
+            columnas = 0;
         ultimoEstado = 4;
         fila = 504;//Actualiza el sprite
         if(x()<2197){//Condiciones del borde de las escena
             setPos(x()+5,y());//Movimiento del jugador
-            box->setPos(x()-10,y()+12);//Movimiento del hiteBox que colisiona
-            if (box->collidesWithItem(muro)){//Verifica la colision
+            box.setPos(x()-10,y()+12);//Movimiento del hiteBox que colisiona
+            if (box.collidesWithItem(muro)){//Verifica la colision
                 //En este punto con el fin de no intersectar al jugador con los objetos del mapa
                 //lo que se hace es retroceder al jugador y a su vez a las caja que lo sigue una
                 //vez esta colisiona con alguna part del mapa.
@@ -157,12 +142,14 @@ void Jugador::moveUp()
 {
     if (banUp)
     {
+        if (fila != 588)
+            columnas = 0;
         ultimoEstado = 3;
         fila = 588;//Actualiza el sprite
         if(y() > 42){//Condiciones del borde de las escena
             setPos(x(),y()-5);//Movimiento del jugador
-            box->setPos(x()-15,y()+7);//Movimiento del hiteBox que colisiona
-            if (box->collidesWithItem(muro)){//Verifica la colision
+            box.setPos(x()-15,y()+7);//Movimiento del hiteBox que colisiona
+            if (box.collidesWithItem(muro)){//Verifica la colision
                 //En este punto con el fin de no intersectar al jugador con los objetos del mapa
                 //lo que se hace es retroceder al jugador y a su vez a las caja que lo sigue una
                 //vez esta colisiona con alguna part del mapa.
@@ -176,12 +163,14 @@ void Jugador::moveDown()
 {
     if (banDown)
     {
+        if (fila != 336)
+            columnas = 0;
         ultimoEstado = 1;
         fila = 336;//Actualiza el sprite
         if(y()<2193){//Condiciones del borde de las escena
             setPos(x(),y()+5);//Movimiento del hiteBox que colisiona
-            box->setPos(x()-15,y()+17);
-            if (box->collidesWithItem(muro)){//Verifica la colision
+            box.setPos(x()-15,y()+17);
+            if (box.collidesWithItem(muro)){//Verifica la colision
                 //En este punto con el fin de no intersectar al jugador con los objetos del mapa
                 //lo que se hace es retroceder al jugador y a su vez a las caja que lo sigue una
                 //vez esta colisiona con alguna part del mapa.
@@ -195,6 +184,9 @@ void Jugador::moveDown()
 void Jugador::Attack()
 {
     if (banAttack){
+        if (fila != 672 and fila != 840 and fila != 756 and fila != 924)
+            columnas = 0; /*Se reinicia columnas ya que puede estar en valor distinto de 0 y por ende la animacion
+                            se va a mostrar mal. Esto solo pasa una vez antes de empezar la animacion de la espada.*/
         switch (ultimoEstado) {
         case 1: //abajo
             fila = 672;

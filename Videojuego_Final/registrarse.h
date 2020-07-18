@@ -32,8 +32,10 @@ private slots:
 
 private:
     Ui::Registrarse *ui;
+    QLabel *w;
     QMovie *movie;
-    QMediaPlayer *boton;
+    QMediaPlayer boton;
+    QRegExpValidator * val;
 };
 
 #endif // REGISTRARSE_H

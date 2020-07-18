@@ -9,15 +9,14 @@ Registrarse::Registrarse(QWidget *parent) :
     ui->setupUi(this);
 
     //Sonido al presionar los botones
-    boton = new QMediaPlayer(this);
-    boton->setMedia(QUrl("qrc:/Musica/Boton.mp3"));
-    boton->setVolume(100);
+    boton.setMedia(QUrl("qrc:/Musica/knifes_boton.mp3"));
+    boton.setVolume(100);
 
     /*Sistema de reproducción de gif en el menú:
     Para reproducir un gif primeramente se creara un nuevo QLabel al cual le asignaremos las dimensiones de la ventana, posterior a eso
     crearemos una variable QMovie con el gif a reproducir y también le asignaremos el tamaño de la pantalla, luego con
     la función setMovie le asignaremos al Label que contenga el gif y se reproduzca.*/
-    QLabel *w = new QLabel(this);
+    w = new QLabel(this);
     w->resize(1000,650);//Tamaño de la ventana.
     movie = new QMovie(this);
     movie->setFileName(":/Imagenes/GIF.gif");
@@ -54,7 +53,7 @@ Registrarse::Registrarse(QWidget *parent) :
     y no deja que en esa casilla de nombre de usuario aparezcan esos caracteres aunque el usuario
     los presione*/
     QRegExp rx("^[\\w'\\-,.][^_!¡' '?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\\]]{2,}$");
-    QRegExpValidator * val = new QRegExpValidator(rx, this);
+    val = new QRegExpValidator(rx, this);
     ui->usuario->setValidator(val);
 
     /*Se inicializa la casilla de contraseña en forma de Password para que sea imposible saber
@@ -74,7 +73,7 @@ Registrarse::~Registrarse()
 void Registrarse::on_registrarse_clicked()
 {
 
-    boton->play(); //Sonido del botón
+    boton.play(); //Sonido del botón
 
     /*En esta función el usuario llena unas casillas con sus datos para registrarlo
      y paso seguido se toman esos datos y se llevan a la base de datos de los jugadores
@@ -105,8 +104,11 @@ void Registrarse::on_registrarse_clicked()
 
 void Registrarse::on_volver_clicked()
 {
-    boton->play(); //Sonido del botón
+    boton.play(); //Sonido del botón
 
+    delete movie;
+    delete w;
+    delete val;
     /*Si deseamos registrarnos en el sistema, al presionar el botón se procederá a cerrar la ventana actual y se  creara una
     nueva ventana de registro y se abrirá.*/
     Widget *w = new Widget;

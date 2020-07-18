@@ -1,9 +1,11 @@
- #include "widget.h"
+#include "widget.h"
 #include "ui_widget.h"
 #include "registrarse.h"
 #include "menu_partida.h"
 
 QString user, pass;
+
+extern QMediaPlayer * musica;
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
@@ -12,15 +14,18 @@ Widget::Widget(QWidget *parent)
     ui->setupUi(this);
 
     //Sonido al presionar los botones
-    boton = new QMediaPlayer(this);
-    boton->setMedia(QUrl("qrc:/Musica/Boton.mp3"));
-    boton->setVolume(100);
+    boton.setMedia(QUrl("qrc:/Musica/knifes_boton.mp3"));
+    boton.setVolume(100);
+
+    //Repetir la musica
+    connect(&timer, SIGNAL(timeout()), this, SLOT(reanudar()));
+    timer.start(90000);
 
     /*Sistema de reproducción de gif en el menú:
     Para reproducir un gif primeramente se creara un nuevo QLabel al cual le asignaremos las dimensiones de la ventana, posterior a eso
     crearemos una variable QMovie con el gif a reproducir y también le asignaremos el tamaño de la pantalla, luego con
     la función setMovie le asignaremos al Label que contenga el gif y se reproduzca.*/
-    QLabel *w = new QLabel(this);
+    w = new QLabel(this);
     w->resize(1000,650);//Tamaño de la ventana.
     movie = new QMovie(this);
     movie->setFileName(":/Imagenes/GIF1.gif");
@@ -59,7 +64,7 @@ Widget::Widget(QWidget *parent)
     y no deja que en esa casilla de nombre de usuario aparezcan esos caracteres aunque el usuario
     los presione*/
     QRegExp rx("^[\\w'\\-,.][^_!¡' '?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\\]]{2,}$"); //Expresion
-    QRegExpValidator * val = new QRegExpValidator(rx, this); //Validador
+    val = new QRegExpValidator(rx, this); //Validador
     ui->usuario->setValidator(val);
 
     /*Se inicializa la casilla de contraseña en forma de Password para que sea imposible saber
@@ -78,7 +83,7 @@ Widget::~Widget()
 
 void Widget::on_login_clicked()
 {
-    boton->play();
+    boton.play();
 
     //Obtenemos el usuario y contraseña que digitó el usuario
     user = ui->usuario->text();
@@ -106,6 +111,9 @@ void Widget::on_login_clicked()
     file.close();
     if (user.toStdString() == usuario and pass.toStdString() == clave) //Verificación
     {
+        delete movie;
+        delete w;
+        delete val;
         //Se abre la nueva mentana del menú de partida una vez el inicio fue exitóso
         Menu_partida *menu = new Menu_partida;
         menu->show();
@@ -123,10 +131,14 @@ void Widget::on_login_clicked()
 
 void Widget::on_registrarse_clicked()
 {
-    boton->play();
+    boton.play();
 
     /*Si deseamos registrarnos en el sistema, al presionar el botón se procederá a cerrar la ventana actual y se  creara una
     nueva ventana de registro y se abrirá.*/
+    delete movie;
+    delete w;
+    delete val;
+
     Registrarse *registro = new Registrarse;
     registro->show();
     close();
@@ -143,4 +155,9 @@ void Widget::on_mostrar_stateChanged(int arg1)
     else{
         ui->clave->setEchoMode(QLineEdit::Password);
     }
+}
+
+void Widget::reanudar()
+{
+    musica->play();
 }

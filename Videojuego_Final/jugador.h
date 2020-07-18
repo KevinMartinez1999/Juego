@@ -6,7 +6,6 @@
 #include <QTimer>
 #include <QPainter>
 #include "muro.h"
-#include "hitbox.h"
 
 class Jugador : public QObject, public QGraphicsPixmapItem
 {
@@ -27,15 +26,9 @@ public:
     inline void resetBanDown() {banDown = false;}
     inline void resetBanAttack() {banAttack = false;}
 
-    HitBox *box;
-    void crear_hitBox(); //Crea el HiteBox del jugador que sigue sus pies para las colisiones
-
     //Los sig. metodos y atributos son los necesarios para crear la animacion de
     //movimiento del jugador
-
-    QTimer *timer;
-    QPixmap *pixmap;
-    float columnas,fila,ancho,alto;
+    QPixmap pixmap;
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
@@ -61,6 +54,9 @@ private:
     bool banAttack;
     short int ultimoEstado;
     QPoint posAnterior;
+    QGraphicsRectItem box;
+    QTimer timer, timer1;
+    float columnas,fila,ancho,alto;
 };
 
 #endif // JUGADOR_H

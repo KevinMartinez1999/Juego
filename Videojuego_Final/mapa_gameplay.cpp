@@ -21,24 +21,25 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     setCursor(cursor);
 
     //Musica de fondo
-    ambiente = new QMediaPlayer(this);
-    ambiente->setMedia(QUrl("qrc:/Musica/Ambiente.mp3"));
-    ambiente->setVolume(100);
-    ambiente->play();
+    ambiente.setMedia(QUrl("qrc:/Musica/Ambiente.mp3"));
+    ambiente.setVolume(100);
+    ambiente.play();
 
     //Este timer hacer que la cancion de fondo de repita una vez ha terminado
-    QTimer * loop = new QTimer(this);
-    connect(loop, SIGNAL(timeout()), this, SLOT(iniciar()));
-    loop->start(100000);
+    connect(&loop, SIGNAL(timeout()), this, SLOT(iniciar()));
+    loop.start(100000);
+
+    //Timer para actualizar la escena y centrarla en el jugador
+    connect(&timer,SIGNAL(timeout()),this,SLOT(ActualizarEscena()));
+    timer.start();
 
     //Aqui se añade la escena; la escena es bastante grande ya que el mapa del juego no es una pantalla fija
     //sino que el jugador se mueve por todo el mapa y la escena se actualiza con un timer y se centra en
     //nuestro jugador.
-    escena = new QGraphicsScene(this);
-    escena->setSceneRect(0, 0,2239,2235);
+    escena.setSceneRect(0, 0,2239,2235);
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    ui->graphicsView->setScene(escena);
+    ui->graphicsView->setScene(&escena);
 
     /*El diseño del mapa esta divido en tres capas; la primera es la de los muros que es MUROS.png
     esta imagen es la que representa las colisiones del jugador con el castillo, las rocas, los arboles y demas objetos.
@@ -54,13 +55,13 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     //Primera capa del mapa
     muro = new Muro;
     muro->setPos(0,0);
-    escena->addItem(muro);
+    escena.addItem(muro);
 
     //Segunda capa del mapa
     mapa = new QGraphicsPixmapItem;
     mapa->setPos(0,0);
     mapa->setPixmap(QPixmap(":/Imagenes/MAPA.png"));
-    escena->addItem(mapa);
+    escena.addItem(mapa);
 
     /*Con la variable global num_jugadores que viene de la clase menu_partida sabemos cuantos
     jugadores escogió el usuario y aqui se va a hacer uso de eso; si es 1 se crea un
@@ -76,35 +77,27 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
         //a ser los jugadores 1 y 2
 
         jugador = new Jugador(this);
-        jugador->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
+        jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
         jugador->setPos(770,2155);
-        escena->addItem(jugador);
-        jugador->crear_hitBox();//Se crea el hitbox del primer jugador
+        escena.addItem(jugador);
 
-        jugador2 = new Jugador(jugador);
-        jugador2->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER2.png");//Asignamos el determinado sprite al jugador
+        jugador2 = new Jugador(this);
+        jugador2->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER2.png");//Asignamos el determinado sprite al jugador
         jugador2->setPos(820,2155);
-        escena->addItem(jugador2);
-        jugador2->crear_hitBox();//Se crea el hitbox del segundo jugador
+        escena.addItem(jugador2);
     }
     else{
         jugador = new Jugador(this);
-        jugador->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
+        jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
         jugador->setPos(770,2155);
-        escena->addItem(jugador);
-        jugador->crear_hitBox();
+        escena.addItem(jugador);
     }
-
-    //Timer para actualizar la escena y centrarla en el jugador
-    timer = new QTimer(this);
-    connect(timer,SIGNAL(timeout()),this,SLOT(ActualizarEscena()));
-    timer->start();
 
     //Tercera capa del mapa
     objetos = new QGraphicsPixmapItem;
     objetos->setPos(0,0);
     objetos->setPixmap(QPixmap(":/Imagenes/OBJETOS.png"));
-    escena->addItem(objetos);
+    escena.addItem(objetos);
 }
 
 Mapa_GamePlay::~Mapa_GamePlay()
