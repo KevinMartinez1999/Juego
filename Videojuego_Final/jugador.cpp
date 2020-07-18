@@ -96,8 +96,6 @@ void Jugador::moveLeft()
 
     if (banLeft)
     {
-        if (fila != 420)
-            columnas = 0;
         ultimoEstado = 2;
         fila = 420; //Actualiza el sprite
         if(x()>42){ //Condiciones del borde de las escena
@@ -121,8 +119,6 @@ void Jugador::moveRight()
 {
     if (banRight)
     {
-        if (fila != 504)
-            columnas = 0;
         ultimoEstado = 4;
         fila = 504;//Actualiza el sprite
         if(x()<2197){//Condiciones del borde de las escena
@@ -142,8 +138,6 @@ void Jugador::moveUp()
 {
     if (banUp)
     {
-        if (fila != 588)
-            columnas = 0;
         ultimoEstado = 3;
         fila = 588;//Actualiza el sprite
         if(y() > 42){//Condiciones del borde de las escena
@@ -163,8 +157,6 @@ void Jugador::moveDown()
 {
     if (banDown)
     {
-        if (fila != 336)
-            columnas = 0;
         ultimoEstado = 1;
         fila = 336;//Actualiza el sprite
         if(y()<2193){//Condiciones del borde de las escena
