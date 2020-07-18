@@ -1,14 +1,19 @@
 #include "jugadorbatalla.h"
 #include <QDebug>
+#define t 0.03
 
 JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
 {
     banLeft = false;
     banRight = false;
 
+    vx=5;
+    xFinal=x0;
+
     QTimer *timer1 = new QTimer;
     connect(timer1, SIGNAL(timeout()), this, SLOT(moveLeft()));
     connect(timer1, SIGNAL(timeout()), this, SLOT(moveRight()));
+    connect(timer1, SIGNAL(timeout()), this, SLOT(setX()));
     timer1->start(30);
 
     //Timer para las actualización y dibujo del sprite.
@@ -43,6 +48,14 @@ void JugadorBatalla::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     painter->drawPixmap(-ancho/2,-alto/2,*pixmap,columnas,fila,ancho,alto);
 }
 
+void JugadorBatalla::setX(){
+    if(xFinal>=5){
+        return;
+    }
+    xFinal+=(vx*t)-(0.5*pow(t,2));
+    if(fila==168 or fila==252) xFinal=0;
+}
+
 void JugadorBatalla::Actualizacion()
 {
     /*La imagen sprite del jugador es una imagen que estaba dividida por filas y por columnas, cada fila determina un movimiento o
@@ -64,9 +77,10 @@ void JugadorBatalla::moveLeft()
 {
     if (banLeft)
     {
+        if(fila!=420 and fila!=168) xFinal=0;
         fila=420;
         if(x()>0){
-        setPos(x()-5,y());
+        setPos(x()-xFinal,y());
         }
     }
 }
@@ -75,9 +89,10 @@ void JugadorBatalla::moveRight()
 {
     if (banRight)
     {
+        if(fila!=504 and fila!=252) xFinal=0;
         fila = 504;
         if(x()<930){
-        setPos(x()+5,y());
+        setPos(x()+xFinal,y());
     }
     }
 }

@@ -28,7 +28,6 @@ Niveles::Niveles(QWidget *parent) :
     if (num_jugadores == 1){ //Solo un jugador
         jugadorBatalla = new JugadorBatalla(this);
         jugadorBatalla->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER.png");
-        escena->addItem(jugadorBatalla);
         NivelSetup();
     }
     else if (num_jugadores == 2){ //Dos jugadores
@@ -52,8 +51,11 @@ Niveles::~Niveles()
 void Niveles::NivelSetup()
 {
     if(nivel==1){
+        jugadorBatalla->setX0(120);
+        jugadorBatalla->setY0(490);
         fondo->setPixmap(QPixmap(":/Imagenes/TUTORIAL.png").scaled(1132,650));
-        jugadorBatalla->setPos(120,490);
+        jugadorBatalla->setPos(jugadorBatalla->GetX0(),jugadorBatalla->GetY0());
+        escena->addItem(jugadorBatalla);
         if(num_jugadores==2)jugadorBatalla2->setPos(250,490);
         boss = new Boss(this);
         boss->pixmap = new QPixmap(":/Imagenes/BOSS1.png");
