@@ -90,7 +90,7 @@ void Menu_partida::on_volver_clicked()
 void Menu_partida::on_nueva_partida_clicked()
 {
     boton.play();//Sonido del botón
-    delete musica;
+    musica->stop();
     delete w;
     delete movie;
 
@@ -111,7 +111,7 @@ void Menu_partida::on_cargar_partida_clicked()
     /*Botón en el que se implementara la función que nos permitirá leer los datos guardados del
      jugador y así generar una partida exactamente igual a como se guardó.*/
     boton.play();//Sonido del botón
-    delete musica;
+    musica->stop();
     delete w;
     delete movie;
 }

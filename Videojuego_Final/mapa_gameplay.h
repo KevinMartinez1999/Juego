@@ -30,8 +30,9 @@ public:
 
 private: //Atributos de la clase
     Ui::Mapa_GamePlay *ui;
+    QGraphicsScene *escena;
     QMediaPlayer ambiente;
-    QTimer loop, timer;
+    QTimer timer, loop;
     QString nombre;
     QGraphicsPixmapItem *mapa;
     QGraphicsPixmapItem *objetos;
@@ -39,7 +40,7 @@ private: //Atributos de la clase
 
  private slots:
     void ActualizarEscena(); //Centra constantemente la grafica en el jugador
-    void iniciar() {ambiente.play();}
+    void iniciar();
 };
 
 #endif // MAPA_GAMEPLAY_H

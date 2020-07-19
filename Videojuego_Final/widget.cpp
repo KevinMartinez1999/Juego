@@ -3,8 +3,6 @@
 
 QString user, pass;
 
-extern QMediaPlayer * musica;
-
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
@@ -14,10 +12,6 @@ Widget::Widget(QWidget *parent)
     //Sonido al presionar los botones
     boton.setMedia(QUrl("qrc:/Musica/knifes_boton.mp3"));
     boton.setVolume(100);
-
-    //Repetir la musica
-    connect(&timer, SIGNAL(timeout()), this, SLOT(reanudar()));
-    timer.start(90000);
 
     /*Sistema de reproducción de gif en el menú:
     Para reproducir un gif primeramente se creara un nuevo QLabel al cual le asignaremos las dimensiones de la ventana, posterior a eso
@@ -153,9 +147,4 @@ void Widget::on_mostrar_stateChanged(int arg1)
     else{
         ui->clave->setEchoMode(QLineEdit::Password);
     }
-}
-
-void Widget::reanudar()
-{
-    musica->play();
 }

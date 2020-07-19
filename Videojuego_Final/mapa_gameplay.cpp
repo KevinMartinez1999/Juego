@@ -36,7 +36,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     //Aqui se añade la escena; la escena es bastante grande ya que el mapa del juego no es una pantalla fija
     //sino que el jugador se mueve por todo el mapa y la escena se actualiza con un timer y se centra en
     //nuestro jugador.
-    QGraphicsScene *escena = new QGraphicsScene(this);
+    escena = new QGraphicsScene(this);
     escena->setSceneRect(0, 0,2239,2235);
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -109,11 +109,9 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
         escena->addItem(&jugador->vida);
     }
 
-    /*
     //Añadir un enemigo
     Enemigo *enemigo = new Enemigo(this);
     escena->addItem(enemigo);
-    */
 }
 
 Mapa_GamePlay::~Mapa_GamePlay()
@@ -218,6 +216,11 @@ void Mapa_GamePlay::keyReleaseEvent(QKeyEvent *event)
 void Mapa_GamePlay::ActualizarEscena()
 {
     ui->graphicsView->centerOn(jugador);
+}
+
+void Mapa_GamePlay::iniciar()
+{
+    ambiente.play();
 }
 
 

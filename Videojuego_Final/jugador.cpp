@@ -201,6 +201,8 @@ void Jugador::moveDown()
 void Jugador::Attack()
 {
     if (banAttack){
+        if (fila != 672 and fila != 840 and fila != 756 and fila != 924)
+            columnas = 0;
         switch (ultimoEstado) {
         case 1: //abajo
             golpe_aba = true;

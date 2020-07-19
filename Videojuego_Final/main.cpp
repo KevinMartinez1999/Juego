@@ -20,12 +20,12 @@ int main(int argc, char *argv[])
     QFont *font = new QFont("Red Right Hand", 14, 1);
     a.setFont(*font);
 
-    QSplashScreen *splash = new QSplashScreen;
-    splash->setPixmap(QPixmap(":/Imagenes/LOGO.png").scaled(406,610));
-    splash->show();
+    QSplashScreen splash;
+    splash.setPixmap(QPixmap(":/Imagenes/LOGO.png").scaled(406,610));
+    splash.show();
 
     Widget w;
-    QTimer::singleShot(5000,splash,SLOT(close()));
+    QTimer::singleShot(5000,&splash,SLOT(close()));
     QTimer::singleShot(5500,&w,SLOT(show()));
 
     return a.exec();

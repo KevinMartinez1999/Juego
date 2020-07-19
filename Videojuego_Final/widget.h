@@ -9,7 +9,6 @@
 #include <QMovie>
 #include <QLabel>
 #include <QMediaPlayer>
-#include <QTimer>
 #include "registrarse.h"
 #include "menu_partida.h"
 
@@ -34,14 +33,11 @@ private slots:
 
     void on_mostrar_stateChanged(int arg1);
 
-    void reanudar();
-
 private:
     Ui::Widget *ui;
     QMovie *movie;
     QMediaPlayer boton;
     QLabel *w;
     QRegExpValidator * val;
-    QTimer timer;
 };
 #endif // WIDGET_H
