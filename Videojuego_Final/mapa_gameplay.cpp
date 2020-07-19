@@ -236,10 +236,10 @@ void Mapa_GamePlay::Nivel()
 {
     ambiente->stop();
     botonSound->play();
-    if(Xpos>=325 && Xpos<=405 && YPos>=2193 && YPos<=2215) nivel=1;//Verifica si se esta en la entrada del tutorial
-    else if(Xpos>=755 && Xpos<=815 && YPos<=1465 && YPos>=1405) nivel=2;//Verifica si se esta en la entrada del nivel 1
-    else if(Xpos>=1565 && Xpos<=1690 && YPos<=1825 && YPos>=1760) nivel=3;//Verifica si se esta en la entrada del nivel 2
-    else if(Xpos>=2075 && Xpos<=2200 && YPos<=645 && YPos>=585) nivel=4;//Verifica si se esta en la entrada del nivel 3
+    if(Xpos>=325 && Xpos<=405 && YPos>=2193 && YPos<=2215) nivel=0;//Verifica si se esta en la entrada del tutorial
+    else if(Xpos>=755 && Xpos<=815 && YPos<=1465 && YPos>=1405) nivel=1;//Verifica si se esta en la entrada del nivel 1
+    else if(Xpos>=1565 && Xpos<=1690 && YPos<=1825 && YPos>=1760) nivel=2;//Verifica si se esta en la entrada del nivel 2
+    else if(Xpos>=2075 && Xpos<=2200 && YPos<=645 && YPos>=585) nivel=3;//Verifica si se esta en la entrada del nivel 3
     //Se abre la ventana determinada para las batallas contra Bosses
     Niveles * batalla = new Niveles;
     batalla->show();

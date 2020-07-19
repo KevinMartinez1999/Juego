@@ -10,10 +10,10 @@ class Boss: public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 public:
-    explicit Boss(QObject *parent = nullptr);
+    explicit Boss(QObject *parent = nullptr,int tipo=0);
     QTimer *timer;
     QPixmap *pixmap;
-    float columnas,fila,ancho,alto;
+    float columnas,fila,ancho,alto,limiteSprite;
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 private slots:

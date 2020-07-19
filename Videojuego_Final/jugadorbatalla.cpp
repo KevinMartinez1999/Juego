@@ -22,8 +22,8 @@ JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
     fila = 0;
 
     //Ancho y alto del sprite del jugador
-    ancho = 84;
-    alto  = 84;
+    ancho = 168;
+    alto  = 168;
     connect(timer,SIGNAL(timeout()),this,SLOT(Actualizacion()));
     /*Este timer nos permitira la constante actualizacion de la imagen de nuestro jugador*/
     timer->start(150);
@@ -62,12 +62,12 @@ void JugadorBatalla::Actualizacion()
     accion diferente hecha por el jugador, y las columnas son frames que permiten que esa accion se vea con movimiento, entonces mediante
     un timer estaremos constantemente interactuando en las columnas de determinada fila para asi ir generando una animacion fluida y
     continua.*/
-    if(columnas >= 336 or (fila >= 672 and columnas >= 168))//El archivo consta de 6 columnas de 84x84, cuando se llegue a la sexta columna se iniciara de nuevo
+    if(columnas >= 504 or (fila >= 672 and fila<=1008 and columnas >= 336))
     {
-        columnas = 84;
+        columnas = 0;
     }
     else{
-        columnas += 84;
+        columnas += 168;
     }
     this->update(-ancho/2,-alto/2,ancho,alto);/*La funcion update constantemente actualiza el boundingRect del jugador para que su
     origen siempre sea la mitad de la imagen actual.*/
@@ -77,8 +77,8 @@ void JugadorBatalla::moveLeft()
 {
     if (banLeft)
     {
-        if(fila!=420 and fila!=168) xFinal=0;
-        fila=420;
+        if(fila!=336 and fila!=0) xFinal=0;
+        fila=336;
         if(x()>0){
         setPos(x()-xFinal,y());
         }
@@ -89,7 +89,7 @@ void JugadorBatalla::moveRight()
 {
     if (banRight)
     {
-        if(fila!=504 and fila!=252) xFinal=0;
+        if(fila!=504 and fila!=168) xFinal=0;
         fila = 504;
         if(x()<930){
         setPos(x()+xFinal,y());

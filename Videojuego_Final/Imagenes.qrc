@@ -32,5 +32,10 @@
         <file>Imagenes/TUTORIAL.png</file>
         <file>Imagenes/NIVEL3.png</file>
         <file>Imagenes/BOSS1.png</file>
+        <file>Imagenes/SPRITEBATALLA.png</file>
+        <file>Imagenes/SPRITEBATALLA2.png</file>
+        <file>Imagenes/BOSS2.png</file>
+        <file>Imagenes/BOSS3.png</file>
+        <file>Imagenes/BOSS4.png</file>
     </qresource>
 </RCC>

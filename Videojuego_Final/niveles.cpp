@@ -11,11 +11,10 @@ Niveles::Niveles(QWidget *parent) :
     ui(new Ui::Niveles)
 {
     ui->setupUi(this);
+    pj2 = false;
 
     QCursor cursor = QCursor(Qt::BlankCursor);
     setCursor(cursor);
-
-    pj2 = false;
 
     escena = new QGraphicsScene(this);
     escena->setSceneRect(0, 0,982,632);
@@ -25,22 +24,20 @@ Niveles::Niveles(QWidget *parent) :
     fondo = new QGraphicsPixmapItem;
     fondo->setPos(0,0);
     escena->addItem(fondo);
+
     if (num_jugadores == 1){ //Solo un jugador
         jugadorBatalla = new JugadorBatalla(this);
-        jugadorBatalla->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER.png");
-        NivelSetup();
+        jugadorBatalla->pixmap = new QPixmap(":/Imagenes/SPRITEBATALLA.png");    
     }
     else if (num_jugadores == 2){ //Dos jugadores
         pj2 = true;
         jugadorBatalla = new JugadorBatalla(this);
-        jugadorBatalla->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER.png");
-        escena->addItem(jugadorBatalla);
+        jugadorBatalla->pixmap = new QPixmap(":/Imagenes/SPRITEBATALLA.png");
 
         jugadorBatalla2 = new JugadorBatalla(jugadorBatalla);
-        jugadorBatalla2->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER2.png");
-        escena->addItem(jugadorBatalla2);
-        NivelSetup();
+        jugadorBatalla2->pixmap = new QPixmap(":/Imagenes/SPRITEBATALLA2.png");
     }
+    NivelSetup();
 }
 
 Niveles::~Niveles()
@@ -50,32 +47,49 @@ Niveles::~Niveles()
 
 void Niveles::NivelSetup()
 {
-    if(nivel==1){
-        jugadorBatalla->setX0(120);
-        jugadorBatalla->setY0(490);
+    if(nivel==0){
         fondo->setPixmap(QPixmap(":/Imagenes/TUTORIAL.png").scaled(1132,650));
-        jugadorBatalla->setPos(jugadorBatalla->GetX0(),jugadorBatalla->GetY0());
-        escena->addItem(jugadorBatalla);
-        if(num_jugadores==2)jugadorBatalla2->setPos(250,490);
-        boss = new Boss(this);
-        boss->pixmap = new QPixmap(":/Imagenes/BOSS1.png");
-        boss->setPos(900,490);
-        escena->addItem(boss);
+        jugadorBatalla->setX0(170);
+        jugadorBatalla->setY0(455);
+        if(num_jugadores==2){
+            jugadorBatalla2->setX0(65);
+            jugadorBatalla2->setY0(455);
+        }       
     }
-    if(nivel==2){
+    else if(nivel==1){
         fondo->setPixmap(QPixmap(":/Imagenes/NIVEL1.png").scaled(1000,650));
-        jugadorBatalla->setPos(50,545);
-        if(num_jugadores==2)jugadorBatalla2->setPos(140,545);
+        jugadorBatalla->setX0(170);
+        jugadorBatalla->setY0(515); 
+        if(num_jugadores==2){
+            jugadorBatalla2->setX0(70);
+            jugadorBatalla2->setY0(515);    
+        }
     }
-    if(nivel==3){
+    else if(nivel==2){
         fondo->setPixmap(QPixmap(":/Imagenes/NIVEL2.png").scaled(1000,650));
-        jugadorBatalla->setPos(20,408);
-        if(num_jugadores==2)jugadorBatalla2->setPos(135,408);
+        jugadorBatalla->setX0(175);
+        jugadorBatalla->setY0(378);   
+        if(num_jugadores==2){
+            jugadorBatalla2->setX0(60);
+            jugadorBatalla2->setY0(378);
+        }
     }
-    if(nivel==4){
-        fondo->setPixmap(QPixmap(":/Imagenes/NIVEL3.png").scaled(1000,650));
-        jugadorBatalla->setPos(20,550);
-        if(num_jugadores==2)jugadorBatalla2->setPos(135,550);
+    else if(nivel==3){
+        fondo->setPixmap(QPixmap(":/Imagenes/NIVEL3.png").scaled(1000,650));   
+        jugadorBatalla->setX0(160);
+        jugadorBatalla->setY0(480);
+        if(num_jugadores==2){
+            jugadorBatalla2->setX0(45);
+            jugadorBatalla2->setY0(480);  
+        }
+    }
+    boss = new Boss(this,nivel);
+    escena->addItem(boss);
+    jugadorBatalla->setPos(jugadorBatalla->GetX0(),jugadorBatalla->GetY0());
+    escena->addItem(jugadorBatalla);
+    if(num_jugadores==2){
+        jugadorBatalla2->setPos(jugadorBatalla2->GetX0(),jugadorBatalla2->GetY0());
+        escena->addItem(jugadorBatalla2);
     }
 }
 
@@ -106,6 +120,7 @@ void Niveles::keyReleaseEvent(QKeyEvent *event)
     else if (event->key() == Qt::Key_D){
         jugadorBatalla->resetBanRight();
     }
+
     else if(event->key()==Qt::Key_J){
         if(pj2)
             jugadorBatalla2->resetBanLeft();

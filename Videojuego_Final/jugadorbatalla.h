@@ -15,8 +15,8 @@ public:
     explicit JugadorBatalla(QObject *parent = nullptr);
     inline bool setBanLeft() {return banLeft = true;}
     inline bool setBanRight() {return banRight = true;}
-    inline bool resetBanLeft() {fila=168; return banLeft = false;}
-    inline bool resetBanRight() {fila=252; return banRight = false;}
+    inline bool resetBanLeft() {fila=0; return banLeft = false;}
+    inline bool resetBanRight() {fila=168; return banRight = false;}
 
     void setX0(double X){x0=X;}
     void setY0(double Y){y0=Y;}
@@ -35,6 +35,7 @@ public slots:
     //Señales para el movimiento del jugador
     void moveLeft();
     void moveRight();
+
 private:
     double x0,y0,xFinal,vx;
     bool banLeft;

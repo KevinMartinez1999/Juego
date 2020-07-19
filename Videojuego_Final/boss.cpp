@@ -1,11 +1,40 @@
 #include "boss.h"
+#include "niveles.h"
 
-Boss::Boss(QObject *parent) : QObject(parent)
+Boss::Boss(QObject *parent,int tipo) : QObject(parent)
 {
-    columnas = 0;
+
     fila = 0;
-    ancho = 160;
-    alto  = 144;
+    columnas = 0;
+    if(tipo==0){
+        ancho = 128;
+        alto  = 110;
+        limiteSprite=788;
+        pixmap = new QPixmap(":/Imagenes/BOSS4.png");
+        setPos(890,455);
+    }
+    else if(tipo==1){
+        ancho = 192;
+        alto  = 224;
+        limiteSprite=1344;
+        pixmap = new QPixmap(":/Imagenes/BOSS2.png");
+        setPos(900,490);
+    }
+    else if(tipo==2){
+        ancho = 165;
+        alto  = 201;
+        limiteSprite=825;
+        pixmap = new QPixmap(":/Imagenes/BOSS3.png");
+        setPos(875,363);
+    }
+    else if(tipo==3){
+        ancho = 320;
+        alto  = 288;
+        limiteSprite=1600;
+        pixmap = new QPixmap(":/Imagenes/BOSS1.png");
+        setPos(875,450);
+    }
+
     timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(Actualizacion()));
     timer->start(100);
@@ -36,12 +65,12 @@ void Boss::Actualizacion()
     accion diferente hecha por el jugador, y las columnas son frames que permiten que esa accion se vea con movimiento, entonces mediante
     un timer estaremos constantemente interactuando en las columnas de determinada fila para asi ir generando una animacion fluida y
     continua.*/
-    if(columnas >= 800)//El archivo consta de 6 columnas de 84x84, cuando se llegue a la sexta columna se iniciara de nuevo
+    if(columnas >= limiteSprite)//El archivo consta de 6 columnas de 84x84, cuando se llegue a la sexta columna se iniciara de nuevo
     {
         columnas = 0;
     }
     else{
-        columnas += 160;
+        columnas += ancho;
     }
     this->update(-ancho/2,-alto/2,ancho,alto);/*La funcion update constantemente actualiza el boundingRect del jugador para que su
     origen siempre sea la mitad de la imagen actual.*/
