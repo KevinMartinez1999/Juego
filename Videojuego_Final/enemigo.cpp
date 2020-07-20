@@ -1,23 +1,29 @@
 #include "enemigo.h"
-#include <QDebug>
 
 extern int num_jugadores;
 extern Jugador *jugador, *jugador2;
 
 Enemigo::Enemigo(QObject *parent) : QObject(parent)
 {
-    vida = 20;
+    //Inicializando vida del enemigo
+    health = 20;
 
+    //Dimendiones del enemigo
     setRect(0,0,25,25);
     setBrush(QBrush(Qt::green));
     setPos(770,2055);
 
+    //Timers del enemigo
     connect(&at_enemigo, SIGNAL(timeout()), this, SLOT(ataque_enemigo()));
     connect(&at_enemigo, SIGNAL(timeout()), this, SLOT(detectar_enemigos()));
     at_enemigo.start(1000);
 
     connect(&at_jugador, SIGNAL(timeout()), this, SLOT(ataque_jugador()));
     at_jugador.start(200);
+
+    //Barra de vida
+    vida.setRect(0,0,health,5);
+    vida.setBrush(Qt::blue);
 }
 
 /*Verifica cuando los enemigos atacan al jugador por la espalda o de frente
@@ -39,12 +45,19 @@ bool Enemigo::verificar_golpe(Jugador *obj)
 
 void Enemigo::ataque_enemigo()
 {
-    if (collidesWithItem(&jugador->box)){
-        jugador->vida.setRect(0,0,jugador->health -= 5,5);
+    if (jugador->health <= 1){
+        delete jugador;
+        return;
+    }
+
+    if (collidesWithItem(&jugador->box) and jugador->health > 0){
+        jugador->health -= 5;
+        jugador->vida.setRect(0,0,jugador->health,5);
     }
     if (num_jugadores == 2){
-        if (collidesWithItem(&jugador2->box)){
-            jugador2->vida.setRect(0,0,jugador2->health -= 5,5);
+        if (collidesWithItem(&jugador2->box) and jugador2->health > 0){
+            jugador->health -= 5;
+            jugador2->vida.setRect(0,0,jugador2->health,5);
         }
     }
 }
@@ -53,8 +66,9 @@ void Enemigo::ataque_enemigo()
  no es necesario*/
 void Enemigo::detectar_enemigos()
 {
-    if (abs(x()-jugador->x()) > 1000 or abs(y()-jugador->y()) > 1000){
+    if (abs(int(x()-jugador->x())) > 1000 or abs(int(y()-jugador->y())) > 1000){
         delete this;
+        return;
     }
 }
 
@@ -64,25 +78,22 @@ void Enemigo::detectar_enemigos()
  atacando este muere; Esta verificación del ataque se hace en una función mas arriba*/
 void Enemigo::ataque_jugador()
 {
-    if (vida <= 1)
-        delete this;
-
-    if (abs(this->x()-jugador->x()) < 84 and abs(this->y()-jugador->y()) < 84){
+    if (collidesWithItem(&jugador->box)){
         if (verificar_golpe(jugador)){
-            vida -= 2;
+            health -= 2;
+            vida.setRect(0,0,health,5);
         }
     }
 
     if (num_jugadores == 2){ //En caso de tener dos jugadores
-        if (abs(this->x()-jugador2->x()) < 84 and abs(this->y()-jugador2->y()) < 84){
+        if (collidesWithItem(&jugador2->box)){
             if (verificar_golpe(jugador2)){
-                vida -= 2;
+                health -= 2;
+                vida.setRect(0,0,health,5);
             }
         }
     }
-}
 
-void Enemigo::move()
-{
-
+    if (health <= 1)
+        delete this;
 }

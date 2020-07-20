@@ -44,7 +44,6 @@ Jugador::Jugador(QObject *parent) : QObject(parent)
     //Barra de vida
     vida.setRect(0,0,health,5);
     vida.setBrush(Qt::red);
-    vida.setPos(755,2167);
 }
 
 QRectF Jugador::boundingRect() const
@@ -117,7 +116,7 @@ void Jugador::moveLeft()
         reset_golpe();
         ultimoEstado = 2;
         fila = 420; //Actualiza el sprite
-        if(x()>42){ //Condiciones del borde de las escena
+        if(box.x() > 0){ //Condiciones del borde de las escena
             setPos(x()-X,y()); //Movimiento del jugador
             box.setPos(x()-15-X,y()+12); //Movimiento del hiteBox que colisiona
             vida.setPos(x()-30-X,y()-50);
@@ -141,7 +140,7 @@ void Jugador::moveRight()
         reset_golpe();
         ultimoEstado = 4;
         fila = 504;//Actualiza el sprite
-        if(x()<2197){//Condiciones del borde de las escena
+        if(box.x() < 2239-25){//Condiciones del borde de las escena
             setPos(x()+X,y());//Movimiento del jugador
             box.setPos(x()-15+X,y()+12);//Movimiento del hiteBox que colisiona
             vida.setPos(x()-30+X,y()-50);
@@ -162,7 +161,7 @@ void Jugador::moveUp()
         reset_golpe();
         ultimoEstado = 3;
         fila = 588;//Actualiza el sprite
-        if(y() > 42){//Condiciones del borde de las escena
+        if(box.y() > 0){//Condiciones del borde de las escena
             setPos(x(),y()-X);//Movimiento del jugador
             box.setPos(x()-15,y()+12-X);//Movimiento del hiteBox que colisiona
             vida.setPos(x()-30,y()-50-X);
@@ -183,7 +182,7 @@ void Jugador::moveDown()
         reset_golpe();
         ultimoEstado = 1;
         fila = 336;//Actualiza el sprite
-        if(y()<2193){//Condiciones del borde de las escena
+        if(box.y() < 2235-25){//Condiciones del borde de las escena
             setPos(x(),y()+X);//Movimiento del hiteBox que colisiona
             box.setPos(x()-15,y()+12+X);
             vida.setPos(x()-30,y()-50+X);

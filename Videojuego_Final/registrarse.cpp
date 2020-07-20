@@ -39,8 +39,8 @@ Registrarse::Registrarse(QWidget *parent) :
     /*Creacion del cursor del videojuego: con ayuda de QCursor podremos brindarle al cursor la imagen que deseamos.
     Primeramente crearemos un pixmap que contiene la imagen, luego se creara una variable QCursor que recibira la imagen
     y los puntos de eje del click, luego con setCursor establecemos ese cursor para toda la ventana.*/
-    QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
-    QCursor cursor = QCursor(Pixmap_Cursor,0,0);
+    Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
+    cursor = QCursor(Pixmap_Cursor,0,0);
     setCursor(cursor);
 
     //Enfoca por defecto la casilla del usuario para hacer el login mas rapido
@@ -52,7 +52,7 @@ Registrarse::Registrarse(QWidget *parent) :
     e-mail, numero de telefono, etcétera. Luego de tener esta expresion el QRegExpValidator la toma
     y no deja que en esa casilla de nombre de usuario aparezcan esos caracteres aunque el usuario
     los presione*/
-    QRegExp rx("^[\\w'\\-,.][^_!¡' '?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\\]]{2,}$");
+    rx = QRegExp("^[\\w'\\-,.][^_!¡' '?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\\]]{2,}$");
     val = new QRegExpValidator(rx, this);
     ui->usuario->setValidator(val);
 

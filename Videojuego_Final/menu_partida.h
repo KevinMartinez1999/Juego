@@ -32,6 +32,8 @@ private slots:
 
 private:
     Ui::Menu_partida *ui;
+    QPixmap Pixmap_Cursor;
+    QCursor cursor;
     QLabel *w;
     QMovie *movie;
     QMediaPlayer boton;

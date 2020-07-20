@@ -35,9 +35,12 @@ private slots:
 
 private:
     Ui::Widget *ui;
+    QPixmap Pixmap_Cursor;
+    QCursor cursor;
     QMovie *movie;
     QMediaPlayer boton;
     QLabel *w;
+    QRegExp rx;
     QRegExpValidator * val;
 };
 #endif // WIDGET_H

@@ -41,8 +41,8 @@ Menu_partida::Menu_partida(QWidget *parent) :
     /*Creacion del cursor del videojuego: con ayuda de QCursor podremos brindarle al cursor la imagen que deseamos.
     Primeramente crearemos un pixmap que contiene la imagen, luego se creara una variable QCursor que recibira la imagen
     y los puntos de eje del click, luego con setCursor establecemos ese cursor para toda la ventana.*/
-    QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
-    QCursor cursor = QCursor(Pixmap_Cursor,0,0);
+    Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
+    cursor = QCursor(Pixmap_Cursor,0,0);
     setCursor(cursor);
 
     ui->un_jugador->setChecked(true);/*Por defecto siempre estará señalada la opción de un jugador en caso de que el usuario no escoja.*/

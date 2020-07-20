@@ -17,17 +17,16 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     pj2 = false; //Inicializacion de la variable del segundo jugador por defecto apagado
 
     //Esconde el cursor
-    QCursor cursor = QCursor(Qt::BlankCursor);
+    cursor = QCursor(Qt::BlankCursor);
     setCursor(cursor);
 
     //Musica de fondo
-    ambiente.setMedia(QUrl("qrc:/Musica/Ambiente.mp3"));
+    lista.addMedia(QUrl("qrc:/Musica/Ambiente.mp3"));
+    lista.setCurrentIndex(0);
+    lista.setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+    ambiente.setPlaylist(&lista);
     ambiente.setVolume(100);
     ambiente.play();
-
-    //Este timer hacer que la cancion de fondo de repita una vez ha terminado
-    connect(&loop, SIGNAL(timeout()), this, SLOT(iniciar()));
-    loop.start(100000);
 
     //Timer para actualizar la escena y centrarla en el jugador
     connect(&timer,SIGNAL(timeout()),this,SLOT(ActualizarEscena()));
@@ -81,17 +80,21 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
         jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
         jugador->setPos(770,2155);
         escena->addItem(jugador);
+        jugador->vida.setPos(jugador->x(),jugador->y());
 
         jugador2 = new Jugador(this);
         jugador2->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER2.png");//Asignamos el determinado sprite al jugador
         jugador2->setPos(820,2155);
         escena->addItem(jugador2);
+        jugador2->vida.setPos(jugador2->x(),jugador2->y());
     }
     else{
         jugador = new Jugador(this);
         jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
         jugador->setPos(770,2155);
         escena->addItem(jugador);
+        escena->addItem(&jugador->box);
+        jugador->vida.setPos(jugador->x(),jugador->y());
     }
 
     //Tercera capa del mapa
@@ -112,6 +115,8 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     //Añadir un enemigo
     Enemigo *enemigo = new Enemigo(this);
     escena->addItem(enemigo);
+    enemigo->vida.setPos(enemigo->x(),enemigo->y());
+    escena->addItem(&enemigo->vida);
 }
 
 Mapa_GamePlay::~Mapa_GamePlay()
@@ -217,10 +222,3 @@ void Mapa_GamePlay::ActualizarEscena()
 {
     ui->graphicsView->centerOn(jugador);
 }
-
-void Mapa_GamePlay::iniciar()
-{
-    ambiente.play();
-}
-
-
