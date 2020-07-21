@@ -39,7 +39,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QLabel" name="Marco">
+  <widget class="QLabel" name="Interfaz">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -50,9 +50,6 @@
    </property>
    <property name="text">
     <string/>
-   </property>
-   <property name="pixmap">
-    <pixmap resource="Imagenes.qrc">:/Imagenes/MARCO.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>

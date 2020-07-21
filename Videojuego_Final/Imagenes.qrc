@@ -37,5 +37,7 @@
         <file>Imagenes/BOSS2.png</file>
         <file>Imagenes/BOSS3.png</file>
         <file>Imagenes/BOSS4.png</file>
+        <file>Imagenes/INTERFAZBOSS1.png</file>
+        <file>Imagenes/INTERFAZBOSS2.png</file>
     </qresource>
 </RCC>

@@ -23,7 +23,6 @@ Niveles::Niveles(QWidget *parent) :
     ui->graphicsView->setScene(escena);
     fondo = new QGraphicsPixmapItem;
     fondo->setPos(0,0);
-    escena->addItem(fondo);
 
     if (num_jugadores == 1){ //Solo un jugador
         jugadorBatalla = new JugadorBatalla(this);
@@ -83,16 +82,24 @@ void Niveles::NivelSetup()
             jugadorBatalla2->setY0(480);  
         }
     }
+    escena->addItem(fondo);
     boss = new Boss(this,nivel);
     escena->addItem(boss);
+    boss->vida.setPos(742,30);
+    escena->addItem(&boss->vida);
     jugadorBatalla->setPos(jugadorBatalla->GetX0(),jugadorBatalla->GetY0());
     escena->addItem(jugadorBatalla);
+    jugadorBatalla->vida.setPos(90,28);
+    escena->addItem(&jugadorBatalla->vida);
     if(num_jugadores==2){
         jugadorBatalla2->setPos(jugadorBatalla2->GetX0(),jugadorBatalla2->GetY0());
         escena->addItem(jugadorBatalla2);
+        jugadorBatalla2->vida.setPos(146,96);
+        escena->addItem(&jugadorBatalla2->vida);
+        ui->Interfaz->setPixmap(QPixmap(":/Imagenes/INTERFAZBOSS2.png"));
     }
+    else ui->Interfaz->setPixmap(QPixmap(":/Imagenes/INTERFAZBOSS1.png"));
 }
-
 void Niveles::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_A){
@@ -101,6 +108,10 @@ void Niveles::keyPressEvent(QKeyEvent *event)
     else if (event->key() == Qt::Key_D){
         jugadorBatalla->setBanRight();
     }
+    else if (event->key() == Qt::Key_F){
+        jugadorBatalla->setBanAttack();
+    }
+
     else if(event->key()==Qt::Key_J){
         if(pj2)
             jugadorBatalla2->setBanLeft();
@@ -108,6 +119,10 @@ void Niveles::keyPressEvent(QKeyEvent *event)
     else if(event->key()==Qt::Key_L){
         if(pj2)
             jugadorBatalla2->setBanRight();
+    }
+    else if (event->key() == Qt::Key_H){
+        if(pj2)
+        jugadorBatalla2->setBanAttack();
     }
 
 }
@@ -120,6 +135,9 @@ void Niveles::keyReleaseEvent(QKeyEvent *event)
     else if (event->key() == Qt::Key_D){
         jugadorBatalla->resetBanRight();
     }
+    else if (event->key() == Qt::Key_F){
+        jugadorBatalla->resetBanAttack();
+    }
 
     else if(event->key()==Qt::Key_J){
         if(pj2)
@@ -128,6 +146,8 @@ void Niveles::keyReleaseEvent(QKeyEvent *event)
     else if(event->key()==Qt::Key_L){
         if(pj2)
             jugadorBatalla2->resetBanRight();
-
+    }
+    else if (event->key() == Qt::Key_H){
+        jugadorBatalla2->resetBanAttack();
     }
 }

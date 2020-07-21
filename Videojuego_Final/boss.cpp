@@ -1,17 +1,20 @@
 #include "boss.h"
 #include "niveles.h"
+extern int num_jugadores;
+extern JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
 
 Boss::Boss(QObject *parent,int tipo) : QObject(parent)
 {
 
     fila = 0;
     columnas = 0;
+    health=160;
     if(tipo==0){
-        ancho = 128;
-        alto  = 110;
-        limiteSprite=788;
+        ancho = 256;
+        alto  = 220;
+        limiteSprite=1536;
         pixmap = new QPixmap(":/Imagenes/BOSS4.png");
-        setPos(890,455);
+        setPos(890,450);
     }
     else if(tipo==1){
         ancho = 192;
@@ -34,10 +37,27 @@ Boss::Boss(QObject *parent,int tipo) : QObject(parent)
         pixmap = new QPixmap(":/Imagenes/BOSS1.png");
         setPos(875,450);
     }
+    vida.setRect(0,0,health,40);
+    vida.setTransformOriginPoint(health/2,40/2);
+    vida.setRotation(180);
+    vida.setBrush(Qt::red);
 
     timer = new QTimer(this);
     connect(timer,SIGNAL(timeout()),this,SLOT(Actualizacion()));
     timer->start(100);
+
+    connect(&at_jugador, SIGNAL(timeout()), this, SLOT(ataque_jugador()));
+    at_jugador.start(200);
+}
+
+bool Boss::verificar_golpe(JugadorBatalla *obj)
+{
+    if (obj->golpe_izq and this->x() < obj->x())
+        return true;
+    else if (obj->golpe_der and this->x() > obj->x())
+        return true;
+    else
+        return false;
 }
 
 QRectF Boss::boundingRect() const
@@ -57,6 +77,28 @@ void Boss::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     Q_UNUSED(option);
     Q_UNUSED(widget);
     painter->drawPixmap(-ancho/2,-alto/2,*pixmap,columnas,fila,ancho,alto);
+}
+
+void Boss::ataque_jugador()
+{
+    if (health <= 1)
+        delete this;
+
+    if (abs(this->x()-jugadorBatalla->x()) < 100 and abs(this->y()-jugadorBatalla->y()) < 100){
+        if (verificar_golpe(jugadorBatalla)){
+            health -= 1;
+            vida.setRect(0,0,health,40);
+        }
+    }
+
+    if (num_jugadores == 2){ //En caso de tener dos jugadores
+        if (abs(this->x()-jugadorBatalla2->x()) < 100 and abs(this->y()-jugadorBatalla2->y()) < 100){
+            if (verificar_golpe(jugadorBatalla2)){
+                health -= 1;
+                vida.setRect(0,0,health,40);
+            }
+        }
+    }
 }
 
 void Boss::Actualizacion()
