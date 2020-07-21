@@ -37,6 +37,8 @@ Niveles::Niveles(QWidget *parent) :
         jugadorBatalla2->pixmap = new QPixmap(":/Imagenes/SPRITEBATALLA2.png");
     }
     NivelSetup();
+    connect(&timer, SIGNAL(timeout()), this, SLOT(Level_Events()));
+    timer.start(30);
 }
 
 Niveles::~Niveles()
@@ -100,6 +102,7 @@ void Niveles::NivelSetup()
     }
     else ui->Interfaz->setPixmap(QPixmap(":/Imagenes/INTERFAZBOSS1.png"));
 }
+
 void Niveles::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_A){
@@ -150,4 +153,16 @@ void Niveles::keyReleaseEvent(QKeyEvent *event)
     else if (event->key() == Qt::Key_H){
         jugadorBatalla2->resetBanAttack();
     }
+}
+
+void Niveles::Level_Events()
+{
+    if(boss->Boss_Derrotado){
+        boss->Boss_Derrotado=false;
+        Mapa_GamePlay *mapa=new Mapa_GamePlay;
+        mapa->show();
+        close();
+        delete this;
+    }
+    else return;
 }

@@ -20,13 +20,14 @@ public:
     QPixmap *pixmap;
     QGraphicsRectItem vida;
     int health;
-    float columnas,fila,ancho,alto,limiteSprite;
+    bool Boss_Derrotado=true;
 signals:
 private slots:
     void ataque_jugador();
     void Actualizacion();
 private:
     QTimer at_jugador;
+    float columnas,fila,ancho,alto,limiteSprite;
 };
 
 #endif // BOSS_H

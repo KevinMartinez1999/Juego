@@ -5,6 +5,7 @@
 #include <QGraphicsScene>
 #include <QKeyEvent>
 #include <QGraphicsPixmapItem>
+#include <QTimer>
 #include "jugadorbatalla.h"
 #include "boss.h"
 
@@ -26,9 +27,12 @@ public:
 private:
     Ui::Niveles *ui;
     QGraphicsScene *escena;
-    Boss *boss;
     QGraphicsPixmapItem *fondo;
+    QTimer timer;
+    Boss *boss;
     bool pj2;
+private slots:
+    void Level_Events();
 };
 
 #endif // NIVELES_H

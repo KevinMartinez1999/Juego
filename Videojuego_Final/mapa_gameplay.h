@@ -40,6 +40,7 @@ private: //Atributos de la clase
     QGraphicsPixmapItem *objetos;  
     QLabel *aviso;
     QPushButton *boton;
+    int PosX,PosY,PosX2,PosY2;
     int Xpos,YPos;
     bool pj2;
 

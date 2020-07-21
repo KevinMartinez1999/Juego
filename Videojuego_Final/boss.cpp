@@ -5,10 +5,10 @@ extern JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
 
 Boss::Boss(QObject *parent,int tipo) : QObject(parent)
 {
-
     fila = 0;
     columnas = 0;
     health=160;
+    Boss_Derrotado=false;
     if(tipo==0){
         ancho = 256;
         alto  = 220;
@@ -48,6 +48,7 @@ Boss::Boss(QObject *parent,int tipo) : QObject(parent)
 
     connect(&at_jugador, SIGNAL(timeout()), this, SLOT(ataque_jugador()));
     at_jugador.start(200);
+
 }
 
 bool Boss::verificar_golpe(JugadorBatalla *obj)
@@ -81,12 +82,13 @@ void Boss::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
 void Boss::ataque_jugador()
 {
-    if (health <= 1)
+    if (health <= 1){
         delete this;
-
+        Boss_Derrotado=true;
+    }
     if (abs(this->x()-jugadorBatalla->x()) < 100 and abs(this->y()-jugadorBatalla->y()) < 100){
         if (verificar_golpe(jugadorBatalla)){
-            health -= 1;
+            health -= 5;
             vida.setRect(0,0,health,40);
         }
     }
@@ -94,7 +96,7 @@ void Boss::ataque_jugador()
     if (num_jugadores == 2){ //En caso de tener dos jugadores
         if (abs(this->x()-jugadorBatalla2->x()) < 100 and abs(this->y()-jugadorBatalla2->y()) < 100){
             if (verificar_golpe(jugadorBatalla2)){
-                health -= 1;
+                health -= 5;
                 vida.setRect(0,0,health,40);
             }
         }

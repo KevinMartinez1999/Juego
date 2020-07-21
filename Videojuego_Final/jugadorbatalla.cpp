@@ -69,7 +69,7 @@ void JugadorBatalla::setX(){
         return;
     }
     xFinal+=(vx*dt)-(0.5*pow(dt,2));
-    if(fila==168 or fila==0) xFinal=0;
+    if(fila==0 or fila==168) xFinal=0;
 }
 
 void JugadorBatalla::Actualizacion()
