@@ -1,7 +1,7 @@
 #include "enemigo.h"
 
 extern int num_jugadores;
-extern Jugador *jugador, *jugador2;
+extern Mapa_GamePlay * mapa;
 
 Enemigo::Enemigo(QObject *parent) : QObject(parent)
 {
@@ -31,13 +31,13 @@ Enemigo::Enemigo(QObject *parent) : QObject(parent)
  pero si lo ataca por la espalda el jugador muere*/
 bool Enemigo::verificar_golpe(Jugador *obj)
 {
-    if (obj->golpe_izq and this->x() < obj->x())
+    if (obj->golpe_izq and this->x() < obj->box.x())
         return true;
-    else if (obj->golpe_der and this->x() > obj->x())
+    else if (obj->golpe_der and this->x() > obj->box.x())
         return true;
-    else if (obj->golpe_arr and this->y() < obj->y())
+    else if (obj->golpe_arr and this->y() < obj->box.y())
         return true;
-    else if (obj->golpe_aba and this->y() > obj->y())
+    else if (obj->golpe_aba and this->y() > obj->box.y())
         return true;
     else
         return false;
@@ -45,19 +45,19 @@ bool Enemigo::verificar_golpe(Jugador *obj)
 
 void Enemigo::ataque_enemigo()
 {
-    if (jugador->health <= 1){
-        delete jugador;
+    if (mapa->jugador->health <= 1){
+        delete mapa->jugador;
         return;
     }
 
-    if (collidesWithItem(&jugador->box) and jugador->health > 0){
-        jugador->health -= 5;
-        jugador->vida.setRect(0,0,jugador->health,5);
+    if (collidesWithItem(&mapa->jugador->box) and mapa->jugador->health > 0){
+        mapa->jugador->health -= 5;
+        mapa->jugador->vida.setRect(0,0,mapa->jugador->health,5);
     }
     if (num_jugadores == 2){
-        if (collidesWithItem(&jugador2->box) and jugador2->health > 0){
-            jugador->health -= 5;
-            jugador2->vida.setRect(0,0,jugador2->health,5);
+        if (collidesWithItem(&mapa->jugador2->box) and mapa->jugador2->health > 0){
+            mapa->jugador->health -= 5;
+            mapa->jugador2->vida.setRect(0,0,mapa->jugador2->health,5);
         }
     }
 }
@@ -66,7 +66,7 @@ void Enemigo::ataque_enemigo()
  no es necesario*/
 void Enemigo::detectar_enemigos()
 {
-    if (abs(int(x()-jugador->x())) > 1000 or abs(int(y()-jugador->y())) > 1000){
+    if (abs(int(x()-mapa->jugador->x())) > 1000 or abs(int(y()-mapa->jugador->y())) > 1000){
         delete this;
         return;
     }
@@ -78,16 +78,16 @@ void Enemigo::detectar_enemigos()
  atacando este muere; Esta verificación del ataque se hace en una función mas arriba*/
 void Enemigo::ataque_jugador()
 {
-    if (collidesWithItem(&jugador->box)){
-        if (verificar_golpe(jugador)){
+    if (collidesWithItem(&mapa->jugador->box)){
+        if (verificar_golpe(mapa->jugador)){
             health -= 2;
             vida.setRect(0,0,health,5);
         }
     }
 
     if (num_jugadores == 2){ //En caso de tener dos jugadores
-        if (collidesWithItem(&jugador2->box)){
-            if (verificar_golpe(jugador2)){
+        if (collidesWithItem(&mapa->jugador2->box)){
+            if (verificar_golpe(mapa->jugador2)){
                 health -= 2;
                 vida.setRect(0,0,health,5);
             }

@@ -29,6 +29,8 @@ public:
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
 
+    Jugador *jugador, *jugador2;
+
 private: //Atributos de la clase
     Ui::Mapa_GamePlay *ui;
     QMediaPlaylist lista;

@@ -8,12 +8,14 @@
 #include <cmath>
 #include <QDebug>
 #include "jugador.h"
+#include "menu_partida.h"
 
 class Enemigo : public QObject, public QGraphicsRectItem
 {
     Q_OBJECT
 public:
     explicit Enemigo(QObject *parent = nullptr);
+    ~Enemigo() {qDebug()<<"Eliminado";}
 
     bool verificar_golpe(Jugador *obj);
 

@@ -5,7 +5,6 @@ extern int num_jugadores;
 extern QString user, pass;
 
 Muro *muro;
-Jugador *jugador, *jugador2;
 
 Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     QWidget(parent),

@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QPainter>
 #include <cmath>
+#include <QDebug>
 #include "muro.h"
 
 class Jugador : public QObject, public QGraphicsPixmapItem
@@ -13,6 +14,7 @@ class Jugador : public QObject, public QGraphicsPixmapItem
     Q_OBJECT
 public:
     explicit Jugador(QObject *parent = nullptr);
+    ~Jugador() {qDebug()<<"Eliminado";}
 
     // Estas funciones son las banderas de movimiento
     inline void setBanLeft() {banLeft = true;}

@@ -1,5 +1,4 @@
 #include "jugador.h"
-#include <QDebug>
 
 #define X 5
 
