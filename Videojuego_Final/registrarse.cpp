@@ -106,7 +106,6 @@ void Registrarse::on_registrarse_clicked()
 void Registrarse::on_volver_clicked()
 {
     boton->play(); //Sonido del botón
-
     /*Si deseamos registrarnos en el sistema, al presionar el botón se procederá a cerrar la ventana actual y se  creara una
     nueva ventana de registro y se abrirá.*/
     Widget *w = new Widget;

@@ -10,6 +10,8 @@ JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
     banLeft = false;
     banRight = false;
     banAttack = false;
+    banSpell = false;
+    TiempoHechizo=true;
     ultimoEstado = 1;
     posAnterior = QPoint(0,0);
 
@@ -21,6 +23,7 @@ JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
     connect(timer1, SIGNAL(timeout()), this, SLOT(moveRight()));
     connect(timer1, SIGNAL(timeout()), this, SLOT(setX()));
     connect(timer1, SIGNAL(timeout()), this, SLOT(Attack()));
+    connect(timer1, SIGNAL(timeout()), this, SLOT(Spell()));
     connect(timer1, SIGNAL(timeout()), this, SLOT(pos()));
     timer1->start(30);
 
@@ -37,6 +40,11 @@ JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
     //Barra de vida del jugador
     vida.setRect(0,0,health,40);
     vida.setBrush(Qt::red);
+
+    Hechizo = new QMediaPlayer(this);
+    Hechizo->setMedia(QUrl("qrc:/Musica/FUEGO.wav"));
+    Hechizo->setVolume(100);
+
 }
 
 void JugadorBatalla::reset_golpe()
@@ -78,7 +86,7 @@ void JugadorBatalla::Actualizacion()
     accion diferente hecha por el jugador, y las columnas son frames que permiten que esa accion se vea con movimiento, entonces mediante
     un timer estaremos constantemente interactuando en las columnas de determinada fila para asi ir generando una animacion fluida y
     continua.*/
-    if(columnas >= 504 or(fila >= 672 and columnas >= 336))
+    if(columnas >= 504 or(fila == 672 and columnas >= 336)or(fila == 840 and columnas >= 336)or(fila>=1008 and columnas>=504))
     {
         columnas = 0;
     }
@@ -137,9 +145,35 @@ void JugadorBatalla::Attack()
     }
 }
 
+void JugadorBatalla::Spell()
+{
+    if(TiempoHechizo){
+    if(banSpell and !banAttack){
+        if (fila != 1008 and fila != 1176)
+            columnas = 0;
+        switch (ultimoEstado) {
+        case 1:
+            fila = 1008;
+            break;
+        case 2:
+            golpe_der = true;
+            fila = 1176;
+            break;
+        default:
+            break;
+        }
+        if (columnas==504){
+            Hechizo->play();
+            TiempoHechizo=false;
+            QTimer::singleShot(5000,this,SLOT(tiempo()));
+        }
+    }
+    }
+}
+
 void JugadorBatalla::pos()
 {
-    if (banAttack) //Cuando este atacando no debe hacer la animacion de estar quieto
+    if (banAttack or banSpell) //Cuando este atacando no debe hacer la animacion de estar quieto
         return;
     if (posAnterior == QPoint(x(),y())){ //Si se cumple es porque el jugador está quieto
         switch (ultimoEstado) {

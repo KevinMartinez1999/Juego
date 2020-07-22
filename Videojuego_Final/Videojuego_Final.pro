@@ -23,6 +23,7 @@ SOURCES += \
     main.cpp \
     mapa_gameplay.cpp \
     menu_partida.cpp \
+    menupausa.cpp \
     muro.cpp \
     niveles.cpp \
     registrarse.cpp \
@@ -35,6 +36,7 @@ HEADERS += \
     jugadorbatalla.h \
     mapa_gameplay.h \
     menu_partida.h \
+    menupausa.h \
     muro.h \
     niveles.h \
     registrarse.h \
@@ -43,6 +45,7 @@ HEADERS += \
 FORMS += \
     mapa_gameplay.ui \
     menu_partida.ui \
+    menupausa.ui \
     niveles.ui \
     registrarse.ui \
     widget.ui

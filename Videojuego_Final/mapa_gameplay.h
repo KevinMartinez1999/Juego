@@ -45,6 +45,7 @@ private: //Atributos de la clase
     bool pj2;
 
  private slots:
+    void Controles();
     void Nivel();
     void ingreso_batalla();
     void ActualizarEscena(); //Centra constantemente la grafica en el jugador

@@ -5,6 +5,7 @@
 #include <QGraphicsPixmapItem>
 #include <QTimer>
 #include <QPainter>
+#include <QGraphicsTextItem>
 #include "jugadorbatalla.h"
 
 class Boss: public QObject, public QGraphicsPixmapItem

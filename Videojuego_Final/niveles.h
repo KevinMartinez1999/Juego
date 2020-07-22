@@ -6,8 +6,11 @@
 #include <QKeyEvent>
 #include <QGraphicsPixmapItem>
 #include <QTimer>
+#include <QMediaPlaylist>
+#include <QMediaPlayer>
 #include "jugadorbatalla.h"
 #include "boss.h"
+#include "menupausa.h"
 
 namespace Ui {
 class Niveles;
@@ -28,11 +31,15 @@ private:
     Ui::Niveles *ui;
     QGraphicsScene *escena;
     QGraphicsPixmapItem *fondo;
+    QMediaPlayer * musicaNivel;
+    MenuPausa *opciones;
     QTimer timer;
     Boss *boss;
     bool pj2;
 private slots:
+    void Controles();
     void Level_Events();
+    void on_Opciones_clicked();
 };
 
 #endif // NIVELES_H

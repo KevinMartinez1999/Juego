@@ -86,17 +86,17 @@ void Boss::ataque_jugador()
         delete this;
         Boss_Derrotado=true;
     }
-    if (abs(this->x()-jugadorBatalla->x()) < 100 and abs(this->y()-jugadorBatalla->y()) < 100){
+    if (abs(this->x()-jugadorBatalla->x()) < 184 and abs(this->y()-jugadorBatalla->y()) < 184){
         if (verificar_golpe(jugadorBatalla)){
-            health -= 5;
+            health -= 2;
             vida.setRect(0,0,health,40);
         }
     }
 
     if (num_jugadores == 2){ //En caso de tener dos jugadores
-        if (abs(this->x()-jugadorBatalla2->x()) < 100 and abs(this->y()-jugadorBatalla2->y()) < 100){
+        if (abs(this->x()-jugadorBatalla2->x()) < 184 and abs(this->y()-jugadorBatalla2->y()) < 184){
             if (verificar_golpe(jugadorBatalla2)){
-                health -= 5;
+                health -= 2;
                 vida.setRect(0,0,health,40);
             }
         }

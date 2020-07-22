@@ -127,7 +127,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     boton->hide();//Por defecto se encontrara escondido para simplemente mostrarse cuando se este en una entrada
     connect(boton,SIGNAL(clicked()),this,SLOT(Nivel()));//Se ejecutara la funcion Nivel() si se presiona el boton
 
-
+    QTimer::singleShot(5000,this,SLOT(Controles()));
 }
 
 Mapa_GamePlay::~Mapa_GamePlay()
@@ -232,6 +232,10 @@ void Mapa_GamePlay::keyReleaseEvent(QKeyEvent *event)
     }
 }
 
+void Mapa_GamePlay::Controles()
+{
+    ui->Controles->hide();
+}
 void Mapa_GamePlay::Nivel()
 {
     ambiente->stop();
@@ -244,6 +248,7 @@ void Mapa_GamePlay::Nivel()
     Niveles * batalla = new Niveles;
     batalla->show();
     close();
+    delete this;
 }
 
 void Mapa_GamePlay::ingreso_batalla()

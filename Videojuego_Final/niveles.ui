@@ -55,6 +55,53 @@
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="QPushButton" name="Opciones">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>580</y>
+     <width>60</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#Opciones{
+color: rgb(255, 255, 255);
+border-image: url(:/Imagenes/OPCIONES.png);
+}
+#Opciones:hover
+{
+border-image: url(:/Imagenes/OPCIONES_HOVER.png);
+}
+#Opcionesa:pressed
+{
+border-image: url(:/Imagenes/OPCIONES_PUSH.png);
+}
+</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Controles">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>140</y>
+     <width>451</width>
+     <height>401</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="Imagenes.qrc">:/Imagenes/TECLAS.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="Imagenes.qrc"/>

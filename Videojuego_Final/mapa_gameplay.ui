@@ -74,6 +74,25 @@ border-image: url(:/Imagenes/BOTONGRISPUSH.png);
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="QLabel" name="Controles">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>110</y>
+     <width>381</width>
+     <height>351</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="Imagenes.qrc">:/Imagenes/TECLASMAPA.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="Imagenes.qrc"/>
