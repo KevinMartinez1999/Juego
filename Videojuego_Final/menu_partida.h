@@ -7,8 +7,6 @@
 #include <QLabel>
 #include <QMovie>
 #include <QMediaPlayer>
-#include "widget.h"
-#include "mapa_gameplay.h"
 
 using namespace std;
 

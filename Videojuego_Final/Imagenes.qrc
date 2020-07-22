@@ -26,5 +26,7 @@
         <file>Musica/Ambiente.mp3</file>
         <file>Musica/Boton.mp3</file>
         <file>Musica/knifes_boton.mp3</file>
+        <file>Imagenes/ENEMIGOS.png</file>
+        <file>Imagenes/ENEMIGOS2.png</file>
     </qresource>
 </RCC>

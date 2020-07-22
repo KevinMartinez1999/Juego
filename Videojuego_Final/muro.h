@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QGraphicsPixmapItem>
+
 class Muro : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT

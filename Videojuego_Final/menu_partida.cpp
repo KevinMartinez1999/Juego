@@ -1,10 +1,11 @@
 #include "menu_partida.h"
 #include "ui_menu_partida.h"
+#include "widget.h"
+#include "mapa_gameplay.h"
 
 int num_jugadores;
 extern QString user, pass;
 extern QMediaPlayer * musica;
-Mapa_GamePlay *mapa;
 
 Menu_partida::Menu_partida(QWidget *parent) :
     QWidget(parent),
@@ -102,7 +103,7 @@ void Menu_partida::on_nueva_partida_clicked()
         num_jugadores = 1;
     else if(ui->dos_jugadores->isChecked())
         num_jugadores = 2;
-    mapa = new Mapa_GamePlay();
+    Mapa_GamePlay *mapa = new Mapa_GamePlay();
     mapa->show();
     close();
 }

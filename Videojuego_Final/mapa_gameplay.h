@@ -8,9 +8,7 @@
 #include <QTimer>
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
-#include "jugador.h"
-#include "muro.h"
-#include "enemigo.h"
+#include <QMessageBox>
 
 namespace Ui {
 class Mapa_GamePlay;
@@ -29,15 +27,13 @@ public:
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
 
-    Jugador *jugador, *jugador2;
-
 private: //Atributos de la clase
     Ui::Mapa_GamePlay *ui;
     QMediaPlaylist lista;
     QMediaPlayer ambiente;
     QCursor cursor;
     QGraphicsScene *escena;
-    QTimer timer, loop;
+    QTimer timer, dead;
     QString nombre;
     QGraphicsPixmapItem *mapa;
     QGraphicsPixmapItem *objetos;
@@ -45,6 +41,7 @@ private: //Atributos de la clase
 
  private slots:
     void ActualizarEscena(); //Centra constantemente la grafica en el jugador
+    void verificar_muerte();
 };
 
 #endif // MAPA_GAMEPLAY_H

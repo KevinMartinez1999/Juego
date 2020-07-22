@@ -9,8 +9,6 @@
 #include <QMovie>
 #include <QLabel>
 #include <QMediaPlayer>
-#include "registrarse.h"
-#include "menu_partida.h"
 
 using namespace std;
 

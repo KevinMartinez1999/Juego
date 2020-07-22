@@ -1,10 +1,14 @@
 #include "mapa_gameplay.h"
 #include "ui_mapa_gameplay.h"
+#include "menu_partida.h"
+#include "jugador.h"
+#include "muro.h"
 
 extern int num_jugadores;
 extern QString user, pass;
 
 Muro *muro;
+Jugador *jugador, *jugador2;
 
 Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     QWidget(parent),
@@ -30,6 +34,10 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     //Timer para actualizar la escena y centrarla en el jugador
     connect(&timer,SIGNAL(timeout()),this,SLOT(ActualizarEscena()));
     timer.start();
+
+    //Verificar la muerte del jugador
+    connect(&dead,SIGNAL(timeout()),this,SLOT(verificar_muerte()));
+    dead.start(100);
 
     //Aqui se añade la escena; la escena es bastante grande ya que el mapa del juego no es una pantalla fija
     //sino que el jugador se mueve por todo el mapa y la escena se actualiza con un timer y se centra en
@@ -92,7 +100,6 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
         jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
         jugador->setPos(770,2155);
         escena->addItem(jugador);
-        escena->addItem(&jugador->box);
         jugador->vida.setPos(jugador->x(),jugador->y());
     }
 
@@ -110,12 +117,6 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     else{
         escena->addItem(&jugador->vida);
     }
-
-    //Añadir un enemigo
-    Enemigo *enemigo = new Enemigo(this);
-    escena->addItem(enemigo);
-    enemigo->vida.setPos(enemigo->x(),enemigo->y());
-    escena->addItem(&enemigo->vida);
 }
 
 Mapa_GamePlay::~Mapa_GamePlay()
@@ -219,5 +220,42 @@ void Mapa_GamePlay::keyReleaseEvent(QKeyEvent *event)
 
 void Mapa_GamePlay::ActualizarEscena()
 {
-    ui->graphicsView->centerOn(jugador);
+    if (num_jugadores == 2){
+        if (jugador->muerto){
+            ui->graphicsView->centerOn(jugador2);
+        }
+        else{
+            ui->graphicsView->centerOn(jugador);
+        }
+    }
+    else
+        ui->graphicsView->centerOn(jugador);
+}
+
+void Mapa_GamePlay::verificar_muerte()
+{
+    if (num_jugadores == 2){
+        if (jugador->muerto and jugador2->muerto){
+            QMessageBox msgBox;
+            msgBox.setText("You Are Dead.");
+            msgBox.exec();
+
+            Menu_partida * menu = new Menu_partida;
+            menu->show();
+            close();
+            delete this;
+        }
+    }
+    else{
+        if (jugador->muerto){
+            QMessageBox msgBox;
+            msgBox.setText("You Are Dead.");
+            msgBox.exec();
+
+            Menu_partida * menu = new Menu_partida;
+            menu->show();
+            close();
+            delete this;
+        }
+    }
 }

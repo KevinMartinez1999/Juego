@@ -6,15 +6,12 @@
 #include <QTimer>
 #include <QPainter>
 #include <cmath>
-#include <QDebug>
-#include "muro.h"
 
 class Jugador : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
 public:
     explicit Jugador(QObject *parent = nullptr);
-    ~Jugador() {qDebug()<<"Eliminado";}
 
     // Estas funciones son las banderas de movimiento
     inline void setBanLeft() {banLeft = true;}
@@ -37,6 +34,7 @@ public:
 
     QGraphicsRectItem box, vida;
     int health;
+    bool muerto;
 
     //Los sig. metodos y atributos son los necesarios para crear la animacion de
     //movimiento del jugador
@@ -57,6 +55,7 @@ public slots:
     void moveDown();
     void Attack();
     void pos();
+    void spawn();
 
 private:
     bool banLeft;
@@ -64,9 +63,9 @@ private:
     bool banUp;
     bool banDown;
     bool banAttack;
-    short int ultimoEstado;
+    short int ultimoEstado, cont = 0;
     QPoint posAnterior;
-    QTimer timer, timer1;
+    QTimer timer, timer1, enemigos;
     float columnas,fila,ancho,alto;
 };
 
