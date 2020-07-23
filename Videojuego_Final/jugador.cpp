@@ -84,14 +84,13 @@ void Jugador::Actualizacion()
      determina un movimiento o accion diferente hecha por el jugador, y las columnas son frames que
      permiten que esa accion se vea con movimiento, entonces mediante un timer estaremos constantemente
      interactuando en las columnas de determinada fila para asi ir generando una animacion fluida y continua.*/
-    if(columnas >= 336 or (fila >= 672 and columnas >= 168))
+    if (fila >= 672 and columnas >= 168)
+        columnas = 0;
+    else if(columnas >= 336)
         //El archivo consta de 6 columnas de 84x84, cuando se llegue a la sexta columna se iniciara de nuevo
-    {
         columnas = 84;
-    }
-    else{
+    else
         columnas += 84;
-    }
     /*La funcion update constantemente actualiza el boundingRect del jugador para que su
      origen siempre sea la mitad de la imagen actual.*/
     this->update(-ancho/2,-alto/2,ancho,alto);
@@ -300,7 +299,7 @@ void Jugador::spawn()
     //El enemigo se añade a la escena con su barra de vida
     scene()->addItem(enemigo);
     enemigo->vida.setPos(enemigo->x(),enemigo->y());
-    //scene()->addItem(&enemigo->box);
+    scene()->addItem(&enemigo->box);
     scene()->addItem(&enemigo->vida);
     lista.append(enemigo); //Se añade a una lista el enemigo para controlar cuando enemigos hay
 }

@@ -44,6 +44,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
 
     //Verificar la muerte del jugador
     connect(&dead,SIGNAL(timeout()),this,SLOT(verificar_muerte()));
+    connect(&dead,SIGNAL(timeout()),this,SLOT(ingreso_batalla()));
     dead.start(100);
 
     //Aqui se añade la escena; la escena es bastante grande ya que el mapa del juego no es una pantalla fija
@@ -107,14 +108,9 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
         jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
         jugador->setPos(770,2155);
         escena->addItem(jugador);
+        escena->addItem(&jugador->box);
         jugador->vida.setPos(jugador->x(),jugador->y());
     }
-
-    //Timer para actualizar la escena y centrarla en el jugador
-    timer = new QTimer(this);
-    connect(timer,SIGNAL(timeout()),this,SLOT(ActualizarEscena()));
-    connect(timer,SIGNAL(timeout()),this,SLOT(ingreso_batalla()));
-    timer->start();
 
     //Tercera capa del mapa
     objetos = new QGraphicsPixmapItem;
@@ -248,7 +244,7 @@ void Mapa_GamePlay::Controles()
 }
 void Mapa_GamePlay::Nivel()
 {
-    ambiente->stop();
+    ambiente.stop();
     botonSound->play();
     if(Xpos>=325 && Xpos<=405 && YPos>=2193 && YPos<=2215) nivel=0;//Verifica si se esta en la entrada del tutorial
     else if(Xpos>=755 && Xpos<=815 && YPos<=1465 && YPos>=1405) nivel=1;//Verifica si se esta en la entrada del nivel 1
