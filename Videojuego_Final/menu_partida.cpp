@@ -14,15 +14,14 @@ Menu_partida::Menu_partida(QWidget *parent) :
     ui->setupUi(this);
 
     //Sonido al presionar los botones
-    boton = new QMediaPlayer(this);
-    boton->setMedia(QUrl("qrc:/Musica/Boton.mp3"));
-    boton->setVolume(100);
+    boton.setMedia(QUrl("qrc:/Musica/knifes_boton.mp3"));
+    boton.setVolume(100);
 
     /*Sistema de reproducción de gif en el menú:
     Para reproducir un gif primeramente se creara un nuevo QLabel al cual le asignaremos las dimensiones de la ventana, posterior a eso
     crearemos una variable QMovie con el gif a reproducir y también le asignaremos el tamaño de la pantalla, luego con
     la función setMovie le asignaremos al Label que contenga el gif y se reproduzca.*/
-    QLabel *w = new QLabel(this);
+    w = new QLabel(this);
     w->resize(1000,650);//Tamaño de la ventana.
     movie = new QMovie(this);
     movie->setFileName(":/Imagenes/GIF2.gif");
@@ -44,8 +43,8 @@ Menu_partida::Menu_partida(QWidget *parent) :
     /*Creacion del cursor del videojuego: con ayuda de QCursor podremos brindarle al cursor la imagen que deseamos.
     Primeramente crearemos un pixmap que contiene la imagen, luego se creara una variable QCursor que recibira la imagen
     y los puntos de eje del click, luego con setCursor establecemos ese cursor para toda la ventana.*/
-    QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
-    QCursor cursor = QCursor(Pixmap_Cursor,0,0);
+    Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
+    cursor = QCursor(Pixmap_Cursor,0,0);
     setCursor(cursor);
 
     ui->un_jugador->setChecked(true);/*Por defecto siempre estará señalada la opción de un jugador en caso de que el usuario no escoja.*/
@@ -79,8 +78,10 @@ Menu_partida::~Menu_partida()
 
 void Menu_partida::on_volver_clicked()
 {
-    boton->play(); //Sonido del botón
+    boton.play(); //Sonido del botón
 
+    delete w;
+    delete movie;
     /*Si por alguna razon al entrar al menu de nueva-cargar partida deseamos cerrar sesion y volver al menu principal simplemente
     se cerrara la ventana y se creara un nuevo widget y se abrira.*/
     Widget *w = new Widget;
@@ -90,9 +91,10 @@ void Menu_partida::on_volver_clicked()
 
 void Menu_partida::on_nueva_partida_clicked()
 {
-    boton->play();//Sonido del botón
-    musica->stop(); //Se detiene la musica del menú
-    delete musica; //Se libera la memoria
+    boton.play();//Sonido del botón
+    musica->stop();
+    delete w;
+    delete movie;
 
     /*Cuando le damos a una nueva partida anteriormente seleccionamos cuantas pesonas
      van a jugar, por defecto una, y al iniciar se toman esos datos para saber cuantos
@@ -110,5 +112,8 @@ void Menu_partida::on_cargar_partida_clicked()
 {
     /*Botón en el que se implementara la función que nos permitirá leer los datos guardados del
      jugador y así generar una partida exactamente igual a como se guardó.*/
-    boton->play();//Sonido del botón
+    boton.play();//Sonido del botón
+    musica->stop();
+    delete w;
+    delete movie;
 }

@@ -1,6 +1,9 @@
 #include "mapa_gameplay.h"
 #include "ui_mapa_gameplay.h"
 #include "niveles.h"
+#include "menu_partida.h"
+#include "jugador.h"
+#include "muro.h"
 
 extern int num_jugadores;
 extern QString user, pass;
@@ -15,28 +18,33 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    nombre = user;
+    pj2 = false; //Inicializacion de la variable del segundo jugador por defecto apagado
+
     //Esconde el cursor
-    QCursor cursor = QCursor(Qt::BlankCursor);
+    cursor = QCursor(Qt::BlankCursor);
     setCursor(cursor);
 
     //Musica de fondo
-    ambiente = new QMediaPlayer(this);
-    ambiente->setMedia(QUrl("qrc:/Musica/Ambiente.mp3"));
-    ambiente->setVolume(50);
-    ambiente->play();
+    lista.addMedia(QUrl("qrc:/Musica/Ambiente.mp3"));
+    lista.setCurrentIndex(0);
+    lista.setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+    ambiente.setPlaylist(&lista);
+    ambiente.setVolume(100);
+    ambiente.play();
 
     //Sonido de los botones
     botonSound = new QMediaPlayer(this);
     botonSound->setMedia(QUrl("qrc:/Musica/Boton.mp3"));
     botonSound->setVolume(100);
+      
+    //Timer para actualizar la escena y centrarla en el jugador
+    connect(&timer,SIGNAL(timeout()),this,SLOT(ActualizarEscena()));
+    timer.start();
 
-    //Este timer hace que la cancion de fondo de repita una vez ha terminado
-    QTimer * loop = new QTimer(this);
-    connect(loop, SIGNAL(timeout()), this, SLOT(iniciar()));
-    loop->start(100000);
-
-    nombre = user;
-    pj2 = false; //Inicializacion de la variable del segundo jugador por defecto apagado
+    //Verificar la muerte del jugador
+    connect(&dead,SIGNAL(timeout()),this,SLOT(verificar_muerte()));
+    dead.start(100);
 
     //Aqui se añade la escena; la escena es bastante grande ya que el mapa del juego no es una pantalla fija
     //sino que el jugador se mueve por todo el mapa y la escena se actualiza con un timer y se centra en
@@ -76,30 +84,30 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     la partida, pj2 en true el programa sabe que debe habilitar las teclas de movimiento para
     un segundo jugador*/
 
-    if (num_jugadores == 1){ //Solo un jugador
-        jugador = new Jugador(this);
-        jugador->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
-        jugador->setPos(770,2155);
-        escena->addItem(jugador);
-        jugador->crear_hitBox();
-    }
-    else if (num_jugadores == 2){ //Dos jugadores
+    if (num_jugadores == 2){ //Dos jugadores
         pj2 = true; //Se activa la presencia de un jugador dos en mapa
 
         //Se crean los dos objetos Jugador en el mapa que van
         //a ser los jugadores 1 y 2
 
         jugador = new Jugador(this);
-        jugador->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
+        jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
         jugador->setPos(770,2155);
         escena->addItem(jugador);
-        jugador->crear_hitBox();//Se crea el hitbox del primer jugador
+        jugador->vida.setPos(jugador->x(),jugador->y());
 
-        jugador2 = new Jugador(jugador);
-        jugador2->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER2.png");//Asignamos el determinado sprite al jugador
+        jugador2 = new Jugador(this);
+        jugador2->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER2.png");//Asignamos el determinado sprite al jugador
         jugador2->setPos(820,2155);
         escena->addItem(jugador2);
-        jugador2->crear_hitBox();//Se crea el hitbox del segundo jugador
+        jugador2->vida.setPos(jugador2->x(),jugador2->y());
+    }
+    else{
+        jugador = new Jugador(this);
+        jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
+        jugador->setPos(770,2155);
+        escena->addItem(jugador);
+        jugador->vida.setPos(jugador->x(),jugador->y());
     }
 
     //Timer para actualizar la escena y centrarla en el jugador
@@ -128,6 +136,14 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     connect(boton,SIGNAL(clicked()),this,SLOT(Nivel()));//Se ejecutara la funcion Nivel() si se presiona el boton
 
     QTimer::singleShot(5000,this,SLOT(Controles()));
+    //Añadir barras de vida
+    if (num_jugadores == 2){
+        escena->addItem(&jugador->vida);
+        escena->addItem(&jugador2->vida);
+    }
+    else{
+        escena->addItem(&jugador->vida);
+    }
 }
 
 Mapa_GamePlay::~Mapa_GamePlay()
@@ -162,25 +178,22 @@ void Mapa_GamePlay::keyPressEvent(QKeyEvent *event)
 
     //Estas son las teclas de movimiento para el jugador 2.
     //Solo estan habilitadas (o habilitadas) si asi lo quiere el usuario.
-    else if(event->key()==Qt::Key_J){
-        if(pj2)
+    if (pj2){
+        if(event->key()==Qt::Key_J){
             jugador2->setBanLeft();
-    }
-    else if(event->key()==Qt::Key_L){
-        if(pj2)
-            jugador2->setBanRight();
-    }
-    else if(event->key()==Qt::Key_I){
-        if(pj2)
+        }
+        else if(event->key()==Qt::Key_L){
+             jugador2->setBanRight();
+        }
+        else if(event->key()==Qt::Key_I){
             jugador2->setBanUp();
-    }
-    else if(event->key()==Qt::Key_K){
-        if(pj2)
+        }
+        else if(event->key()==Qt::Key_K){
             jugador2->setBanDown();
-    }
-    else if (event->key() == Qt::Key_H){
-        if (pj2)
+        }
+        else if (event->key() == Qt::Key_H){
             jugador2->setBanAttack();
+        }
     }
 }
 
@@ -210,25 +223,22 @@ void Mapa_GamePlay::keyReleaseEvent(QKeyEvent *event)
 
     //Estas son las teclas de movimiento para el jugador 2.
     //Solo estan habilitadas (o habilitadas) si asi lo quiere el usuario.
-    else if(event->key()==Qt::Key_J){
-        if(pj2)
+    if (pj2){
+        if(event->key()==Qt::Key_J){
             jugador2->resetBanLeft();
-    }
-    else if(event->key()==Qt::Key_L){
-        if(pj2)
-            jugador2->resetBanRight();
-    }
-    else if(event->key()==Qt::Key_I){
-        if(pj2)
+        }
+        else if(event->key()==Qt::Key_L){
+             jugador2->resetBanRight();
+        }
+        else if(event->key()==Qt::Key_I){
             jugador2->resetBanUp();
-    }
-    else if(event->key()==Qt::Key_K){
-        if(pj2)
+        }
+        else if(event->key()==Qt::Key_K){
             jugador2->resetBanDown();
-    }
-    else if (event->key() == Qt::Key_H){
-        if (pj2)
+        }
+        else if (event->key() == Qt::Key_H){
             jugador2->resetBanAttack();
+        }
     }
 }
 
@@ -286,6 +296,42 @@ void Mapa_GamePlay::ingreso_batalla()
 
 void Mapa_GamePlay::ActualizarEscena()
 {
-    //Centrado de la grafica en el jugador
-    ui->graphicsView->centerOn(jugador);
+    if (num_jugadores == 2){
+        if (jugador->muerto){
+            ui->graphicsView->centerOn(jugador2);
+        }
+        else{
+            ui->graphicsView->centerOn(jugador);
+        }
+    }
+    else
+        ui->graphicsView->centerOn(jugador);
+}
+
+void Mapa_GamePlay::verificar_muerte()
+{
+    if (num_jugadores == 2){
+        if (jugador->muerto and jugador2->muerto){
+            QMessageBox msgBox;
+            msgBox.setText("You Are Dead.");
+            msgBox.exec();
+
+            Menu_partida * menu = new Menu_partida;
+            menu->show();
+            close();
+            delete this;
+        }
+    }
+    else{
+        if (jugador->muerto){
+            QMessageBox msgBox;
+            msgBox.setText("You Are Dead.");
+            msgBox.exec();
+
+            Menu_partida * menu = new Menu_partida;
+            menu->show();
+            close();
+            delete this;
+        }
+    }
 }

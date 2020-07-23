@@ -9,21 +9,21 @@ Registrarse::Registrarse(QWidget *parent) :
     ui->setupUi(this);
 
     //Sonido al presionar los botones
-    boton = new QMediaPlayer(this);
-    boton->setMedia(QUrl("qrc:/Musica/Boton.mp3"));
-    boton->setVolume(100);
+    boton.setMedia(QUrl("qrc:/Musica/knifes_boton.mp3"));
+    boton.setVolume(100);
 
     /*Sistema de reproducción de gif en el menú:
     Para reproducir un gif primeramente se creara un nuevo QLabel al cual le asignaremos las dimensiones de la ventana, posterior a eso
     crearemos una variable QMovie con el gif a reproducir y también le asignaremos el tamaño de la pantalla, luego con
     la función setMovie le asignaremos al Label que contenga el gif y se reproduzca.*/
-    QLabel *w = new QLabel(this);
+    w = new QLabel(this);
     w->resize(1000,650);//Tamaño de la ventana.
     movie = new QMovie(this);
     movie->setFileName(":/Imagenes/GIF.gif");
     movie->setScaledSize(QSize(1000,650));//Tamaño de la ventana.
     w->setMovie(movie);//Asignamos el gif al Label.
     movie->start();//Iniciamos la reproducción del gif.
+
     /*Ya que estamos creando el gif por código, siempre aparecerá en la ventana por encima de todos los elementos agregados en el .ui,
     para arreglar esto haremos uso de la función .raise(); que traerá al frente los elementos de la interfaz grafica
     (Labels, botones, lineEdits, etc). Primero traeremos al frente el label Interfaz que contiene la imagen diseñada para el menú,
@@ -40,8 +40,8 @@ Registrarse::Registrarse(QWidget *parent) :
     /*Creacion del cursor del videojuego: con ayuda de QCursor podremos brindarle al cursor la imagen que deseamos.
     Primeramente crearemos un pixmap que contiene la imagen, luego se creara una variable QCursor que recibira la imagen
     y los puntos de eje del click, luego con setCursor establecemos ese cursor para toda la ventana.*/
-    QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
-    QCursor cursor = QCursor(Pixmap_Cursor,0,0);
+    Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
+    cursor = QCursor(Pixmap_Cursor,0,0);
     setCursor(cursor);
 
     //Enfoca por defecto la casilla del usuario para hacer el login mas rapido
@@ -53,8 +53,8 @@ Registrarse::Registrarse(QWidget *parent) :
     e-mail, numero de telefono, etcétera. Luego de tener esta expresion el QRegExpValidator la toma
     y no deja que en esa casilla de nombre de usuario aparezcan esos caracteres aunque el usuario
     los presione*/
-    QRegExp rx("^[\\w'\\-,.][^_!¡' '?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\\]]{2,}$");
-    QRegExpValidator * val = new QRegExpValidator(rx, this);
+    rx = QRegExp("^[\\w'\\-,.][^_!¡' '?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\\]]{2,}$");
+    val = new QRegExpValidator(rx, this);
     ui->usuario->setValidator(val);
 
     /*Se inicializa la casilla de contraseña en forma de Password para que sea imposible saber
@@ -74,7 +74,7 @@ Registrarse::~Registrarse()
 void Registrarse::on_registrarse_clicked()
 {
 
-    boton->play(); //Sonido del botón
+    boton.play(); //Sonido del botón
 
     /*En esta función el usuario llena unas casillas con sus datos para registrarlo
      y paso seguido se toman esos datos y se llevan a la base de datos de los jugadores
@@ -105,7 +105,11 @@ void Registrarse::on_registrarse_clicked()
 
 void Registrarse::on_volver_clicked()
 {
-    boton->play(); //Sonido del botón
+    boton.play(); //Sonido del botón
+
+    delete movie;
+    delete w;
+    delete val;
     /*Si deseamos registrarnos en el sistema, al presionar el botón se procederá a cerrar la ventana actual y se  creara una
     nueva ventana de registro y se abrirá.*/
     Widget *w = new Widget;
@@ -119,11 +123,9 @@ void Registrarse::on_mostrar_stateChanged(int arg1)
      la casilla está desmarcada la contraseña va a estar oculta, la fuente se
      cabia por las mismas razones qe se explicó en el constructor de la clase*/
     if (arg1){
-        ui->clave->setFont(QFont("Red Right Hand", 14, 1));
         ui->clave->setEchoMode(QLineEdit::Normal);
     }
     else{
-        ui->clave->setFont(QFont("Arial", 10, 1));
         ui->clave->setEchoMode(QLineEdit::Password);
     }
 }

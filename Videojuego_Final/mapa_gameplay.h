@@ -11,6 +11,8 @@
 #include <QLabel>
 #include "jugador.h"
 #include "muro.h"
+#include <QMediaPlaylist>
+#include <QMessageBox>
 
 namespace Ui {
 class Mapa_GamePlay;
@@ -26,16 +28,18 @@ public:
 
     //Funciones detectoras de del teclado
 
-    void keyPressEvent(QKeyEvent * event);
+    void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
 
 private: //Atributos de la clase
     Ui::Mapa_GamePlay *ui;
-    QMediaPlayer * ambiente;
     QMediaPlayer * botonSound;
-    QTimer *timer;
-    QString nombre;
+    QMediaPlaylist lista;
+    QMediaPlayer ambiente;
+    QCursor cursor;
     QGraphicsScene *escena;
+    QTimer timer, dead;
+    QString nombre;
     QGraphicsPixmapItem *mapa;
     QGraphicsPixmapItem *objetos;  
     QLabel *aviso;
@@ -49,7 +53,7 @@ private: //Atributos de la clase
     void Nivel();
     void ingreso_batalla();
     void ActualizarEscena(); //Centra constantemente la grafica en el jugador
-    void iniciar() {ambiente->play();}
+    void verificar_muerte();
 };
 
 #endif // MAPA_GAMEPLAY_H

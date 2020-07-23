@@ -5,8 +5,7 @@
 #include <QGraphicsPixmapItem>
 #include <QTimer>
 #include <QPainter>
-#include "muro.h"
-#include "hitbox.h"
+#include <cmath>
 
 class Jugador : public QObject, public QGraphicsPixmapItem
 {
@@ -15,26 +14,31 @@ public:
     explicit Jugador(QObject *parent = nullptr);
 
     // Estas funciones son las banderas de movimiento
-    inline bool setBanLeft() {return banLeft = true;}
-    inline bool setBanRight() {return banRight = true;}
-    inline bool setBanUp() {return banUp= true;}
-    inline bool setBanDown() {return banDown = true;}
-    inline bool resetBanLeft() {fila=168; return banLeft = false;}
-    inline bool resetBanRight() {fila=252; return banRight = false;}
-    inline bool resetBanUp() {fila=84; return banUp = false;}
-    inline bool resetBanDown() {fila=0; return banDown = false;}
-    inline bool setBanAttack() {return banAttack = true;}
-    inline bool resetBanAttack() {return banAttack = false;}
+    inline void setBanLeft() {banLeft = true;}
+    inline void setBanRight() {banRight = true;}
+    inline void setBanUp() {banUp= true;}
+    inline void setBanDown() {banDown = true;}
+    inline void setBanAttack() {banAttack = true;}
 
-    HitBox *box;
-    void crear_hitBox(); //Crea el HiteBox del jugador que sigue sus pies para las colisiones
+    inline void resetBanLeft() {banLeft = false;}
+    inline void resetBanRight() {banRight = false;}
+    inline void resetBanUp() {banUp = false;}
+    inline void resetBanDown() {banDown = false;}
+    inline void resetBanAttack() {banAttack = false;}
+
+    void reset_golpe();
+    bool golpe_izq = false;
+    bool golpe_der = false;
+    bool golpe_arr = false;
+    bool golpe_aba = false;
+
+    QGraphicsRectItem box, vida;
+    int health;
+    bool muerto;
 
     //Los sig. metodos y atributos son los necesarios para crear la animacion de
     //movimiento del jugador
-
-    QTimer *timer;
-    QPixmap *pixmap;
-    float columnas,fila,ancho,alto;
+    QPixmap pixmap;
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
@@ -50,6 +54,8 @@ public slots:
     void moveUp();
     void moveDown();
     void Attack();
+    void pos();
+    void spawn();
 
 private:
     bool banLeft;
@@ -57,7 +63,10 @@ private:
     bool banUp;
     bool banDown;
     bool banAttack;
-    short int ultimoEstado;
+    short int ultimoEstado, cont = 0;
+    QPoint posAnterior;
+    QTimer timer, timer1, enemigos;
+    float columnas,fila,ancho,alto;
 };
 
 #endif // JUGADOR_H
