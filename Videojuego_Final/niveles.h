@@ -31,10 +31,10 @@ private:
     Ui::Niveles *ui;
     QGraphicsScene *escena;
     QGraphicsPixmapItem *fondo;
-    QMediaPlayer * musicaNivel;
+    QMediaPlaylist Lista;
+    QMediaPlayer musicaNivel;
     MenuPausa *opciones;
     QTimer timer;
-    Boss *boss;
     bool pj2;
 private slots:
     void Controles();

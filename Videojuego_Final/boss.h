@@ -17,9 +17,9 @@ public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-    QTimer *timer;
     QPixmap *pixmap;
     QGraphicsRectItem vida;
+    int vida_real;
     int health;
     bool Boss_Derrotado=true;
 signals:
@@ -27,8 +27,9 @@ private slots:
     void ataque_jugador();
     void Actualizacion();
 private:
-    QTimer at_jugador;
+    QTimer at_jugador, timer;
     float columnas,fila,ancho,alto,limiteSprite;
+    int tipoBoss;
 };
 
 #endif // BOSS_H

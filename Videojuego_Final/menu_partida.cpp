@@ -103,7 +103,7 @@ void Menu_partida::on_nueva_partida_clicked()
         num_jugadores = 2;
     Mapa_GamePlay *mapa = new Mapa_GamePlay();
     mapa->show();
-    close();
+    delete this;
 }
 
 void Menu_partida::on_cargar_partida_clicked()

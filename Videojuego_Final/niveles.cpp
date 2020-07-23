@@ -5,6 +5,7 @@
 extern int nivel;
 extern int num_jugadores;
 JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
+Boss *boss;
 
 Niveles::Niveles(QWidget *parent) :
     QWidget(parent),
@@ -12,19 +13,20 @@ Niveles::Niveles(QWidget *parent) :
 {
     ui->setupUi(this);
     pj2 = false;//Inicializacion de la variable del segundo jugador por defecto apagado
+
     //Esconde el cursor
     QCursor cursor = QCursor(Qt::BlankCursor);
     setCursor(cursor); 
-    QMediaPlaylist *Lista = new QMediaPlaylist;
-    if(nivel==0)Lista->addMedia(QUrl("qrc:/Musica/MUSICA0.mp3"));
-    else if(nivel==1)Lista->addMedia(QUrl("qrc:/Musica/MUSICA1.mp3"));
-    else if(nivel==2)Lista->addMedia(QUrl("qrc:/Musica/MUSICA3.mp3"));
-    else if(nivel==3)Lista->addMedia(QUrl("qrc:/Musica/MUSICA2.mp3"));
-    Lista->setPlaybackMode(QMediaPlaylist::Loop);
-    musicaNivel = new QMediaPlayer;
-    musicaNivel->setPlaylist(Lista);
-    musicaNivel->setVolume(60);
-    musicaNivel->play();
+
+    //Musica de los niveles
+    if(nivel==0)Lista.addMedia(QUrl("qrc:/Musica/MUSICA0.mp3"));
+    else if(nivel==1)Lista.addMedia(QUrl("qrc:/Musica/MUSICA1.mp3"));
+    else if(nivel==2)Lista.addMedia(QUrl("qrc:/Musica/MUSICA3.mp3"));
+    else if(nivel==3)Lista.addMedia(QUrl("qrc:/Musica/MUSICA2.mp3"));
+    Lista.setPlaybackMode(QMediaPlaylist::Loop);
+    musicaNivel.setPlaylist(&Lista);
+    musicaNivel.setVolume(60);
+    musicaNivel.play();
 
     //Añadido de la escena y grafica del nivel
     escena = new QGraphicsScene(this);
@@ -32,10 +34,12 @@ Niveles::Niveles(QWidget *parent) :
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setScene(escena);
+
     //Pixmap fondo que sera modificado dependiendo a que nivel se esta entrando
     fondo = new QGraphicsPixmapItem;
     fondo->setPos(0,0);
 
+    //Añadir a los jugadores
     if (num_jugadores == 1){ //Solo un jugador
         jugadorBatalla = new JugadorBatalla(this);
         jugadorBatalla->pixmap = new QPixmap(":/Imagenes/SPRITEBATALLA.png");//Asignamos el determinado sprite al jugador
@@ -48,14 +52,18 @@ Niveles::Niveles(QWidget *parent) :
         jugadorBatalla2 = new JugadorBatalla(jugadorBatalla);
         jugadorBatalla2->pixmap = new QPixmap(":/Imagenes/SPRITEBATALLA2.png");//Asignamos el determinado sprite al jugador
     }
+
+    //Por defecto la ayuda esta desativada
     ui->Controles->hide();
+
     /*Funcion nivel setup que contendrá los distintos condicionales que crearan y modificaran los elementos que
     seran añadidos a la escena dependiendo del nivel en que se encuentre.*/
     NivelSetup();
+
     /*El slot Level_Events se encargará de periodicamente revisar los distintos eventos que puedan ocurrir durante
     la batalla, siendo uno de estos si el Boss ha sido derrotado.*/
     connect(&timer, SIGNAL(timeout()), this, SLOT(Level_Events()));
-    timer.start(15);
+    timer.start(100);
 }
 
 Niveles::~Niveles()
@@ -76,8 +84,8 @@ void Niveles::NivelSetup()
             jugadorBatalla2->setX0(65);
             jugadorBatalla2->setY0(455);
         }
-        ui->Controles->show();
-        QTimer::singleShot(5000,this,SLOT(Controles()));
+        ui->Controles->show(); //Se muestra la ayuda
+        QTimer::singleShot(500,this,SLOT(Controles()));
     }
     else if(nivel==1){
         //Si el nivel==1 se prepararan en la escena los elementos del primer nivel
@@ -221,7 +229,7 @@ void Niveles::Level_Events()
     y se eliminara la ventana del nivel.*/
     if(boss->Boss_Derrotado){
         boss->Boss_Derrotado=false;
-        musicaNivel->stop();
+        musicaNivel.stop();
         Mapa_GamePlay *mapa=new Mapa_GamePlay;
         mapa->show();
         close();

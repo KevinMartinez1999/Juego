@@ -25,9 +25,12 @@ private slots:
 
     void on_Cerrar_Sesion_clicked();
 
+    void on_Reanudar_clicked();
+
 private:
     Ui::MenuPausa *ui;
     QMovie *movie;
+    QLabel *w;
 };
 
 #endif // MENUPAUSA_H

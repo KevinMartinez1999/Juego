@@ -31,11 +31,11 @@ public:
     void reset_golpe();
     bool golpe_izq = false;
     bool golpe_der = false;
+    bool banAttack;
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
-    QTimer *timer;
     QPixmap *pixmap;
     QGraphicsRectItem vida;
     QGraphicsEllipseItem *fuego;
@@ -57,12 +57,11 @@ private:
     bool TiempoHechizo;
     bool banLeft;
     bool banRight;
-    bool banAttack;
     bool banSpell;
     short int ultimoEstado;
     QMediaPlayer *Hechizo;
     QPoint posAnterior;
-    QTimer timer1;
+    QTimer mov, timer;
 };
 
 #endif // JUGADORBATALLA_H

@@ -1,53 +1,59 @@
 #include "boss.h"
 #include "niveles.h"
+
 extern int num_jugadores;
 extern JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
 
-Boss::Boss(QObject *parent,int tipo) : QObject(parent)
+Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
 {
+    //Inicializacion de las variables del boss
     fila = 0;
     columnas = 0;
-    health=160;
+    health = 160;
     Boss_Derrotado=false;
-    if(tipo==0){
+    vida_real = 0;
+
+    if(tipoBoss==0){
         ancho = 256;
         alto  = 220;
         limiteSprite=1536;
         pixmap = new QPixmap(":/Imagenes/BOSS4.png");
         setPos(890,450);
     }
-    else if(tipo==1){
+    else if(tipoBoss==1){
         ancho = 192;
         alto  = 224;
         limiteSprite=1344;
         pixmap = new QPixmap(":/Imagenes/BOSS2.png");
         setPos(900,490);
     }
-    else if(tipo==2){
+    else if(tipoBoss==2){
         ancho = 165;
         alto  = 201;
         limiteSprite=825;
         pixmap = new QPixmap(":/Imagenes/BOSS3.png");
         setPos(875,363);
     }
-    else if(tipo==3){
+    else if(tipoBoss==3){
         ancho = 320;
         alto  = 288;
         limiteSprite=1600;
         pixmap = new QPixmap(":/Imagenes/BOSS1.png");
         setPos(875,450);
     }
+
+    //Se añade la barra de vida
     vida.setRect(0,0,health,40);
     vida.setTransformOriginPoint(health/2,40/2);
     vida.setRotation(180);
     vida.setBrush(Qt::red);
 
-    timer = new QTimer(this);
-    connect(timer,SIGNAL(timeout()),this,SLOT(Actualizacion()));
-    timer->start(100);
+    //Timers
+    connect(&timer,SIGNAL(timeout()),this,SLOT(Actualizacion()));
+    timer.start(100);
 
     connect(&at_jugador, SIGNAL(timeout()), this, SLOT(ataque_jugador()));
-    at_jugador.start(200);
+    at_jugador.start(450);
 
 }
 
@@ -83,18 +89,45 @@ void Boss::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 void Boss::ataque_jugador()
 {
     if (health <= 1){
-        delete this;
-        Boss_Derrotado=true;
+        Boss_Derrotado = true;
     }
-    if (abs(this->x()-jugadorBatalla->x()) < 184 and abs(this->y()-jugadorBatalla->y()) < 184){
+    if (abs(this->x()-jugadorBatalla->x()) < 184 and jugadorBatalla->banAttack){
         if (verificar_golpe(jugadorBatalla)){
-            health -= 2;
+            vida_real++;
+            switch (tipoBoss) {
+            case 0:
+                if (vida_real == 1){
+                    health -= 2;
+                    vida_real = 0;
+                }
+                break;
+            case 1:
+                if (vida_real == 2){
+                    health -= 2;
+                    vida_real = 0;
+                }
+                break;
+            case 2:
+                if (vida_real == 3){
+                    health -= 2;
+                    vida_real = 0;
+                }
+                break;
+            case 3:
+                if (vida_real == 4){
+                    health -= 2;
+                    vida_real = 0;
+                }
+                break;
+            default:
+                break;
+            }
             vida.setRect(0,0,health,40);
         }
     }
 
     if (num_jugadores == 2){ //En caso de tener dos jugadores
-        if (abs(this->x()-jugadorBatalla2->x()) < 184 and abs(this->y()-jugadorBatalla2->y()) < 184){
+        if (abs(this->x()-jugadorBatalla2->x()) < 184 and jugadorBatalla2->banAttack){
             if (verificar_golpe(jugadorBatalla2)){
                 health -= 2;
                 vida.setRect(0,0,health,40);

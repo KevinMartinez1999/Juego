@@ -247,7 +247,6 @@ void Mapa_GamePlay::Nivel()
     //Se abre la ventana determinada para las batallas contra Bosses
     Niveles * batalla = new Niveles;
     batalla->show();
-    close();
     delete this;
 }
 

@@ -8,6 +8,14 @@
   <property name="enabled">
    <bool>true</bool>
   </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>440</width>
+    <height>440</height>
+   </rect>
+  </property>
   <property name="minimumSize">
    <size>
     <width>440</width>
@@ -117,38 +125,5 @@ border-image: url(:/Imagenes/BOTONGRISPUSH.png);
  <resources>
   <include location="Imagenes.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>Reanudar</sender>
-   <signal>clicked()</signal>
-   <receiver>Reanudar</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>201</x>
-     <y>37</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>201</x>
-     <y>37</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>Reanudar</sender>
-   <signal>clicked()</signal>
-   <receiver>MenuPausa</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>259</x>
-     <y>38</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>364</x>
-     <y>0</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

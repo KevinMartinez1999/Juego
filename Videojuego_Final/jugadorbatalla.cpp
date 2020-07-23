@@ -1,12 +1,22 @@
 #include "jugadorbatalla.h"
-#include <QDebug>
+#include "niveles.h"
+#include "bolafuego.h"
+
 #define dt 0.03
 
 JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
 {
+    //Variables fisicas
     vx=5;
     xFinal=x0;
 
+    //Variables para la animacion del personaje
+    columnas = 0;
+    fila = 0;
+    ancho = 168;
+    alto  = 168;
+
+    //Inicializacion de banderas de movimiento
     banLeft = false;
     banRight = false;
     banAttack = false;
@@ -15,32 +25,26 @@ JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
     ultimoEstado = 1;
     posAnterior = QPoint(0,0);
 
+    //Vida del jugador
     health=120;
 
     //Timers para los slots de movimiento y fisicas del jugador
-    QTimer *timer1 = new QTimer;
-    connect(timer1, SIGNAL(timeout()), this, SLOT(moveLeft()));
-    connect(timer1, SIGNAL(timeout()), this, SLOT(moveRight()));
-    connect(timer1, SIGNAL(timeout()), this, SLOT(setX()));
-    connect(timer1, SIGNAL(timeout()), this, SLOT(Attack()));
-    connect(timer1, SIGNAL(timeout()), this, SLOT(Spell()));
-    connect(timer1, SIGNAL(timeout()), this, SLOT(pos()));
-    timer1->start(30);
+    connect(&mov, SIGNAL(timeout()), this, SLOT(moveLeft()));
+    connect(&mov, SIGNAL(timeout()), this, SLOT(moveRight()));
+    connect(&mov, SIGNAL(timeout()), this, SLOT(setX()));
+    connect(&mov, SIGNAL(timeout()), this, SLOT(Attack()));
+    connect(&mov, SIGNAL(timeout()), this, SLOT(Spell()));
+    connect(&mov, SIGNAL(timeout()), this, SLOT(pos()));
+    mov.start(30);
 
-    //Timer para las actualización y dibujo del sprite.
-    timer = new QTimer(this);
-    columnas = 0;
-    fila = 0;
-    //Ancho y alto del sprite del jugador
-    ancho = 168;
-    alto  = 168;
     /*Este timer nos permitira la constante actualizacion de la imagen de nuestro jugador*/
-    connect(timer,SIGNAL(timeout()),this,SLOT(Actualizacion()));
-    timer->start(150);
+    connect(&timer,SIGNAL(timeout()),this,SLOT(Actualizacion()));
+    timer.start(150);
     //Barra de vida del jugador
     vida.setRect(0,0,health,40);
     vida.setBrush(Qt::red);
 
+    //Sonido del lanzamiento de la bola de fuego
     Hechizo = new QMediaPlayer(this);
     Hechizo->setMedia(QUrl("qrc:/Musica/FUEGO.wav"));
     Hechizo->setVolume(100);
@@ -86,9 +90,12 @@ void JugadorBatalla::Actualizacion()
     accion diferente hecha por el jugador, y las columnas son frames que permiten que esa accion se vea con movimiento, entonces mediante
     un timer estaremos constantemente interactuando en las columnas de determinada fila para asi ir generando una animacion fluida y
     continua.*/
-    if(columnas >= 504 or(fila == 672 and columnas >= 336)or(fila == 840 and columnas >= 336)or(fila>=1008 and columnas>=504))
-    {
+    if ((fila == 672 or fila == 840) and columnas >= 336){
         columnas = 0;
+    }
+    else if(columnas >= 672)
+    {
+        columnas = 168;
     }
     else{
         columnas += 168;
@@ -148,26 +155,37 @@ void JugadorBatalla::Attack()
 void JugadorBatalla::Spell()
 {
     if(TiempoHechizo){
-    if(banSpell and !banAttack){
-        if (fila != 1008 and fila != 1176)
-            columnas = 0;
-        switch (ultimoEstado) {
-        case 1:
-            fila = 1008;
-            break;
-        case 2:
-            golpe_der = true;
-            fila = 1176;
-            break;
-        default:
-            break;
+        if(banSpell and !banAttack){
+            if (fila != 1008 and fila != 1176)
+                columnas = 0;
+            switch (ultimoEstado) {
+            case 1:
+                fila = 1008;
+                break;
+            case 2:
+                fila = 1176;
+                break;
+            default:
+                break;
+            }
+            if (columnas==672){
+                Hechizo->play();
+
+                //Añadir bola de fuego
+                bolaFuego *bola = new bolaFuego(this, ultimoEstado);
+                bola->setX0(x());
+                bola->setY0(y());
+                bola->setPos(bola->getX0(),bola->getY0());
+                scene()->addItem(bola);
+
+                TiempoHechizo=false;
+                QTimer::singleShot(5000,this,SLOT(tiempo()));
+                if (ultimoEstado == 1)
+                    fila = 0;
+                else
+                    fila = 168;
+            }
         }
-        if (columnas==504){
-            Hechizo->play();
-            TiempoHechizo=false;
-            QTimer::singleShot(5000,this,SLOT(tiempo()));
-        }
-    }
     }
 }
 

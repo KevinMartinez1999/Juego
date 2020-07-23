@@ -51,5 +51,6 @@
         <file>Musica/MUSICA3.mp3</file>
         <file>Imagenes/TECLAS.png</file>
         <file>Imagenes/TECLASMAPA.png</file>
+        <file>Imagenes/BOLAFUEGO.png</file>
     </qresource>
 </RCC>

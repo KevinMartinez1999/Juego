@@ -12,7 +12,7 @@ MenuPausa::MenuPausa(QWidget *parent) :
     QCursor cursor = QCursor(Pixmap_Cursor,0,0);
     setCursor(cursor);
 
-    QLabel *w = new QLabel(this);
+    w = new QLabel(this);
     w->resize(440,440);//Tamaño de la ventana.
     movie = new QMovie(this);
     movie->setFileName(":/Imagenes/GIF4.gif");
@@ -45,4 +45,9 @@ void MenuPausa::on_Controles_clicked()
 void MenuPausa::on_Cerrar_Sesion_clicked()
 {
 
+}
+
+void MenuPausa::on_Reanudar_clicked()
+{
+    delete this;
 }
