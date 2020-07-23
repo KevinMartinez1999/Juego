@@ -7,6 +7,10 @@
 #include <QGraphicsPixmapItem>
 #include <QTimer>
 #include <QMediaPlayer>
+#include <QPushButton>
+#include <QLabel>
+#include "jugador.h"
+#include "muro.h"
 #include <QMediaPlaylist>
 #include <QMessageBox>
 
@@ -29,6 +33,7 @@ public:
 
 private: //Atributos de la clase
     Ui::Mapa_GamePlay *ui;
+    QMediaPlayer * botonSound;
     QMediaPlaylist lista;
     QMediaPlayer ambiente;
     QCursor cursor;
@@ -36,10 +41,17 @@ private: //Atributos de la clase
     QTimer timer, dead;
     QString nombre;
     QGraphicsPixmapItem *mapa;
-    QGraphicsPixmapItem *objetos;
+    QGraphicsPixmapItem *objetos;  
+    QLabel *aviso;
+    QPushButton *boton;
+    int PosX,PosY,PosX2,PosY2;
+    int Xpos,YPos;
     bool pj2;
 
  private slots:
+    void Controles();
+    void Nivel();
+    void ingreso_batalla();
     void ActualizarEscena(); //Centra constantemente la grafica en el jugador
     void verificar_muerte();
 };

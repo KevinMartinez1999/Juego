@@ -10,6 +10,18 @@
     <height>582</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>782</width>
+    <height>582</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>782</width>
+    <height>582</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>HellBurn</string>
   </property>
@@ -17,11 +29,70 @@
    <iconset resource="Imagenes.qrc">
     <normaloff>:/Imagenes/ICONO.png</normaloff>:/Imagenes/ICONO.png</iconset>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QGraphicsView" name="graphicsView"/>
-   </item>
-  </layout>
+  <property name="styleSheet">
+   <string notr="true">QPushButton{
+color: rgb(255, 255, 255);
+border-image: url(:/Imagenes/BOTONGRIS.png);
+}
+QPushButton:hover
+{
+border-image: url(:/Imagenes/BOTONGRISHOVER.png);
+}
+QPushButtonr:pressed
+{
+border-image: url(:/Imagenes/BOTONGRISPUSH.png);
+}
+
+</string>
+  </property>
+  <widget class="QGraphicsView" name="graphicsView">
+   <property name="geometry">
+    <rect>
+     <x>9</x>
+     <y>9</y>
+     <width>764</width>
+     <height>564</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>782</width>
+     <height>582</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="Imagenes.qrc">:/Imagenes/MARCO.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Controles">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>110</y>
+     <width>381</width>
+     <height>351</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="Imagenes.qrc">:/Imagenes/TECLASMAPA.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="Imagenes.qrc"/>

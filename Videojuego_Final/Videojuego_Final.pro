@@ -3,7 +3,7 @@ QT       += core gui multimedia
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
-
+CONFIG += resources_big
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -16,27 +16,39 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    bolafuego.cpp \
+    boss.cpp \
     enemigo.cpp \
     jugador.cpp \
+    jugadorbatalla.cpp \
     main.cpp \
     mapa_gameplay.cpp \
     menu_partida.cpp \
+    menupausa.cpp \
     muro.cpp \
+    niveles.cpp \
     registrarse.cpp \
     widget.cpp
 
 HEADERS += \
+    bolafuego.h \
+    boss.h \
     enemigo.h \
     jugador.h \
+    jugadorbatalla.h \
     mapa_gameplay.h \
     menu_partida.h \
+    menupausa.h \
     muro.h \
+    niveles.h \
     registrarse.h \
     widget.h
 
 FORMS += \
     mapa_gameplay.ui \
     menu_partida.ui \
+    menupausa.ui \
+    niveles.ui \
     registrarse.ui \
     widget.ui
 

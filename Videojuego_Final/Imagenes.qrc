@@ -25,6 +25,33 @@
         <file>Imagenes/GIF2.gif</file>
         <file>Musica/Ambiente.mp3</file>
         <file>Musica/Boton.mp3</file>
+        <file>Imagenes/LETRERO.png</file>
+        <file>Imagenes/MARCO.png</file>
+        <file>Imagenes/NIVEL1.png</file>
+        <file>Imagenes/NIVEL2.png</file>
+        <file>Imagenes/TUTORIAL.png</file>
+        <file>Imagenes/NIVEL3.png</file>
+        <file>Imagenes/BOSS1.png</file>
+        <file>Imagenes/SPRITEBATALLA.png</file>
+        <file>Imagenes/SPRITEBATALLA2.png</file>
+        <file>Imagenes/BOSS2.png</file>
+        <file>Imagenes/BOSS3.png</file>
+        <file>Imagenes/BOSS4.png</file>
+        <file>Imagenes/INTERFAZBOSS1.png</file>
+        <file>Imagenes/INTERFAZBOSS2.png</file>
+        <file>Imagenes/MENUPAUSA.png</file>
+        <file>Imagenes/OPCIONES.png</file>
+        <file>Imagenes/OPCIONES_HOVER.png</file>
+        <file>Imagenes/OPCIONES_PUSH.png</file>
+        <file>Imagenes/GIF4.gif</file>
+        <file>Musica/FUEGO.wav</file>
+        <file>Musica/MUSICA0.mp3</file>
+        <file>Musica/MUSICA1.mp3</file>
+        <file>Musica/MUSICA2.mp3</file>
+        <file>Musica/MUSICA3.mp3</file>
+        <file>Imagenes/TECLAS.png</file>
+        <file>Imagenes/TECLASMAPA.png</file>
+        <file>Imagenes/BOLAFUEGO.png</file>
         <file>Musica/knifes_boton.mp3</file>
         <file>Imagenes/ENEMIGOS.png</file>
         <file>Imagenes/ENEMIGOS2.png</file>

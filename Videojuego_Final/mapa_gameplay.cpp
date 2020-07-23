@@ -1,5 +1,6 @@
 #include "mapa_gameplay.h"
 #include "ui_mapa_gameplay.h"
+#include "niveles.h"
 #include "menu_partida.h"
 #include "jugador.h"
 #include "muro.h"
@@ -9,6 +10,7 @@ extern QString user, pass;
 
 Muro *muro;
 Jugador *jugador, *jugador2;
+int nivel;
 
 Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     QWidget(parent),
@@ -31,6 +33,11 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     ambiente.setVolume(100);
     ambiente.play();
 
+    //Sonido de los botones
+    botonSound = new QMediaPlayer(this);
+    botonSound->setMedia(QUrl("qrc:/Musica/Boton.mp3"));
+    botonSound->setVolume(100);
+      
     //Timer para actualizar la escena y centrarla en el jugador
     connect(&timer,SIGNAL(timeout()),this,SLOT(ActualizarEscena()));
     timer.start();
@@ -103,12 +110,32 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
         jugador->vida.setPos(jugador->x(),jugador->y());
     }
 
+    //Timer para actualizar la escena y centrarla en el jugador
+    timer = new QTimer(this);
+    connect(timer,SIGNAL(timeout()),this,SLOT(ActualizarEscena()));
+    connect(timer,SIGNAL(timeout()),this,SLOT(ingreso_batalla()));
+    timer->start();
+
     //Tercera capa del mapa
     objetos = new QGraphicsPixmapItem;
     objetos->setPos(0,0);
     objetos->setPixmap(QPixmap(":/Imagenes/OBJETOS.png"));
     escena->addItem(objetos);
 
+    //Aviso decorativo que se mostrara al momento de estar en la entrada de una batalla contra un Boss
+    aviso = new QLabel(this);
+    aviso->setPixmap(QPixmap(":/Imagenes/LETRERO.png"));
+    aviso->setScaledContents(true); //Ajusta la imagen al label
+    aviso->setGeometry(290,270,200,110);
+    aviso->hide();//Por defecto se encontrara escondido para simplemente mostrarse cuando se este en una entrada
+
+    //Boton que permitira al usuario decidir si desea entrar a la batalla contra el Boss o no
+    boton = new QPushButton("Entrar",this);
+    boton->setGeometry(326,326,130,35);
+    boton->hide();//Por defecto se encontrara escondido para simplemente mostrarse cuando se este en una entrada
+    connect(boton,SIGNAL(clicked()),this,SLOT(Nivel()));//Se ejecutara la funcion Nivel() si se presiona el boton
+
+    QTimer::singleShot(5000,this,SLOT(Controles()));
     //Añadir barras de vida
     if (num_jugadores == 2){
         escena->addItem(&jugador->vida);
@@ -215,8 +242,57 @@ void Mapa_GamePlay::keyReleaseEvent(QKeyEvent *event)
     }
 }
 
-//Esta funcion actualiza el mapa constantemente con un timer para
-//centrarlo en el jugador y dar la sensasion de que la camara sigue al personaje.
+void Mapa_GamePlay::Controles()
+{
+    ui->Controles->hide();
+}
+void Mapa_GamePlay::Nivel()
+{
+    ambiente->stop();
+    botonSound->play();
+    if(Xpos>=325 && Xpos<=405 && YPos>=2193 && YPos<=2215) nivel=0;//Verifica si se esta en la entrada del tutorial
+    else if(Xpos>=755 && Xpos<=815 && YPos<=1465 && YPos>=1405) nivel=1;//Verifica si se esta en la entrada del nivel 1
+    else if(Xpos>=1565 && Xpos<=1690 && YPos<=1825 && YPos>=1760) nivel=2;//Verifica si se esta en la entrada del nivel 2
+    else if(Xpos>=2075 && Xpos<=2200 && YPos<=645 && YPos>=585) nivel=3;//Verifica si se esta en la entrada del nivel 3
+    //Se abre la ventana determinada para las batallas contra Bosses
+    Niveles * batalla = new Niveles;
+    batalla->show();
+    delete this;
+}
+
+void Mapa_GamePlay::ingreso_batalla()
+{
+    Xpos=jugador->x();
+    YPos=jugador->y();
+    /*Si el jugador se encuentra en las posiciones determinadas de las entradas de los niveles se procedera a
+    mostrarsele en pantalla un Label con una imagen, el boton de entrada al nivel, y el cursor para que le sea facil
+    seleccionar y clickear el boton.*/
+    if((Xpos>=325 && Xpos<=405 && YPos>=2193 && YPos<=2215)or
+            (Xpos>=755 && Xpos<=815 && YPos<=1465 && YPos>=1405)or
+            (Xpos>=1565 && Xpos<=1690 && YPos<=1825 && YPos>=1760)or
+            (Xpos>=2075 && Xpos<=2200 && YPos<=645 && YPos>=585)){
+        //Se le muestra al usuario el aviso y el boton para asi seleccionarlo.
+        aviso->show();
+        boton->show();
+        //Se le muestra al usuario el cursor personalizado.
+        QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
+        QCursor cursor = QCursor(Pixmap_Cursor,0,0);
+        setCursor(cursor);
+    }
+    else{
+        /*Si el jugador no se encuentra en esas posiciones simplemente se procedera a no mostrarle el aviso y el boton; y
+        tambien el cursor seguira siendo invisible*/
+        aviso->hide();
+        boton->hide();
+        QCursor cursor = QCursor(Qt::BlankCursor);
+        setCursor(cursor);
+    }
+}
+
+/*Esta funcion actualiza el mapa constantemente con un timer para centrarlo en el jugador y dar la
+  sensasion de que la camara sigue al personaje.
+  Ademas de esto, la funcion verifica si dentro de la escena el personaje se encuentra parado en las determinadas
+  entradas a los niveles de batallas contra Bosses, para asi, poder preguntarle si esta listo para entrar.*/
 
 void Mapa_GamePlay::ActualizarEscena()
 {
