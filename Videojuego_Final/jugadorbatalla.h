@@ -28,6 +28,9 @@ public:
     double GetX0(){return x0;}
     double GetY0(){return y0;}
 
+    void PararTimers();
+    void ReiniciarTimers();
+
     void reset_golpe();
     bool golpe_izq = false;
     bool golpe_der = false;

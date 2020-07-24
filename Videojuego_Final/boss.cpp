@@ -1,7 +1,7 @@
 #include "boss.h"
 #include "niveles.h"
 
-extern int num_jugadores;
+extern short int num_jugadores;
 extern JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
 
 Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
@@ -84,6 +84,18 @@ void Boss::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     Q_UNUSED(option);
     Q_UNUSED(widget);
     painter->drawPixmap(-ancho/2,-alto/2,*pixmap,columnas,fila,ancho,alto);
+}
+
+void Boss::PararTimers()
+{
+    at_jugador.stop();
+    timer.stop();
+}
+
+void Boss::ReiniciarTimers()
+{
+    at_jugador.start(450);
+    timer.start(100);
 }
 
 void Boss::ataque_jugador()

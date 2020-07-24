@@ -8,9 +8,12 @@
 #include <QTimer>
 #include <QMediaPlaylist>
 #include <QMediaPlayer>
+#include <fstream>
+#include <iostream>
 #include "jugadorbatalla.h"
 #include "boss.h"
-#include "menupausa.h"
+
+using namespace std;
 
 namespace Ui {
 class Niveles;
@@ -33,7 +36,6 @@ private:
     QGraphicsPixmapItem *fondo;
     QMediaPlaylist Lista;
     QMediaPlayer musicaNivel;
-    MenuPausa *opciones;
     QTimer timer;
     bool pj2;
 private slots:

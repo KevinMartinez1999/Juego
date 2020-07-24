@@ -17,6 +17,9 @@ public:
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
+    void PararTimers();
+    void ReiniciarTimers();
+
     QPixmap *pixmap;
     QGraphicsRectItem vida;
     int vida_real;

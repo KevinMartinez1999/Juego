@@ -1,9 +1,11 @@
 #include "niveles.h"
 #include "ui_niveles.h"
 #include <mapa_gameplay.h>
+#include "menupausa.h"
 
-extern int nivel;
-extern int num_jugadores;
+extern short int nivel, nivelActual;
+extern short int num_jugadores;
+extern QString user,pass;
 JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
 Boss *boss;
 
@@ -180,9 +182,13 @@ void Niveles::keyPressEvent(QKeyEvent *event)
         if(pj2)
         jugadorBatalla2->setBanAttack();
     }
+    else if (event->key() == Qt::Key_N){
+        if(pj2)
+        jugadorBatalla2->setBanSpell();
+    }
     //Tecla escape destinada para pausar el juego y ver las opciones
     else if(event->key() == Qt::Key_Escape){
-        emit on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
+        on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
     }
 
 }
@@ -228,8 +234,16 @@ void Niveles::Level_Events()
     usuario ha ganado el nivel y ahora puede volver al mapa principal, se abrira una nueva ventana mapa_gameplay
     y se eliminara la ventana del nivel.*/
     if(boss->Boss_Derrotado){
+        nivelActual++;
         boss->Boss_Derrotado=false;
         musicaNivel.stop();
+        fstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
+        if (!file.is_open())
+            return;
+        file<<user.toStdString()<<"\n"<<pass.toStdString();
+        file<<'\n'<<num_jugadores<<'\n'<<nivel+1;
+        file.flush();
+        file.close();
         Mapa_GamePlay *mapa=new Mapa_GamePlay;
         mapa->show();
         close();
@@ -245,6 +259,9 @@ void Niveles::on_Opciones_clicked()
     Esta ventana de opciones tiene una cualidad llamada modal que permite que no se pueda interactuar de cualquier
     forma con la ventana de atras si el ui de pausa aun esta abierto, para poder volver a interactuar con el inter
     faz de nivel primero se debe cerrar la ventana de pausa.*/
-    opciones = new MenuPausa;
+    jugadorBatalla->PararTimers();
+    if (num_jugadores == 2)
+        jugadorBatalla2->PararTimers();
+    MenuPausa *opciones = new MenuPausa(nullptr,1);
     opciones->show();
 }

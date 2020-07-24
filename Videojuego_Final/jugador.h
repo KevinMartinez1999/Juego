@@ -33,9 +33,14 @@ public:
     bool golpe_aba = false;
     bool banAttack;
 
+    QTimer timer, timer1, enemigos;
+
     QGraphicsRectItem box, vida;
     int health;
     bool muerto;
+
+    void PararTimers();
+    void ReiniciarTimers();
 
     //Los sig. metodos y atributos son los necesarios para crear la animacion de
     //movimiento del jugador
@@ -65,7 +70,6 @@ private:
     bool banDown;
     short int ultimoEstado, cont = 0;
     QPoint posAnterior;
-    QTimer timer, timer1, enemigos;
     float columnas,fila,ancho,alto;
 };
 

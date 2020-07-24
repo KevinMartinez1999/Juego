@@ -4,6 +4,8 @@
 
 #define dt 0.03
 
+extern Boss *boss;
+
 JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
 {
     //Variables fisicas
@@ -49,6 +51,27 @@ JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
     Hechizo->setMedia(QUrl("qrc:/Musica/FUEGO.wav"));
     Hechizo->setVolume(100);
 
+}
+
+void JugadorBatalla::PararTimers()
+{
+
+    reset_golpe();
+    resetBanLeft();
+    resetBanRight();
+    resetBanSpell();
+    resetBanAttack();
+    mov.stop();
+    timer.stop();
+    boss->PararTimers();
+}
+
+void JugadorBatalla::ReiniciarTimers()
+{
+    mov.start(30);
+    timer.start(150);
+
+    boss->ReiniciarTimers();
 }
 
 void JugadorBatalla::reset_golpe()

@@ -1,9 +1,15 @@
 #include "menupausa.h"
 #include "ui_menupausa.h"
 #include "widget.h"
+#include "mapa_gameplay.h"
+#include "niveles.h"
 
-MenuPausa::MenuPausa(QWidget *parent) :
-    QWidget(parent),
+extern JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
+extern Jugador *jugador, *jugador2;
+extern short int num_jugadores;
+
+MenuPausa::MenuPausa(QWidget *parent,bool ventana) :
+    QWidget(parent), VentanaPausada(ventana),
     ui(new Ui::MenuPausa)
 {
     ui->setupUi(this);
@@ -32,6 +38,33 @@ MenuPausa::~MenuPausa()
     delete ui;
 }
 
+void MenuPausa::closeEvent(QCloseEvent *event)
+{
+    if(VentanaPausada==0){
+        jugador->ReiniciarTimers();
+        if (num_jugadores == 2)
+            jugador2->ReiniciarTimers();}
+    else{
+        jugadorBatalla->ReiniciarTimers();
+        if (num_jugadores == 2)
+            jugadorBatalla2->ReiniciarTimers();}
+    event->accept();
+}
+
+void MenuPausa::on_Reanudar_clicked()
+{
+    if(VentanaPausada==0){
+        jugador->ReiniciarTimers();
+        if (num_jugadores == 2)
+            jugador2->ReiniciarTimers();}
+    else{
+        jugadorBatalla->ReiniciarTimers();
+        if (num_jugadores == 2)
+            jugadorBatalla2->ReiniciarTimers();}
+    delete this;
+}
+
+
 void MenuPausa::on_Guardar_clicked()
 {
 
@@ -47,7 +80,3 @@ void MenuPausa::on_Cerrar_Sesion_clicked()
 
 }
 
-void MenuPausa::on_Reanudar_clicked()
-{
-    delete this;
-}

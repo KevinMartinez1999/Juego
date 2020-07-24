@@ -4,13 +4,15 @@
 #include "menu_partida.h"
 #include "jugador.h"
 #include "muro.h"
+#include "menupausa.h"
 
-extern int num_jugadores;
+extern short int num_jugadores;
 extern QString user, pass;
+extern bool nueva_partida;
 
 Muro *muro;
 Jugador *jugador, *jugador2;
-int nivel;
+short int nivel, nivelActual;
 
 Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     QWidget(parent),
@@ -85,6 +87,8 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     la partida, pj2 en true el programa sabe que debe habilitar las teclas de movimiento para
     un segundo jugador*/
 
+    CargarPartida();
+
     if (num_jugadores == 2){ //Dos jugadores
         pj2 = true; //Se activa la presencia de un jugador dos en mapa
 
@@ -93,20 +97,20 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
 
         jugador = new Jugador(this);
         jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
-        jugador->setPos(770,2155);
+        jugador->setPos(PosX0,PosY0);
         escena->addItem(jugador);
         jugador->vida.setPos(jugador->x()-30,jugador->y()-50);
 
         jugador2 = new Jugador(this);
         jugador2->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER2.png");//Asignamos el determinado sprite al jugador
-        jugador2->setPos(820,2155);
+        jugador2->setPos(PosX02,PosY02);
         escena->addItem(jugador2);
         jugador2->vida.setPos(jugador2->x()-30,jugador2->y()-50);
     }
     else{
         jugador = new Jugador(this);
         jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
-        jugador->setPos(770,2155);
+        jugador->setPos(PosX0,PosY0);
         escena->addItem(jugador);
         //escena->addItem(&jugador->box);
         jugador->vida.setPos(jugador->x()-30,jugador->y()-50);
@@ -116,6 +120,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     objetos = new QGraphicsPixmapItem;
     objetos->setPos(0,0);
     objetos->setPixmap(QPixmap(":/Imagenes/OBJETOS.png"));
+    objetos->setZValue(1);
     escena->addItem(objetos);
 
     //Aviso decorativo que se mostrara al momento de estar en la entrada de una batalla contra un Boss
@@ -131,9 +136,13 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     boton->hide();//Por defecto se encontrara escondido para simplemente mostrarse cuando se este en una entrada
     connect(boton,SIGNAL(clicked()),this,SLOT(Nivel()));//Se ejecutara la funcion Nivel() si se presiona el boton
 
+    if(BossesMuertos==0 and nueva_partida){
+        nivelActual = 0;
+        QTimer::singleShot(5000,this,SLOT(Controles()));
+    }
+    else
+        ui->Controles->hide();
 
-    ui->Controles->setWindowOpacity(0);
-    QTimer::singleShot(5000,this,SLOT(Controles()));
     //Añadir barras de vida
     if (num_jugadores == 2){
         escena->addItem(&jugador->vida);
@@ -147,6 +156,54 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
 Mapa_GamePlay::~Mapa_GamePlay()
 {
     delete ui;
+}
+
+void Mapa_GamePlay::CargarPartida()
+{
+
+    string Usuario, password;
+    ifstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
+    if (!file.is_open()){
+        return;}
+    file>>Usuario;
+    file>>password;
+    file>>num_jugadores;
+    file>>BossesMuertos;
+    file.close();
+    switch (BossesMuertos) {
+    case 0:
+        PosX0=770,PosY0=2155;
+        nivelActual = 0;
+        if(num_jugadores==2)
+            PosX02=820,PosY02=2155;
+        break;
+    case 1:
+        PosX0=330,PosY0=2200;
+        nivelActual = 1;
+        if(num_jugadores==2)
+            PosX02=415,PosY02=2200;
+        break;
+    case 2:
+        PosX0=755,PosY0=1485;
+        nivelActual = 2;
+        if(num_jugadores==2)
+            PosX02=815,PosY02=1480;
+        break;
+    case 3:
+        PosX0=1715,PosY0=1785;
+        nivelActual = 3;
+        if(num_jugadores==2)
+            PosX02=1705,PosY02=1825;
+        break;
+    case 4:
+        PosX0=2015,PosY0=585;
+        nivelActual = 4;
+        if(num_jugadores==2)
+            PosX02=2175,PosY02=600;
+        break;
+    }
+
+
 }
 
 /*Las siguientes son las funciones del teclado; existe tanto las teclas para el jugador
@@ -173,7 +230,6 @@ void Mapa_GamePlay::keyPressEvent(QKeyEvent *event)
     else if (event->key() == Qt::Key_F){
         jugador->setBanAttack();
     }
-
     //Estas son las teclas de movimiento para el jugador 2.
     //Solo estan habilitadas (o habilitadas) si asi lo quiere el usuario.
     else if (pj2){
@@ -192,6 +248,10 @@ void Mapa_GamePlay::keyPressEvent(QKeyEvent *event)
         else if (event->key() == Qt::Key_H){
             jugador2->setBanAttack();
         }
+    }
+    //Tecla escape destinada para pausar el juego y ver las opciones
+    if(event->key() == Qt::Key_Escape){
+        on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
     }
 }
 
@@ -260,15 +320,21 @@ void Mapa_GamePlay::Nivel()
 
 void Mapa_GamePlay::ingreso_batalla()
 {
-    Xpos=jugador->x();
-    YPos=jugador->y();
+    if (jugador->muerto){
+        Xpos=jugador2->x();
+        YPos=jugador2->y();
+    }
+    else{
+        Xpos=jugador->x();
+        YPos=jugador->y();
+    }
     /*Si el jugador se encuentra en las posiciones determinadas de las entradas de los niveles se procedera a
     mostrarsele en pantalla un Label con una imagen, el boton de entrada al nivel, y el cursor para que le sea facil
     seleccionar y clickear el boton.*/
-    if((Xpos>=325 && Xpos<=405 && YPos>=2193 && YPos<=2215)or
-            (Xpos>=755 && Xpos<=815 && YPos<=1465 && YPos>=1405)or
-            (Xpos>=1565 && Xpos<=1690 && YPos<=1825 && YPos>=1760)or
-            (Xpos>=2075 && Xpos<=2200 && YPos<=645 && YPos>=585)){
+    if((Xpos>=325 && Xpos<=405 && YPos>=2193 && YPos<=2215 and nivelActual == 0)or
+            (Xpos>=755 && Xpos<=815 && YPos<=1465 && YPos>=1405 and nivelActual == 1)or
+            (Xpos>=1565 && Xpos<=1690 && YPos<=1825 && YPos>=1760 and nivelActual == 2)or
+            (Xpos>=2075 && Xpos<=2200 && YPos<=645 && YPos>=585 and nivelActual == 3)){
         //Se le muestra al usuario el aviso y el boton para asi seleccionarlo.
         aviso->show();
         boton->show();
@@ -332,4 +398,18 @@ void Mapa_GamePlay::verificar_muerte()
             delete this;
         }
     }
+}
+
+void Mapa_GamePlay::on_Opciones_clicked()
+{
+    /*En caso de oprimir la tecla Escape o presionar le boton de opciones en la esquina de la pantalla
+    se abrira una nueva ventada opciones por encima de la ventana actual.
+    Esta ventana de opciones tiene una cualidad llamada modal que permite que no se pueda interactuar de cualquier
+    forma con la ventana de atras si el ui de pausa aun esta abierto, para poder volver a interactuar con el inter
+    faz de nivel primero se debe cerrar la ventana de pausa.*/
+    jugador->PararTimers();
+    if (num_jugadores == 2)
+        jugador2->PararTimers();
+    MenuPausa *opciones = new MenuPausa(nullptr,0);
+    opciones->show();
 }

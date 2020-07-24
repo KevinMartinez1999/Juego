@@ -3,7 +3,7 @@
 
 #define paso 2.5
 
-extern int num_jugadores;
+extern short int num_jugadores;
 extern Jugador *jugador, *jugador2;
 extern QList <Enemigo *> lista;
 
@@ -96,6 +96,22 @@ void Enemigo::follow(Jugador *obj)
     }
     box.setPos(x()-15, y()+12);
     vida.setPos(x()-10, y()-30);
+}
+
+void Enemigo::ReiniciarTimers()
+{
+    mov_enemigo.start(60);
+    at_enemigo.start(700);
+    at_jugador.start(400);
+    timer.start(200);
+}
+
+void Enemigo::PararTimers()
+{
+    mov_enemigo.stop();
+    at_enemigo.stop();
+    at_jugador.stop();
+    timer.stop();
 }
 
 QRectF Enemigo::boundingRect() const

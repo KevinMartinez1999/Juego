@@ -103,7 +103,7 @@ void Widget::on_login_clicked()
     file>>usuario;
     file>>clave;
     file.close();
-    if (user.toStdString() == usuario and pass.toStdString() == clave) //Verificación
+    if (pass.toStdString() == clave) //Verificación
     {
         delete movie;
         delete w;
@@ -116,8 +116,7 @@ void Widget::on_login_clicked()
     else
     {
         //Muestra mensaje de error en caso de un login fallido
-        QMessageBox box(this);
-        box.setText("Error al iniciar sesion.");
+        QMessageBox::critical(this, "Login", "Login fallido o el usuario no existe.");
         ui->usuario->clear();
         ui->clave->clear();
     }
