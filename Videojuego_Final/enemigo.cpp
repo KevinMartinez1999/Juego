@@ -111,7 +111,6 @@ void Enemigo::PararTimers()
     at_enemigo.stop();
     at_jugador.stop();
     timer.stop();
-
 }
 
 QRectF Enemigo::boundingRect() const

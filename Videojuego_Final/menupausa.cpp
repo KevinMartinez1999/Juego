@@ -8,7 +8,7 @@ extern JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
 extern Jugador *jugador, *jugador2;
 extern int num_jugadores;
 
-MenuPausa::MenuPausa(QWidget *parent,int ventana) :
+MenuPausa::MenuPausa(QWidget *parent,bool ventana) :
     QWidget(parent), VentanaPausada(ventana),
     ui(new Ui::MenuPausa)
 {
@@ -40,19 +40,23 @@ MenuPausa::~MenuPausa()
 
 void MenuPausa::closeEvent(QCloseEvent *event)
 {
-    if(VentanaPausada==1)
+    if(VentanaPausada==0){
         jugador->ReiniciarTimers();
-    else
+        jugador2->ReiniciarTimers();}
+    else{
         jugadorBatalla->ReiniciarTimers();
+        jugadorBatalla2->ReiniciarTimers();}
     event->accept();
 }
 
 void MenuPausa::on_Reanudar_clicked()
 {
-        if(VentanaPausada==1)
-            jugador->ReiniciarTimers();
-        else
-            jugadorBatalla->ReiniciarTimers();
+    if(VentanaPausada==0){
+        jugador->ReiniciarTimers();
+        jugador2->ReiniciarTimers();}
+    else{
+        jugadorBatalla->ReiniciarTimers();
+        jugadorBatalla2->ReiniciarTimers();}
     delete this;
 }
 

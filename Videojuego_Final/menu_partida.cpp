@@ -103,6 +103,15 @@ void Menu_partida::on_nueva_partida_clicked()
         num_jugadores = 1;
     else if(ui->dos_jugadores->isChecked())
         num_jugadores = 2;
+
+    fstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
+    if (!file.is_open())
+        return;
+    file<<user.toStdString()<<"\n"<<pass.toStdString();
+    file<<'\n'<<num_jugadores<<'\n'<<"0";
+    file.flush();
+    file.close();
+
     Mapa_GamePlay *mapa = new Mapa_GamePlay();
     mapa->show();
     delete this;
@@ -116,4 +125,8 @@ void Menu_partida::on_cargar_partida_clicked()
     musica->stop();
     delete w;
     delete movie;
+
+    Mapa_GamePlay *mapa = new Mapa_GamePlay();
+    mapa->show();
+    delete this;
 }

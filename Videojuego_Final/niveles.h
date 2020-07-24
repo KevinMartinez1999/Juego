@@ -8,9 +8,12 @@
 #include <QTimer>
 #include <QMediaPlaylist>
 #include <QMediaPlayer>
+#include <fstream>
+#include <iostream>
 #include "jugadorbatalla.h"
 #include "boss.h"
 
+using namespace std;
 
 namespace Ui {
 class Niveles;

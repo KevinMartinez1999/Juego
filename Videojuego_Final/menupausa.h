@@ -14,11 +14,11 @@ class MenuPausa : public QWidget
     Q_OBJECT
 
 public:
-    explicit MenuPausa(QWidget *parent = nullptr,int ventana=0);
+    explicit MenuPausa(QWidget *parent = nullptr,bool ventana=0);
     ~MenuPausa();
     void closeEvent(QCloseEvent *event);
     bool cerrar_sesion;
-    int VentanaPausada;
+    bool VentanaPausada;
 
 private slots:
     void on_Guardar_clicked();

@@ -86,6 +86,8 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     la partida, pj2 en true el programa sabe que debe habilitar las teclas de movimiento para
     un segundo jugador*/
 
+    CargarPartida();
+
     if (num_jugadores == 2){ //Dos jugadores
         pj2 = true; //Se activa la presencia de un jugador dos en mapa
 
@@ -94,20 +96,20 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
 
         jugador = new Jugador(this);
         jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
-        jugador->setPos(770,2155);
+        jugador->setPos(PosX0,PosY0);
         escena->addItem(jugador);
         jugador->vida.setPos(jugador->x(),jugador->y());
 
         jugador2 = new Jugador(this);
         jugador2->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER2.png");//Asignamos el determinado sprite al jugador
-        jugador2->setPos(820,2155);
+        jugador2->setPos(PosX02,PosY02);
         escena->addItem(jugador2);
         jugador2->vida.setPos(jugador2->x(),jugador2->y());
     }
     else{
         jugador = new Jugador(this);
         jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
-        jugador->setPos(770,2155);
+        jugador->setPos(PosX0,PosY0);
         escena->addItem(jugador);
         escena->addItem(&jugador->box);
         jugador->vida.setPos(jugador->x(),jugador->y());
@@ -132,7 +134,10 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     boton->hide();//Por defecto se encontrara escondido para simplemente mostrarse cuando se este en una entrada
     connect(boton,SIGNAL(clicked()),this,SLOT(Nivel()));//Se ejecutara la funcion Nivel() si se presiona el boton
 
+    if(BossesMuertos==0)
     QTimer::singleShot(5000,this,SLOT(Controles()));
+    else ui->Controles->hide();
+
     //Añadir barras de vida
     if (num_jugadores == 2){
         escena->addItem(&jugador->vida);
@@ -146,6 +151,49 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
 Mapa_GamePlay::~Mapa_GamePlay()
 {
     delete ui;
+}
+
+void Mapa_GamePlay::CargarPartida()
+{
+
+    string Usuario, password;
+    ifstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
+    if (!file.is_open()){
+        return;}
+    file>>Usuario;
+    file>>password;
+    file>>num_jugadores;
+    file>>BossesMuertos;
+    file.close();
+    switch (BossesMuertos) {
+    case 0:
+        PosX0=770,PosY0=2155;
+        if(num_jugadores==2)
+            PosX02=820,PosY02=2155;
+        break;
+    case 1:
+        PosX0=330,PosY0=2200;
+        if(num_jugadores==2)
+            PosX02=415,PosY02=2200;
+        break;
+    case 2:
+        PosX0=755,PosY0=1485;
+        if(num_jugadores==2)
+            PosX02=815,PosY02=1480;
+        break;
+    case 3:
+        PosX0=1715,PosY0=1785;
+        if(num_jugadores==2)
+            PosX02=1705,PosY02=1825;
+        break;
+    case 4:
+        PosX0=2015,PosY0=585;
+        if(num_jugadores==2)
+            PosX02=2175,PosY02=600;
+        break;
+    }
+
+
 }
 
 /*Las siguientes son las funciones del teclado; existe tanto las teclas para el jugador
@@ -344,6 +392,7 @@ void Mapa_GamePlay::on_Opciones_clicked()
     forma con la ventana de atras si el ui de pausa aun esta abierto, para poder volver a interactuar con el inter
     faz de nivel primero se debe cerrar la ventana de pausa.*/
     jugador->PararTimers();
-    MenuPausa *opciones = new MenuPausa(nullptr,1);
+    jugador2->PararTimers();
+    MenuPausa *opciones = new MenuPausa(nullptr,0);
     opciones->show();
 }

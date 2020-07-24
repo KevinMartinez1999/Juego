@@ -10,6 +10,7 @@ QList <Enemigo *> lista;
 extern Muro * muro;
 extern Jugador *jugador2;
 extern int num_jugadores;
+
 Jugador::Jugador(QObject *parent) : QObject(parent)
 {
     //Inicialzacion de las banderas de movimiento
@@ -110,17 +111,6 @@ void Jugador::reset_golpe()
 
 void Jugador::PararTimers()
 {
-    if(num_jugadores==2){
-        jugador2->reset_golpe();
-        jugador2->resetBanUp();
-        jugador2->resetBanDown();
-        jugador2->resetBanLeft();
-        jugador2->resetBanRight();
-        jugador2->resetBanAttack();
-        jugador2->timer.stop();
-        jugador2->timer1.stop();
-        jugador2->enemigos.stop();
-    }
     reset_golpe();
     resetBanUp();
     resetBanDown();
@@ -141,11 +131,6 @@ void Jugador::ReiniciarTimers()
     timer.start(200);
     timer1.start(30);
     enemigos.start(7000);
-    if(num_jugadores==2){
-        jugador2->timer.start(200);
-        jugador2->timer1.start(30);
-        jugador2->enemigos.start(7000);
-    }
     QListIterator<Enemigo *>Iterador(lista);
     while(Iterador.hasNext()){
         Iterador.next()->ReiniciarTimers();

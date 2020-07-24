@@ -57,15 +57,7 @@ JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
 
 void JugadorBatalla::PararTimers()
 {
-    if(num_jugadores==2){
-        jugadorBatalla2->reset_golpe();
-        jugadorBatalla2->resetBanLeft();
-        jugadorBatalla2->resetBanRight();
-        jugadorBatalla2->resetBanSpell();
-        jugadorBatalla2->resetBanAttack();
-        jugadorBatalla2->mov.stop();
-        jugadorBatalla2->timer.stop();
-    }
+
     reset_golpe();
     resetBanLeft();
     resetBanRight();
@@ -80,10 +72,7 @@ void JugadorBatalla::ReiniciarTimers()
 {
     mov.start(30);
     timer.start(150);
-    if(num_jugadores==2){
-        jugadorBatalla2->mov.start(30);
-        jugadorBatalla2->timer.start(150);
-    }
+
     boss->ReiniciarTimers();
 }
 

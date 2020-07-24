@@ -5,6 +5,7 @@
 
 extern int nivel;
 extern int num_jugadores;
+extern QString user,pass;
 JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
 Boss *boss;
 
@@ -235,6 +236,13 @@ void Niveles::Level_Events()
     if(boss->Boss_Derrotado){
         boss->Boss_Derrotado=false;
         musicaNivel.stop();
+        fstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
+        if (!file.is_open())
+            return;
+        file<<user.toStdString()<<"\n"<<pass.toStdString();
+        file<<'\n'<<num_jugadores<<'\n'<<nivel+1;
+        file.flush();
+        file.close();
         Mapa_GamePlay *mapa=new Mapa_GamePlay;
         mapa->show();
         close();
@@ -251,6 +259,7 @@ void Niveles::on_Opciones_clicked()
     forma con la ventana de atras si el ui de pausa aun esta abierto, para poder volver a interactuar con el inter
     faz de nivel primero se debe cerrar la ventana de pausa.*/
     jugadorBatalla->PararTimers();
-    MenuPausa *opciones = new MenuPausa(nullptr,2);
+    jugadorBatalla2->PararTimers();
+    MenuPausa *opciones = new MenuPausa(nullptr,1);
     opciones->show();
 }
