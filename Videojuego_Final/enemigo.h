@@ -17,6 +17,9 @@ public:
     bool verificar_golpe(Jugador *obj);
     void follow(Jugador *obj);
 
+    void PararTimers();
+    void ReiniciarTimers();
+
     QGraphicsRectItem vida, box;
 
     //Los sig. metodos y atributos son los necesarios para crear la animacion de

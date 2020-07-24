@@ -93,6 +93,34 @@ border-image: url(:/Imagenes/BOTONGRISPUSH.png);
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="QPushButton" name="Opciones">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>510</y>
+     <width>60</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">#Opciones{
+color: rgb(255, 255, 255);
+border-image: url(:/Imagenes/OPCIONES.png);
+}
+#Opciones:hover
+{
+border-image: url(:/Imagenes/OPCIONES_HOVER.png);
+}
+#Opcionesa:pressed
+{
+border-image: url(:/Imagenes/OPCIONES_PUSH.png);
+}
+</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="Imagenes.qrc"/>

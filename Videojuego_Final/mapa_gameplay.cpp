@@ -4,6 +4,7 @@
 #include "menu_partida.h"
 #include "jugador.h"
 #include "muro.h"
+#include "menupausa.h"
 
 extern int num_jugadores;
 extern QString user, pass;
@@ -171,7 +172,6 @@ void Mapa_GamePlay::keyPressEvent(QKeyEvent *event)
     else if (event->key() == Qt::Key_F){
         jugador->setBanAttack();
     }
-
     //Estas son las teclas de movimiento para el jugador 2.
     //Solo estan habilitadas (o habilitadas) si asi lo quiere el usuario.
     if (pj2){
@@ -190,6 +190,10 @@ void Mapa_GamePlay::keyPressEvent(QKeyEvent *event)
         else if (event->key() == Qt::Key_H){
             jugador2->setBanAttack();
         }
+    }
+    //Tecla escape destinada para pausar el juego y ver las opciones
+    if(event->key() == Qt::Key_Escape){
+        on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
     }
 }
 
@@ -330,4 +334,16 @@ void Mapa_GamePlay::verificar_muerte()
             delete this;
         }
     }
+}
+
+void Mapa_GamePlay::on_Opciones_clicked()
+{
+    /*En caso de oprimir la tecla Escape o presionar le boton de opciones en la esquina de la pantalla
+    se abrira una nueva ventada opciones por encima de la ventana actual.
+    Esta ventana de opciones tiene una cualidad llamada modal que permite que no se pueda interactuar de cualquier
+    forma con la ventana de atras si el ui de pausa aun esta abierto, para poder volver a interactuar con el inter
+    faz de nivel primero se debe cerrar la ventana de pausa.*/
+    jugador->PararTimers();
+    MenuPausa *opciones = new MenuPausa(nullptr,1);
+    opciones->show();
 }

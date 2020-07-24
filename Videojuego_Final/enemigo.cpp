@@ -97,6 +97,23 @@ void Enemigo::follow(Jugador *obj)
     vida.setPos(x(), y());
 }
 
+void Enemigo::ReiniciarTimers()
+{
+    mov_enemigo.start(60);
+    at_enemigo.start(700);
+    at_jugador.start(400);
+    timer.start(200);
+}
+
+void Enemigo::PararTimers()
+{
+    mov_enemigo.stop();
+    at_enemigo.stop();
+    at_jugador.stop();
+    timer.stop();
+
+}
+
 QRectF Enemigo::boundingRect() const
 {
     return QRectF(-ancho/2,-alto/2,ancho,alto);

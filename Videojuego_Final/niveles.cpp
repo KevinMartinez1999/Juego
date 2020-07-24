@@ -1,6 +1,7 @@
 #include "niveles.h"
 #include "ui_niveles.h"
 #include <mapa_gameplay.h>
+#include "menupausa.h"
 
 extern int nivel;
 extern int num_jugadores;
@@ -180,9 +181,13 @@ void Niveles::keyPressEvent(QKeyEvent *event)
         if(pj2)
         jugadorBatalla2->setBanAttack();
     }
+    else if (event->key() == Qt::Key_N){
+        if(pj2)
+        jugadorBatalla2->setBanSpell();
+    }
     //Tecla escape destinada para pausar el juego y ver las opciones
     else if(event->key() == Qt::Key_Escape){
-        emit on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
+        on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
     }
 
 }
@@ -245,6 +250,7 @@ void Niveles::on_Opciones_clicked()
     Esta ventana de opciones tiene una cualidad llamada modal que permite que no se pueda interactuar de cualquier
     forma con la ventana de atras si el ui de pausa aun esta abierto, para poder volver a interactuar con el inter
     faz de nivel primero se debe cerrar la ventana de pausa.*/
-    opciones = new MenuPausa;
+    jugadorBatalla->PararTimers();
+    MenuPausa *opciones = new MenuPausa(nullptr,2);
     opciones->show();
 }

@@ -86,6 +86,18 @@ void Boss::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     painter->drawPixmap(-ancho/2,-alto/2,*pixmap,columnas,fila,ancho,alto);
 }
 
+void Boss::PararTimers()
+{
+    at_jugador.stop();
+    timer.stop();
+}
+
+void Boss::ReiniciarTimers()
+{
+    at_jugador.start(450);
+    timer.start(100);
+}
+
 void Boss::ataque_jugador()
 {
     if (health <= 1){

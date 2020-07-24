@@ -8,7 +8,8 @@
 QList <Enemigo *> lista;
 
 extern Muro * muro;
-
+extern Jugador *jugador2;
+extern int num_jugadores;
 Jugador::Jugador(QObject *parent) : QObject(parent)
 {
     //Inicialzacion de las banderas de movimiento
@@ -49,6 +50,7 @@ Jugador::Jugador(QObject *parent) : QObject(parent)
     //Se crea el HitBox
     box.setRect(0,0,25,25);
     box.setPos(755,2167);
+    box.hide();
 
     //Barra de vida
     vida.setRect(0,0,health,5);
@@ -104,6 +106,50 @@ void Jugador::reset_golpe()
     golpe_der = false;
     golpe_arr = false;
     golpe_aba = false;
+}
+
+void Jugador::PararTimers()
+{
+    if(num_jugadores==2){
+        jugador2->reset_golpe();
+        jugador2->resetBanUp();
+        jugador2->resetBanDown();
+        jugador2->resetBanLeft();
+        jugador2->resetBanRight();
+        jugador2->resetBanAttack();
+        jugador2->timer.stop();
+        jugador2->timer1.stop();
+        jugador2->enemigos.stop();
+    }
+    reset_golpe();
+    resetBanUp();
+    resetBanDown();
+    resetBanLeft();
+    resetBanRight();
+    resetBanAttack();
+    timer.stop();
+    timer1.stop();
+    enemigos.stop();
+    QListIterator<Enemigo *>Iterador(lista);
+    while(Iterador.hasNext()){
+        Iterador.next()->PararTimers();
+    }
+}
+
+void Jugador::ReiniciarTimers()
+{
+    timer.start(200);
+    timer1.start(30);
+    enemigos.start(7000);
+    if(num_jugadores==2){
+        jugador2->timer.start(200);
+        jugador2->timer1.start(30);
+        jugador2->enemigos.start(7000);
+    }
+    QListIterator<Enemigo *>Iterador(lista);
+    while(Iterador.hasNext()){
+        Iterador.next()->ReiniciarTimers();
+    }
 }
 
 //Las siguientes son las señales de movimiento que funcionan con un timer;
@@ -299,7 +345,7 @@ void Jugador::spawn()
     //El enemigo se añade a la escena con su barra de vida
     scene()->addItem(enemigo);
     enemigo->vida.setPos(enemigo->x(),enemigo->y());
-    scene()->addItem(&enemigo->box);
+//    scene()->addItem(&enemigo->box);
     scene()->addItem(&enemigo->vida);
     lista.append(enemigo); //Se añade a una lista el enemigo para controlar cuando enemigos hay
 }

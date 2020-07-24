@@ -54,6 +54,7 @@ private: //Atributos de la clase
     void ingreso_batalla();
     void ActualizarEscena(); //Centra constantemente la grafica en el jugador
     void verificar_muerte();
+    void on_Opciones_clicked();
 };
 
 #endif // MAPA_GAMEPLAY_H
