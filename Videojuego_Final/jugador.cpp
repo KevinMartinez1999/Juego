@@ -8,8 +8,6 @@
 QList <Enemigo *> lista;
 
 extern Muro * muro;
-extern Jugador *jugador2;
-extern int num_jugadores;
 
 Jugador::Jugador(QObject *parent) : QObject(parent)
 {

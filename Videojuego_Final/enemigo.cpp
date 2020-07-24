@@ -2,7 +2,7 @@
 
 #define paso 2.5
 
-extern int num_jugadores;
+extern short int num_jugadores;
 extern Jugador *jugador, *jugador2;
 extern QList <Enemigo *> lista;
 

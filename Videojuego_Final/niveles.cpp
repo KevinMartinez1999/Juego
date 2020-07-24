@@ -3,8 +3,8 @@
 #include <mapa_gameplay.h>
 #include "menupausa.h"
 
-extern int nivel;
-extern int num_jugadores;
+extern short int nivel, nivelActual;
+extern short int num_jugadores;
 extern QString user,pass;
 JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
 Boss *boss;
@@ -234,6 +234,7 @@ void Niveles::Level_Events()
     usuario ha ganado el nivel y ahora puede volver al mapa principal, se abrira una nueva ventana mapa_gameplay
     y se eliminara la ventana del nivel.*/
     if(boss->Boss_Derrotado){
+        nivelActual++;
         boss->Boss_Derrotado=false;
         musicaNivel.stop();
         fstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");

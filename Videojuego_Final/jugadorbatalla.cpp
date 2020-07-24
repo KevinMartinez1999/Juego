@@ -5,8 +5,6 @@
 #define dt 0.03
 
 extern Boss *boss;
-extern int num_jugadores;
-extern JugadorBatalla *jugadorBatalla2;
 
 JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
 {

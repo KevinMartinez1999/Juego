@@ -1,7 +1,7 @@
 #include "boss.h"
 #include "niveles.h"
 
-extern int num_jugadores;
+extern short int num_jugadores;
 extern JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
 
 Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
