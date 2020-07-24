@@ -1,4 +1,5 @@
 #include "enemigo.h"
+#include <QDebug>
 
 #define paso 2.5
 
@@ -28,17 +29,17 @@ Enemigo::Enemigo(QObject *parent) : QObject(parent)
 
     //Timers del enemigo
     connect(&at_enemigo, SIGNAL(timeout()), this, SLOT(ataque_enemigo()));
-    at_enemigo.start(700);
+    at_enemigo.start(1000);
 
     //Timer para el ataque del enemigo
     connect(&at_jugador, SIGNAL(timeout()), this, SLOT(ataque_jugador()));
-    connect(&at_jugador, SIGNAL(timeout()), this, SLOT(detectar_enemigos()));
-    connect(&at_jugador, SIGNAL(timeout()), this, SLOT(muerte()));
-    at_jugador.start(400);
+    at_jugador.start(600);
 
     //Timer para las actualización y dibujo del sprite.
     /*Este timer nos permitira la constante actualizacion de la imagen de nuestro jugador*/
     connect(&timer,SIGNAL(timeout()),this,SLOT(Actualizacion()));
+    connect(&timer, SIGNAL(timeout()), this, SLOT(detectar_enemigos()));
+    connect(&timer, SIGNAL(timeout()), this, SLOT(muerte()));
     timer.start(200);
 
     //Movimiento del enemigo
@@ -51,13 +52,13 @@ Enemigo::Enemigo(QObject *parent) : QObject(parent)
  pero si lo ataca por la espalda el jugador muere*/
 bool Enemigo::verificar_golpe(Jugador *obj)
 {
-    if (obj->golpe_izq and this->x() < obj->box.x())
+    if (obj->golpe_izq and x() <= obj->x())
         return true;
-    else if (obj->golpe_der and this->x() > obj->box.x())
+    else if (obj->golpe_der and x() >= obj->x())
         return true;
-    else if (obj->golpe_arr and this->y() < obj->box.y())
+    else if (obj->golpe_arr and y() <= obj->y())
         return true;
-    else if (obj->golpe_aba and this->y() > obj->box.y())
+    else if (obj->golpe_aba and y() >= obj->y())
         return true;
     else
         return false;
@@ -65,36 +66,36 @@ bool Enemigo::verificar_golpe(Jugador *obj)
 
 void Enemigo::follow(Jugador *obj)
 {
-    if (x() > obj->x() and y() > obj->y()){
+    if (box.x() > obj->box.x() and box.y() > obj->box.y()){
         pixmap = QPixmap(":/Imagenes/ENEMIGOS.png");
         setPos(x()-paso, y()-paso);
     }
-    else if  (x() > obj->x() and y() < obj->y()){
+    else if  (box.x() > obj->box.x() and box.y() < obj->box.y()){
         pixmap = QPixmap(":/Imagenes/ENEMIGOS.png");
         setPos(x()-paso, y()+paso);
     }
-    else if  (x() < obj->x() and y() > obj->y()){
+    else if  (box.x() < obj->box.x() and box.y() > obj->box.y()){
         pixmap = QPixmap(":/Imagenes/ENEMIGOS2.png");
         setPos(x()+paso, y()-paso);
     }
-    else if  (x() < obj->x() and y() < obj->y()){
+    else if  (box.x() < obj->box.x() and box.y() < obj->box.y()){
         pixmap = QPixmap(":/Imagenes/ENEMIGOS2.png");
         setPos(x()+paso, y()+paso);
     }
-    else if (x() > obj->x()){
+    else if (box.x() > obj->box.x()){
         setPos(x()-paso, y());
     }
-    else if (x() < obj->x()){
+    else if (box.x() < obj->box.x()){
         setPos(x()+paso, y());
     }
-    else if (y() > obj->y()){
+    else if (box.y() > obj->box.y()){
         setPos(x(), y()-paso);
     }
-    else if (y() < obj->y()){
+    else if (box.y() < obj->box.y()){
         setPos(x(), y()+paso);
     }
-    box.setPos(x()-10, y()+10);
-    vida.setPos(x(), y());
+    box.setPos(x()-15, y()+12);
+    vida.setPos(x()-10, y()-30);
 }
 
 QRectF Enemigo::boundingRect() const
@@ -177,6 +178,7 @@ void Enemigo::detectar_enemigos()
     else{
         if (abs(int(x()-jugador->x())) > 900 or abs(int(y()-jugador->y())) > 700){
             lista.removeOne(this);
+            //qDebug()<<"Enemigo fuera de rango";
             delete this;
             return;
         }
@@ -189,7 +191,7 @@ void Enemigo::detectar_enemigos()
  atacando este muere; Esta verificación del ataque se hace en una función mas arriba*/
 void Enemigo::ataque_jugador()
 {
-    if (box.collidesWithItem(&jugador->box)){
+    if (box.collidesWithItem(&jugador->box) and jugador->banAttack){
         if (verificar_golpe(jugador)){
             health -= 5;
             vida.setRect(0,0,health,5);
@@ -197,7 +199,7 @@ void Enemigo::ataque_jugador()
     }
 
     if (num_jugadores == 2){ //En caso de tener dos jugadores
-        if (box.collidesWithItem(&jugador2->box)){
+        if (box.collidesWithItem(&jugador2->box) and jugador2->banAttack){
             if (verificar_golpe(jugador2)){
                 health -= 5;
                 vida.setRect(0,0,health,5);
@@ -237,12 +239,14 @@ void Enemigo::muerte()
 void Enemigo::move()
 {
     if (num_jugadores == 2){
-        if (abs(int(x() - jugador->x())) <= abs(int(x() - jugador2->x())) and !jugador->muerto){
-            follow(jugador);
-        }
-        else{
+        if (jugador->muerto)
             follow(jugador2);
-        }
+        else if (jugador2->muerto)
+            follow(jugador);
+        else if (abs(int(x() - jugador->x())) <= abs(int(x() - jugador2->x())))
+            follow(jugador);
+        else
+            follow(jugador2);
     }
     else{
         follow(jugador);

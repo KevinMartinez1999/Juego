@@ -262,6 +262,7 @@ void Jugador::pos()
 void Jugador::spawn()
 {
     if (lista.count() == 5){ //Maximo 5 enemigos para no colapsar el programa
+        //qDebug()<<"Maximo de enemigos alcanzados";
         return;
     }
 
@@ -273,11 +274,11 @@ void Jugador::spawn()
         cont++;
         break;
     case 1:
-        enemigo->setPos(1875, 1795);
+        enemigo->setPos(510, 1495);
         cont++;
         break;
     case 2:
-        enemigo->setPos(1645, 1210);
+        enemigo->setPos(85, 1700);
         cont++;
         break;
     case 3:
@@ -285,11 +286,11 @@ void Jugador::spawn()
         cont++;
         break;
     case 4:
-        enemigo->setPos(510, 1495);
+        enemigo->setPos(1875, 1795);
         cont++;
         break;
     case 5:
-        enemigo->setPos(85, 1700);
+        enemigo->setPos(1645, 1210);
         cont = 0;
         break;
     default:
@@ -299,7 +300,7 @@ void Jugador::spawn()
     //El enemigo se añade a la escena con su barra de vida
     scene()->addItem(enemigo);
     enemigo->vida.setPos(enemigo->x(),enemigo->y());
-    scene()->addItem(&enemigo->box);
+    //scene()->addItem(&enemigo->box);
     scene()->addItem(&enemigo->vida);
     lista.append(enemigo); //Se añade a una lista el enemigo para controlar cuando enemigos hay
 }

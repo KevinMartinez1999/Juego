@@ -31,6 +31,7 @@ public:
     bool golpe_der = false;
     bool golpe_arr = false;
     bool golpe_aba = false;
+    bool banAttack;
 
     QGraphicsRectItem box, vida;
     int health;
@@ -62,7 +63,6 @@ private:
     bool banRight;
     bool banUp;
     bool banDown;
-    bool banAttack;
     short int ultimoEstado, cont = 0;
     QPoint posAnterior;
     QTimer timer, timer1, enemigos;

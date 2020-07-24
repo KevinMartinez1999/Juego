@@ -95,21 +95,21 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
         jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
         jugador->setPos(770,2155);
         escena->addItem(jugador);
-        jugador->vida.setPos(jugador->x(),jugador->y());
+        jugador->vida.setPos(jugador->x()-30,jugador->y()-50);
 
         jugador2 = new Jugador(this);
         jugador2->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER2.png");//Asignamos el determinado sprite al jugador
         jugador2->setPos(820,2155);
         escena->addItem(jugador2);
-        jugador2->vida.setPos(jugador2->x(),jugador2->y());
+        jugador2->vida.setPos(jugador2->x()-30,jugador2->y()-50);
     }
     else{
         jugador = new Jugador(this);
         jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
         jugador->setPos(770,2155);
         escena->addItem(jugador);
-        escena->addItem(&jugador->box);
-        jugador->vida.setPos(jugador->x(),jugador->y());
+        //escena->addItem(&jugador->box);
+        jugador->vida.setPos(jugador->x()-30,jugador->y()-50);
     }
 
     //Tercera capa del mapa
@@ -131,6 +131,8 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     boton->hide();//Por defecto se encontrara escondido para simplemente mostrarse cuando se este en una entrada
     connect(boton,SIGNAL(clicked()),this,SLOT(Nivel()));//Se ejecutara la funcion Nivel() si se presiona el boton
 
+
+    ui->Controles->setWindowOpacity(0);
     QTimer::singleShot(5000,this,SLOT(Controles()));
     //Añadir barras de vida
     if (num_jugadores == 2){
@@ -174,7 +176,7 @@ void Mapa_GamePlay::keyPressEvent(QKeyEvent *event)
 
     //Estas son las teclas de movimiento para el jugador 2.
     //Solo estan habilitadas (o habilitadas) si asi lo quiere el usuario.
-    if (pj2){
+    else if (pj2){
         if(event->key()==Qt::Key_J){
             jugador2->setBanLeft();
         }
@@ -219,7 +221,7 @@ void Mapa_GamePlay::keyReleaseEvent(QKeyEvent *event)
 
     //Estas son las teclas de movimiento para el jugador 2.
     //Solo estan habilitadas (o habilitadas) si asi lo quiere el usuario.
-    if (pj2){
+    else if (pj2){
         if(event->key()==Qt::Key_J){
             jugador2->resetBanLeft();
         }
