@@ -1,7 +1,10 @@
 #include "niveles.h"
 #include "ui_niveles.h"
-#include <mapa_gameplay.h>
+#include "mapa_gameplay.h"
 #include "menupausa.h"
+#include "bolafuego.h"
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 
 extern short int nivel, nivelActual;
 extern short int num_jugadores;
@@ -15,6 +18,7 @@ Niveles::Niveles(QWidget *parent) :
 {
     ui->setupUi(this);
     pj2 = false;//Inicializacion de la variable del segundo jugador por defecto apagado
+    srand(time(0));
 
     //Esconde el cursor
     QCursor cursor = QCursor(Qt::BlankCursor);
@@ -66,6 +70,9 @@ Niveles::Niveles(QWidget *parent) :
     la batalla, siendo uno de estos si el Boss ha sido derrotado.*/
     connect(&timer, SIGNAL(timeout()), this, SLOT(Level_Events()));
     timer.start(100);
+
+    connect(&bolas, SIGNAL(timeout()), this, SLOT(spawn_bolas()));
+    bolas.start(1000);
 }
 
 Niveles::~Niveles()
@@ -128,18 +135,21 @@ void Niveles::NivelSetup()
     boss = new Boss(this,nivel);//Se le pasa al boss el numero del nivel para determinar el tipo de boss que toca
     escena->addItem(boss);//Se añade el boss a la escena
     boss->vida.setPos(742,30);
+    boss->vida.setZValue(1);
     escena->addItem(&boss->vida);//Se añade a la escena la barra de vida del Boss
 
     //Se añade a la escena al jugador con las posiciones previamente seleccionadas
     jugadorBatalla->setPos(jugadorBatalla->GetX0(),jugadorBatalla->GetY0());
     escena->addItem(jugadorBatalla);
     jugadorBatalla->vida.setPos(90,28);
+    jugadorBatalla->vida.setZValue(1);
     escena->addItem(&jugadorBatalla->vida);//Se añade la barra de vida del jugador a la escena
     if(num_jugadores==2){
         //En el caso de que haya dos jugadores se añade al jugador2 con las posiciones previamente seleccionadas
         jugadorBatalla2->setPos(jugadorBatalla2->GetX0(),jugadorBatalla2->GetY0());
         escena->addItem(jugadorBatalla2);
         jugadorBatalla2->vida.setPos(146,96);
+        jugadorBatalla2->vida.setZValue(1);
         escena->addItem(&jugadorBatalla2->vida);//Se añade la barra de vida del jugador a la escena
         /*En el caso de que hayan dos jugadores al label interfaz se le añadira una imagen de interfaz que tiene
         un diseño para las barras de vida de los dos jugadores*/
@@ -220,6 +230,17 @@ void Niveles::keyReleaseEvent(QKeyEvent *event)
     else if (event->key() == Qt::Key_H){
         jugadorBatalla2->resetBanAttack();
     }
+}
+
+void Niveles::spawn_bolas()
+{
+    bolaFuego * bola = new bolaFuego(this, 1, 2);
+    bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
+    int x = 1+(rand()%1000), y = 0;
+    bola->setX0(x);
+    bola->setY0(y);
+    bola->setPos(x, y);
+    escena->addItem(bola);
 }
 
 void Niveles::Controles()

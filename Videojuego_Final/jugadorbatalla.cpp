@@ -9,8 +9,9 @@ extern Boss *boss;
 JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
 {
     //Variables fisicas
-    vx=5;
-    xFinal=x0;
+    vx=7;
+    xFinal = 0;
+    t = 0;
 
     //Variables para la animacion del personaje
     columnas = 0;
@@ -55,7 +56,6 @@ JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
 
 void JugadorBatalla::PararTimers()
 {
-
     reset_golpe();
     resetBanLeft();
     resetBanRight();
@@ -100,11 +100,13 @@ void JugadorBatalla::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 }
 
 void JugadorBatalla::setX(){
-    if(xFinal>=5){
+    if(fila==0 or fila==168)
+        t = 0;
+    else if(xFinal >= 7)
         return;
-    }
-    xFinal+=(vx*dt)-(0.5*pow(dt,2));
-    if(fila==0 or fila==168) xFinal=0;
+    xFinal = (vx*t)-(0.5*pow(t,2));
+    qDebug()<<t<<" X: "<<xFinal;
+    t += 0.03;
 }
 
 void JugadorBatalla::Actualizacion()
@@ -133,10 +135,11 @@ void JugadorBatalla::moveLeft()
     {
         reset_golpe();
         ultimoEstado = 1;
-        if(fila!=336 and fila!=0) xFinal=0;
+        if(fila!=336 and fila!=0)
+            t = 0;
         fila=336;
         if(x()>42){
-        setPos(x()-xFinal,y());
+            setPos(x()-xFinal,y());
         }
     }
 }
@@ -147,7 +150,8 @@ void JugadorBatalla::moveRight()
     {
         reset_golpe();
         ultimoEstado = 2;
-        if(fila!=504 and fila!=168) xFinal=0;
+        if(fila!=504 and fila!=168)
+            t = 0;
         fila = 504;
         if(x()<930){
         setPos(x()+xFinal,y());
@@ -195,7 +199,8 @@ void JugadorBatalla::Spell()
                 Hechizo->play();
 
                 //Añadir bola de fuego
-                bolaFuego *bola = new bolaFuego(this, ultimoEstado);
+                bolaFuego *bola = new bolaFuego(this, ultimoEstado, 1);
+                bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
                 bola->setX0(x());
                 bola->setY0(y());
                 bola->setPos(bola->getX0(),bola->getY0());

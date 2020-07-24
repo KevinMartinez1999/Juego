@@ -100,12 +100,14 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
         jugador->setPos(PosX0,PosY0);
         escena->addItem(jugador);
         jugador->vida.setPos(jugador->x()-30,jugador->y()-50);
+        jugador->vida.setZValue(2);
 
         jugador2 = new Jugador(this);
         jugador2->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER2.png");//Asignamos el determinado sprite al jugador
         jugador2->setPos(PosX02,PosY02);
         escena->addItem(jugador2);
         jugador2->vida.setPos(jugador2->x()-30,jugador2->y()-50);
+        jugador2->vida.setZValue(2);
     }
     else{
         jugador = new Jugador(this);
@@ -114,6 +116,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
         escena->addItem(jugador);
         //escena->addItem(&jugador->box);
         jugador->vida.setPos(jugador->x()-30,jugador->y()-50);
+        jugador->vida.setZValue(2);
     }
 
     //Tercera capa del mapa

@@ -36,8 +36,12 @@ private:
     QGraphicsPixmapItem *fondo;
     QMediaPlaylist Lista;
     QMediaPlayer musicaNivel;
-    QTimer timer;
+    QTimer timer, bolas;
     bool pj2;
+
+public slots:
+    void spawn_bolas();
+
 private slots:
     void Controles();
     void Level_Events();

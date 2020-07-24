@@ -331,5 +331,6 @@ void Jugador::spawn()
     enemigo->vida.setPos(enemigo->x(),enemigo->y());
     //scene()->addItem(&enemigo->box);
     scene()->addItem(&enemigo->vida);
+    enemigo->vida.setZValue(2);
     lista.append(enemigo); //Se añade a una lista el enemigo para controlar cuando enemigos hay
 }

@@ -56,7 +56,7 @@ public slots:
     void tiempo(){TiempoHechizo=true;}
 private:
     float columnas,fila,ancho,alto;
-    double x0,y0,xFinal,vx;
+    double x0,y0,xFinal,vx, t;
     bool TiempoHechizo;
     bool banLeft;
     bool banRight;
