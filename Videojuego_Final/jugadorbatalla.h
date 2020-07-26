@@ -14,14 +14,15 @@ class JugadorBatalla: public QObject, public QGraphicsPixmapItem
     Q_OBJECT
 public:
     explicit JugadorBatalla(QObject *parent = nullptr);
-    inline bool setBanLeft() {return banLeft = true;}
-    inline bool setBanRight() {return banRight = true;}
-    inline bool resetBanLeft() {return banLeft = false;}
-    inline bool resetBanRight() {return banRight = false;}
+    inline void setBanLeft() {banLeft = true;}
+    inline void setBanRight() {banRight = true;}
+    inline void resetBanLeft() {banLeft = false;}
+    inline void resetBanRight() {banRight = false;}
     inline void setBanAttack() {banAttack = true;}
     inline void resetBanAttack() {banAttack = false;}
     inline void setBanSpell(){banSpell = true;}
     inline void resetBanSpell(){banSpell = false;}
+    inline void setBanJump(){banJump = true;}
 
     void setX0(double X){x0=X;}
     void setY0(double Y){y0=Y;}
@@ -50,14 +51,16 @@ public slots:
     void Actualizacion(); //Actualiza el sprite
     void moveLeft();//Señales para el movimiento del jugador
     void moveRight();
+    void Jump();
     void Attack();
     void Spell();
     void pos();
     void tiempo(){TiempoHechizo=true;}
 private:
     float columnas,fila,ancho,alto;
-    double x0,y0,xFinal,vx, t;
+    double x0,y0,xFinal,vx,t,tsalto;
     bool TiempoHechizo;
+    bool banJump;
     bool banLeft;
     bool banRight;
     bool banSpell;

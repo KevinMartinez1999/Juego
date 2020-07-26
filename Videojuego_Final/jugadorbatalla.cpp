@@ -24,6 +24,7 @@ JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
     banRight = false;
     banAttack = false;
     banSpell = false;
+    banJump = false;
     TiempoHechizo=true;
     ultimoEstado = 1;
     posAnterior = QPoint(0,0);
@@ -34,6 +35,7 @@ JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
     //Timers para los slots de movimiento y fisicas del jugador
     connect(&mov, SIGNAL(timeout()), this, SLOT(moveLeft()));
     connect(&mov, SIGNAL(timeout()), this, SLOT(moveRight()));
+    connect(&mov, SIGNAL(timeout()), this, SLOT(Jump()));
     connect(&mov, SIGNAL(timeout()), this, SLOT(setX()));
     connect(&mov, SIGNAL(timeout()), this, SLOT(Attack()));
     connect(&mov, SIGNAL(timeout()), this, SLOT(Spell()));
@@ -105,7 +107,6 @@ void JugadorBatalla::setX(){
     else if(xFinal >= 7)
         return;
     xFinal = (vx*t)-(0.5*pow(t,2));
-    qDebug()<<t<<" X: "<<xFinal;
     t += 0.03;
 }
 
@@ -155,6 +156,22 @@ void JugadorBatalla::moveRight()
         fila = 504;
         if(x()<930){
         setPos(x()+xFinal,y());
+    }
+    }
+}
+
+void JugadorBatalla::Jump()
+{
+    if(banJump){
+    tsalto+=0.1;
+    //Salto con un angulo de 90°
+    double X = (10*0*tsalto); //0 => cos(90°)
+    double Y = (10*1*tsalto)-(0.5*9.81*pow(tsalto,2)); //1 => sen(90°)
+    setPos(x()-X,y()-Y);
+    if(y()>=y0){
+        setPos(x(),y0);
+        banJump=false;
+        tsalto=0;
     }
     }
 }
