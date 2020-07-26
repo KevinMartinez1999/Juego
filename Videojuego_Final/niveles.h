@@ -9,6 +9,7 @@
 #include <QMediaPlaylist>
 #include <QMediaPlayer>
 #include <fstream>
+#include <QMessageBox>
 #include <iostream>
 #include "jugadorbatalla.h"
 #include "boss.h"
@@ -41,8 +42,11 @@ private:
 
 public slots:
     void spawn_bolas();
+    void spawn_bolas2();
 
 private slots:
+    void muerte();
+    void verificar_muerte();
     void Controles();
     void Level_Events();
     void on_Opciones_clicked();

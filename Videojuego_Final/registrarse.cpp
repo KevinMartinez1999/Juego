@@ -85,7 +85,13 @@ void Registrarse::on_registrarse_clicked()
     user = ui->usuario->text();
     pass = ui->clave->text();
     if(user==NULL || pass==NULL){
-        QMessageBox::critical(this, "Registro", "Registro invalido.");
+        QMessageBox msgBox;
+        msgBox.setText("Registro Invalido.");
+        msgBox.setWindowTitle("HellBurn");
+        msgBox.setWindowIcon(QIcon(":/Imagenes/ICONO.png"));
+        msgBox.setStyleSheet("background-color:#211b18;"
+                             "color:white;");
+        msgBox.exec();
         ui->usuario->clear();
         ui->clave->clear();
         return;
@@ -97,7 +103,13 @@ void Registrarse::on_registrarse_clicked()
     file.flush();
     file.close();
     //Ventana emergente que notifica que el registro fue exitoso
-    QMessageBox::information(this, "Registro", "Registrado correctamente");
+    QMessageBox msgBox;
+    msgBox.setText("Registrado correctamente.");
+    msgBox.setWindowTitle("HellBurn");
+    msgBox.setWindowIcon(QIcon(":/Imagenes/ICONO.png"));
+    msgBox.setStyleSheet("background-color:#211b18;"
+                         "color:white;");
+    msgBox.exec();
     Widget *w = new Widget;
     w->show();
     close();

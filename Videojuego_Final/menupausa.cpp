@@ -28,7 +28,6 @@ MenuPausa::MenuPausa(QWidget *parent,bool ventana) :
 
     ui->Marco->raise();
     ui->Reanudar->raise();
-    ui->Guardar->raise();
     ui->Controles->raise();
     ui->Cerrar_Sesion->raise();
 }
@@ -62,12 +61,6 @@ void MenuPausa::on_Reanudar_clicked()
         if (num_jugadores == 2)
             jugadorBatalla2->ReiniciarTimers();}
     delete this;
-}
-
-
-void MenuPausa::on_Guardar_clicked()
-{
-
 }
 
 void MenuPausa::on_Controles_clicked()

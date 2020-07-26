@@ -24,7 +24,8 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     pj2 = false; //Inicializacion de la variable del segundo jugador por defecto apagado
 
     //Esconde el cursor
-    cursor = QCursor(Qt::BlankCursor);
+    QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
+    cursor = QCursor(Pixmap_Cursor,0,0);
     setCursor(cursor);
 
     //Musica de fondo
@@ -380,7 +381,11 @@ void Mapa_GamePlay::verificar_muerte()
     if (num_jugadores == 2){
         if (jugador->muerto and jugador2->muerto){
             QMessageBox msgBox;
-            msgBox.setText("You Are Dead.");
+            msgBox.setText("Has sido derrotado.");
+            msgBox.setWindowTitle("HellBurn");
+            msgBox.setWindowIcon(QIcon(":/Imagenes/ICONO.png"));
+            msgBox.setStyleSheet("background-color:#211b18;"
+                                 "color:white;");
             msgBox.exec();
 
             Menu_partida * menu = new Menu_partida;
@@ -392,7 +397,11 @@ void Mapa_GamePlay::verificar_muerte()
     else{
         if (jugador->muerto){
             QMessageBox msgBox;
-            msgBox.setText("You Are Dead.");
+            msgBox.setText("Has sido derrotado.");
+            msgBox.setWindowTitle("HellBurn");
+            msgBox.setWindowIcon(QIcon(":/Imagenes/ICONO.png"));
+            msgBox.setStyleSheet("background-color:#211b18;"
+                                 "color:white;");
             msgBox.exec();
 
             Menu_partida * menu = new Menu_partida;

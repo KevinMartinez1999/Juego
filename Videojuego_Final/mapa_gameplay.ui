@@ -87,7 +87,7 @@ border-image: url(:/Imagenes/BOTONGRISPUSH.png);
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="Imagenes.qrc">:/Imagenes/TECLASMAPA.png</pixmap>
+    <pixmap resource="Imagenes.qrc">:/Imagenes/TUTORIALMAPA.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>

@@ -9,7 +9,7 @@ extern Boss *boss;
 JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
 {
     //Variables fisicas
-    vx=7;
+    vx=5;
     xFinal = 0;
     t = 0;
 
@@ -26,6 +26,7 @@ JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
     banSpell = false;
     banJump = false;
     TiempoHechizo=true;
+    muerto=false;
     ultimoEstado = 1;
     posAnterior = QPoint(0,0);
 
@@ -104,7 +105,7 @@ void JugadorBatalla::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 void JugadorBatalla::setX(){
     if(fila==0 or fila==168)
         t = 0;
-    else if(xFinal >= 7)
+    else if(t >= 1.5)
         return;
     xFinal = (vx*t)-(0.5*pow(t,2));
     t += 0.03;

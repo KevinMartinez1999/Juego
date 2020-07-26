@@ -21,7 +21,6 @@ public:
     bool VentanaPausada;
 
 private slots:
-    void on_Guardar_clicked();
 
     void on_Controles_clicked();
 

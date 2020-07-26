@@ -55,5 +55,7 @@
         <file>Musica/knifes_boton.mp3</file>
         <file>Imagenes/ENEMIGOS.png</file>
         <file>Imagenes/ENEMIGOS2.png</file>
+        <file>Imagenes/TUTORIALBOSS.png</file>
+        <file>Imagenes/TUTORIALMAPA.png</file>
     </qresource>
 </RCC>

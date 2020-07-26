@@ -89,7 +89,13 @@ void Widget::on_login_clicked()
     ifstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
     if (!file.is_open())
     {
-        QMessageBox::critical(this, "Login", "Login fallido o el usuario no existe.");
+        QMessageBox msgBox;
+        msgBox.setText("Contraseña o usuario incorrecto.");
+        msgBox.setWindowTitle("HellBurn");
+        msgBox.setWindowIcon(QIcon(":/Imagenes/ICONO.png"));
+        msgBox.setStyleSheet("background-color:#211b18;"
+                             "color:white;");
+        msgBox.exec();
 
         //Se borran las casillas de usuario y contraseña para una nueva
         ui->usuario->clear();
@@ -116,7 +122,13 @@ void Widget::on_login_clicked()
     else
     {
         //Muestra mensaje de error en caso de un login fallido
-        QMessageBox::critical(this, "Login", "Login fallido o el usuario no existe.");
+        QMessageBox msgBox;
+        msgBox.setText("Contraseña o usuario incorrecto.");
+        msgBox.setWindowTitle("HellBurn");
+        msgBox.setWindowIcon(QIcon(":/Imagenes/ICONO.png"));
+        msgBox.setStyleSheet("background-color:#211b18;"
+                             "color:white;");
+        msgBox.exec();
         ui->usuario->clear();
         ui->clave->clear();
     }

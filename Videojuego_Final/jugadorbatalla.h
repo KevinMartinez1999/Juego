@@ -35,7 +35,9 @@ public:
     void reset_golpe();
     bool golpe_izq = false;
     bool golpe_der = false;
+
     bool banAttack;
+    bool muerto;
 
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);

@@ -69,6 +69,8 @@ Niveles::Niveles(QWidget *parent) :
     /*El slot Level_Events se encargará de periodicamente revisar los distintos eventos que puedan ocurrir durante
     la batalla, siendo uno de estos si el Boss ha sido derrotado.*/
     connect(&timer, SIGNAL(timeout()), this, SLOT(Level_Events()));
+    connect(&timer, SIGNAL(timeout()), this, SLOT(verificar_muerte()));
+    connect(&timer, SIGNAL(timeout()), this, SLOT(muerte()));
     timer.start(100);
 
     connect(&bolas, SIGNAL(timeout()), this, SLOT(spawn_bolas()));
@@ -158,6 +160,64 @@ void Niveles::NivelSetup()
     //Si es solo un jugador se añadira el diseño con solo una barra de vida
     else ui->Interfaz->setPixmap(QPixmap(":/Imagenes/INTERFAZBOSS1.png"));
 }
+void Niveles::muerte()
+{
+    if (num_jugadores == 2){
+        if (jugadorBatalla->health <= 1){
+            jugadorBatalla->muerto=true;
+            jugadorBatalla->hide();
+            jugadorBatalla->vida.hide();
+        }
+        if (jugadorBatalla2->health <= 1){
+            jugadorBatalla2->muerto=true;
+            jugadorBatalla2->hide();
+            jugadorBatalla2->vida.hide();
+        }
+       }
+    else{
+        if (jugadorBatalla->health <= 1){
+            jugadorBatalla->muerto=true;
+            jugadorBatalla->hide();
+            jugadorBatalla->vida.hide();
+        }
+    }
+}
+
+void Niveles::verificar_muerte()
+{
+    if (num_jugadores == 2){
+        if (jugadorBatalla->muerto and jugadorBatalla2->muerto){
+            QMessageBox msgBox;
+            msgBox.setText("Has sido derrotado.");
+            msgBox.setWindowTitle("HellBurn");
+            msgBox.setWindowIcon(QIcon(":/Imagenes/ICONO.png"));
+            msgBox.setStyleSheet("background-color:#211b18;"
+                                 "color:white;");
+            msgBox.exec();
+
+            Mapa_GamePlay *mapa=new Mapa_GamePlay;
+            mapa->show();
+            close();
+            delete this;
+        }
+    }
+    else{
+        if (jugadorBatalla->muerto){
+            QMessageBox msgBox;
+            msgBox.setText("Has sido derrotado.");
+            msgBox.setWindowTitle("HellBurn");
+            msgBox.setWindowIcon(QIcon(":/Imagenes/ICONO.png"));
+            msgBox.setStyleSheet("background-color:#211b18;"
+                                 "color:white;");
+            msgBox.exec();
+
+            Mapa_GamePlay *mapa=new Mapa_GamePlay;
+            mapa->show();
+            close();
+            delete this;
+    }
+    }
+}
 /*Las siguientes son las funciones del teclado; existe tanto las teclas para el jugador
 1 como para el jugador 2, pero en el caso de jugador 2, no puede haber movimiento a menos
 que pj2 = true y esto pasa solo si asi lo escoge el usuario en la pantalla anterior del menú,
@@ -181,6 +241,10 @@ void Niveles::keyPressEvent(QKeyEvent *event)
     else if (event->key() == Qt::Key_W){
         jugadorBatalla->setBanJump();
     }
+    //Tecla escape destinada para pausar el juego y ver las opciones
+    else if(event->key() == Qt::Key_Escape){
+        on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
+    }
     /*Estas son las teclas de movimiento para el jugador 2. Solo estan habilitadas si asi
       lo quiere el usuario.*/
     else if(pj2){
@@ -199,10 +263,6 @@ void Niveles::keyPressEvent(QKeyEvent *event)
     else if (event->key() == Qt::Key_I){
         jugadorBatalla2->setBanJump();
     }
-    }
-    //Tecla escape destinada para pausar el juego y ver las opciones
-    else if(event->key() == Qt::Key_Escape){
-        on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
     }
 
 }
@@ -248,6 +308,19 @@ void Niveles::spawn_bolas()
     bola->setPos(x, y);
     escena->addItem(bola);
 }
+
+void Niveles::spawn_bolas2()
+{
+    bolaFuego * bola = new bolaFuego(this, 1, 1);
+    bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
+    int x=1000,y=470;
+    bola->setX0(x);
+    bola->setY0(y);
+    bola->setPos(x, y);
+    escena->addItem(bola);
+}
+
+
 
 void Niveles::Controles()
 {

@@ -82,24 +82,11 @@ border-image: url(:/Imagenes/BOTONGRISPUSH.png);
     <string>REANUDAR</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="Guardar">
-   <property name="geometry">
-    <rect>
-     <x>145</x>
-     <y>80</y>
-     <width>150</width>
-     <height>50</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>GUARDAR PARTIDA</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="Controles">
    <property name="geometry">
     <rect>
      <x>145</x>
-     <y>140</y>
+     <y>80</y>
      <width>150</width>
      <height>50</height>
     </rect>
@@ -112,7 +99,7 @@ border-image: url(:/Imagenes/BOTONGRISPUSH.png);
    <property name="geometry">
     <rect>
      <x>145</x>
-     <y>200</y>
+     <y>140</y>
      <width>150</width>
      <height>50</height>
     </rect>
