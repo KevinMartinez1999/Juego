@@ -5,6 +5,7 @@
 #include "jugador.h"
 #include "muro.h"
 #include "menupausa.h"
+#include "enemigo.h"
 
 extern short int num_jugadores;
 extern QString user, pass;
@@ -13,6 +14,7 @@ extern bool nueva_partida;
 Muro *muro;
 Jugador *jugador, *jugador2;
 short int nivel, nivelActual;
+QList <Enemigo *> listaEnemigos;
 
 Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     QWidget(parent),
@@ -89,6 +91,10 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
 
     CargarPartida();
 
+    //Spawn de los enemigos
+    connect(&enemigos,SIGNAL(timeout()),this,SLOT(spawn()));
+    enemigos.start(7000);
+
     if (num_jugadores == 2){ //Dos jugadores
         pj2 = true; //Se activa la presencia de un jugador dos en mapa
 
@@ -99,6 +105,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
         jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
         jugador->setPos(PosX0,PosY0);
         escena->addItem(jugador);
+        jugador->box.setPos(x()-15,y()+12);
         jugador->vida.setPos(jugador->x()-30,jugador->y()-50);
         jugador->vida.setZValue(2);
 
@@ -106,6 +113,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
         jugador2->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER2.png");//Asignamos el determinado sprite al jugador
         jugador2->setPos(PosX02,PosY02);
         escena->addItem(jugador2);
+        jugador2->box.setPos(x()-15,y()+12);
         jugador2->vida.setPos(jugador2->x()-30,jugador2->y()-50);
         jugador2->vida.setZValue(2);
     }
@@ -114,7 +122,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
         jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
         jugador->setPos(PosX0,PosY0);
         escena->addItem(jugador);
-        //escena->addItem(&jugador->box);
+        jugador->box.setPos(x()-15,y()+12);
         jugador->vida.setPos(jugador->x()-30,jugador->y()-50);
         jugador->vida.setZValue(2);
     }
@@ -348,6 +356,51 @@ void Mapa_GamePlay::Nivel()
     delete this;
 }
 
+void Mapa_GamePlay::spawn()
+{
+    if (listaEnemigos.count() == 5 or nivelActual<=0){ //Maximo 5 enemigos para no colapsar el programa
+        return;
+    }
+
+    //Estas son las posiciones donde va a aparecer los enemigos en el mapa
+    Enemigo * enemigo = new Enemigo(this);
+    switch (cont) {
+    case 0:
+        enemigo->setPos(1095, 1830);
+        cont++;
+        break;
+    case 1:
+        enemigo->setPos(510, 1495);
+        cont++;
+        break;
+    case 2:
+        enemigo->setPos(85, 1700);
+        cont++;
+        break;
+    case 3:
+        enemigo->setPos(1005, 660);
+        cont++;
+        break;
+    case 4:
+        enemigo->setPos(1875, 1795);
+        cont++;
+        break;
+    case 5:
+        enemigo->setPos(1645, 1210);
+        cont = 0;
+        break;
+    default:
+        break;
+    }
+
+    //El enemigo se añade a la escena con su barra de vida
+    escena->addItem(enemigo);
+    enemigo->vida.setPos(enemigo->x(),enemigo->y());
+    escena->addItem(&enemigo->vida);
+    enemigo->vida.setZValue(2);
+    listaEnemigos.append(enemigo); //Se añade a una lista el enemigo para controlar cuando enemigos hay
+}
+
 void Mapa_GamePlay::ingreso_batalla()
 {
     if (jugador->muerto){
@@ -405,8 +458,6 @@ void Mapa_GamePlay::ActualizarEscena()
 void Mapa_GamePlay::verificar_muerte()
 {
     if (num_jugadores == 2){
-        if(jugador2->muerto)
-            JugadorMuerto->play();
         if (jugador->muerto and jugador2->muerto){
             JugadorMuerto->play();
             QMessageBox msgBox;
@@ -452,6 +503,10 @@ void Mapa_GamePlay::on_Opciones_clicked()
     jugador->PararTimers();
     if (num_jugadores == 2)
         jugador2->PararTimers();
+    QListIterator<Enemigo *>Iterador(listaEnemigos);
+    while(Iterador.hasNext()){
+        Iterador.next()->PararTimers();
     MenuPausa *opciones = new MenuPausa(nullptr,0);
     opciones->show();
+}
 }

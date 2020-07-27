@@ -34,7 +34,7 @@ public:
     bool golpe_aba = false;
     bool banAttack;
 
-    QTimer timer, timer1, enemigos;
+    QTimer timer, timer1;
 
     QGraphicsRectItem box, vida;
     int health;
@@ -62,7 +62,7 @@ public slots:
     void moveDown();
     void Attack();
     void pos();
-    void spawn();
+
 
 private:
     QMediaPlayer *Ataque;

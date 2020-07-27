@@ -5,7 +5,7 @@
 
 extern short int num_jugadores;
 extern Jugador *jugador, *jugador2;
-extern QList <Enemigo *> lista;
+extern QList <Enemigo *> listaEnemigos;
 
 Enemigo::Enemigo(QObject *parent) : QObject(parent)
 {
@@ -159,12 +159,27 @@ void Enemigo::Actualizacion()
     this->update(-ancho/2,-alto/2,ancho,alto);
 }
 
+void Enemigo::sonidos()
+{
+    if(num_jugadores==2){
+        if(jugador->muerto and jugador2->muerto)
+            fantasma->stop();
+        else fantasma->play();
+    }
+    else{
+        if(jugador->muerto)
+            fantasma->stop();
+        else
+             fantasma->play();
+    }
+}
+
 void Enemigo::ataque_enemigo()
 {
-    if (box.collidesWithItem(&jugador->box) and jugador->health > 0){
+    if (box.collidesWithItem(&jugador->box) and !jugador->muerto){
         jugador->health -= 5;
         jugador->vida.setRect(0,0,jugador->health,5);
-        if(jugador->health>=1 and !jugador->muerto)
+        if(!jugador->muerto)
             JugadorAtacado->play();
     }
     else{
@@ -174,14 +189,14 @@ void Enemigo::ataque_enemigo()
         }
     }
     if (num_jugadores == 2){
-        if (box.collidesWithItem(&jugador2->box) and jugador2->health > 0){
+        if (box.collidesWithItem(&jugador2->box) and !jugador2->muerto){
             jugador2->health -= 5;
             jugador2->vida.setRect(0,0,jugador2->health,5);
-            if(jugador2->health>=1 and !jugador2->muerto)
+            if(!jugador2->muerto)
                 JugadorAtacado->play();;
         }
         else{
-            if (jugador2->health < 25){
+            if (jugador2->health <  25){
                 jugador2->health++;
                 jugador2->vida.setRect(0,0,jugador2->health,5);
             }
@@ -196,14 +211,14 @@ void Enemigo::detectar_enemigos()
     if (num_jugadores == 2){
         if (jugador->muerto){
             if (abs(int(x()-jugador2->x())) > 900 or abs(int(y()-jugador2->y())) > 700){
-                lista.removeOne(this);
+                listaEnemigos.removeOne(this);
                 delete this;
                 return;
             }
         }
         else{
             if (abs(int(x()-jugador->x())) > 900 or abs(int(y()-jugador->y())) > 700){
-                lista.removeOne(this);
+                listaEnemigos.removeOne(this);
                 delete this;
                 return;
             }
@@ -211,7 +226,7 @@ void Enemigo::detectar_enemigos()
     }
     else{
         if (abs(int(x()-jugador->x())) > 900 or abs(int(y()-jugador->y())) > 700){
-            lista.removeOne(this);
+            listaEnemigos.removeOne(this);
             //qDebug()<<"Enemigo fuera de rango";
             delete this;
             return;
@@ -242,7 +257,7 @@ void Enemigo::ataque_jugador()
     }
 
     if (health <= 1){
-        lista.removeOne(this);
+        listaEnemigos.removeOne(this);
         delete this;
     }
 }
@@ -260,6 +275,8 @@ void Enemigo::muerte()
             jugador2->hide();
             jugador2->vida.hide();
         }
+        if(jugador->muerto and jugador2->muerto)
+            PararTimers();
     }
     else{
         if (jugador->health <= 1){
@@ -267,7 +284,7 @@ void Enemigo::muerte()
             jugador->hide();
             jugador->vida.hide();
         }
-        if(jugador->muerto and jugador2->muerto)
+        if(jugador->muerto)
             PararTimers();
     }
 }

@@ -42,15 +42,16 @@ bolaFuego::bolaFuego(QObject *parent, short int estado, short int tipo)
 
 }
 
-void bolaFuego::colision(JugadorBatalla *obj)
+bool bolaFuego::colision(JugadorBatalla *obj)
 {
     if (abs(int(x() - obj->x())) < 40 and obj->y() - y() < 50){
         if(obj->health>1)
             obj->JugadorAtacado->play();
         obj->health -= 5;
         obj->vida.setRect(0,0,obj->health,40);
-        delete this;
+        return true;
     }
+    else return false;
 }
 
 QRectF bolaFuego::boundingRect() const
@@ -100,11 +101,14 @@ void bolaFuego::colision_con_boss()
 void bolaFuego::colision_con_jugador()
 {
     if (num_jugadores == 2){
-        colision(jugadorBatalla);
-        colision(jugadorBatalla2);
+        if(colision(jugadorBatalla) and colision(jugadorBatalla2))
+            delete this;
+        else if(colision(jugadorBatalla) or colision(jugadorBatalla2))
+            delete this;
     }
     else
-        colision(jugadorBatalla);
+        if(colision(jugadorBatalla))
+            delete this;
 }
 
 void bolaFuego::Actualizacion()

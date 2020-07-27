@@ -11,6 +11,7 @@
 #include <QMediaPlayer>
 #include <QPushButton>
 #include <QLabel>
+#include <QList>
 #include "jugador.h"
 #include "muro.h"
 #include <QMediaPlaylist>
@@ -44,7 +45,7 @@ private: //Atributos de la clase
     QMediaPlayer *JugadorMuerto;
     QCursor cursor;
     QGraphicsScene *escena;
-    QTimer timer, dead;
+    QTimer timer, dead, enemigos;
     QString nombre;
     QGraphicsPixmapItem *mapa;
     QGraphicsPixmapItem *objetos;  
@@ -58,10 +59,12 @@ private: //Atributos de la clase
  private slots:
     void Tutorial();
     void Nivel();
+    void spawn();
     void ingreso_batalla();
     void ActualizarEscena(); //Centra constantemente la grafica en el jugador
     void verificar_muerte();
     void on_Opciones_clicked();
+
 };
 
 #endif // MAPA_GAMEPLAY_H

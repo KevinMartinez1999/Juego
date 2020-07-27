@@ -179,12 +179,10 @@ void Niveles::muerte()
     if (num_jugadores == 2){
         if (jugadorBatalla->health <= 1){
             jugadorBatalla->muerto=true;
-            JugadorMuerto->play();
             jugadorBatalla->hide();
             jugadorBatalla->vida.hide();
         }
         if (jugadorBatalla2->health <= 1){
-            jugadorBatalla2->muerto=true;
             JugadorMuerto->play();
             jugadorBatalla2->hide();
             jugadorBatalla2->vida.hide();
@@ -193,7 +191,6 @@ void Niveles::muerte()
     else{
         if (jugadorBatalla->health <= 1){
             jugadorBatalla->muerto=true;
-            JugadorMuerto->play();
             jugadorBatalla->hide();
             jugadorBatalla->vida.hide();
         }
@@ -205,6 +202,7 @@ void Niveles::verificar_muerte()
     if (num_jugadores == 2){
         if (jugadorBatalla->muerto and jugadorBatalla2->muerto){
             bolas.stop();
+            JugadorMuerto->play();
             QMessageBox msgBox;
             msgBox.setText("Tu alma ha sido destruida.");
             msgBox.setWindowTitle("HellBurn");
@@ -222,6 +220,7 @@ void Niveles::verificar_muerte()
     else{
         if (jugadorBatalla->muerto){
             bolas.stop();
+            JugadorMuerto->play();
             QMessageBox msgBox;
             msgBox.setText("Tu alma ha sido destruida.");
             msgBox.setWindowTitle("HellBurn");

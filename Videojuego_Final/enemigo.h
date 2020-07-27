@@ -32,7 +32,7 @@ signals:
 
 public slots:
     void Actualizacion(); //Actualiza el sprite
-    void sonidos(){fantasma->play();}
+    void sonidos();
 
     void ataque_enemigo();
     void detectar_enemigos();

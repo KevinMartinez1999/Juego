@@ -1,11 +1,8 @@
 #include "jugador.h"
 #include "muro.h"
-#include "enemigo.h"
 #include "mapa_gameplay.h"
 
 #define X 5
-
-QList <Enemigo *> lista;
 
 extern Muro * muro;
 extern short int nivelActual;
@@ -43,14 +40,8 @@ Jugador::Jugador(QObject *parent) : QObject(parent)
     connect(&timer,SIGNAL(timeout()),this,SLOT(Actualizacion()));
     timer.start(200);
 
-    //Spawn de los enemigos
-    connect(&enemigos,SIGNAL(timeout()),this,SLOT(spawn()));
-    enemigos.start(7000);
-
     //Se crea el HitBox
     box.setRect(0,0,25,25);
-    box.setPos(755,2167);
-    box.hide();
 
     //Barra de vida
     vida.setRect(0,0,health,5);
@@ -124,22 +115,12 @@ void Jugador::PararTimers()
     resetBanAttack();
     timer.stop();
     timer1.stop();
-    enemigos.stop();
-    QListIterator<Enemigo *>Iterador(lista);
-    while(Iterador.hasNext()){
-        Iterador.next()->PararTimers();
-    }
 }
 
 void Jugador::ReiniciarTimers()
 {
     timer.start(200);
     timer1.start(30);
-    enemigos.start(7000);
-    QListIterator<Enemigo *>Iterador(lista);
-    while(Iterador.hasNext()){
-        Iterador.next()->ReiniciarTimers();
-    }
 }
 
 //Las siguientes son las señales de movimiento que funcionan con un timer;
@@ -297,49 +278,4 @@ void Jugador::pos()
         }
     }
     posAnterior = QPoint(x(),y());
-}
-
-void Jugador::spawn()
-{
-    if (lista.count() == 5 or nivelActual<=0){ //Maximo 5 enemigos para no colapsar el programa
-        return;
-    }
-
-    //Estas son las posiciones donde va a aparecer los enemigos en el mapa
-    Enemigo * enemigo = new Enemigo(this);
-    switch (cont) {
-    case 0:
-        enemigo->setPos(1095, 1830);
-        cont++;
-        break;
-    case 1:
-        enemigo->setPos(510, 1495);
-        cont++;
-        break;
-    case 2:
-        enemigo->setPos(85, 1700);
-        cont++;
-        break;
-    case 3:
-        enemigo->setPos(1005, 660);
-        cont++;
-        break;
-    case 4:
-        enemigo->setPos(1875, 1795);
-        cont++;
-        break;
-    case 5:
-        enemigo->setPos(1645, 1210);
-        cont = 0;
-        break;
-    default:
-        break;
-    }
-
-    //El enemigo se añade a la escena con su barra de vida
-    scene()->addItem(enemigo);
-    enemigo->vida.setPos(enemigo->x(),enemigo->y());
-    scene()->addItem(&enemigo->vida);
-    enemigo->vida.setZValue(2);
-    lista.append(enemigo); //Se añade a una lista el enemigo para controlar cuando enemigos hay
 }

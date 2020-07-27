@@ -3,10 +3,12 @@
 #include "widget.h"
 #include "mapa_gameplay.h"
 #include "niveles.h"
+#include "enemigo.h"
 
 extern JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
 extern Jugador *jugador, *jugador2;
 extern short int num_jugadores;
+extern QList <Enemigo *> listaEnemigos;
 
 MenuPausa::MenuPausa(QWidget *parent,bool ventana) :
     QWidget(parent), VentanaPausada(ventana),
@@ -48,7 +50,12 @@ void MenuPausa::closeEvent(QCloseEvent *event)
     if(VentanaPausada==0){
         jugador->ReiniciarTimers();
         if (num_jugadores == 2)
-            jugador2->ReiniciarTimers();}
+            jugador2->ReiniciarTimers();
+        QListIterator<Enemigo *>Iterador(listaEnemigos);
+        while(Iterador.hasNext()){
+            Iterador.next()->ReiniciarTimers();
+        }
+    }
     else{
         jugadorBatalla->ReiniciarTimers();
         if (num_jugadores == 2)
@@ -62,7 +69,12 @@ void MenuPausa::on_Reanudar_clicked()
     if(VentanaPausada==0){
         jugador->ReiniciarTimers();
         if (num_jugadores == 2)
-            jugador2->ReiniciarTimers();}
+            jugador2->ReiniciarTimers();
+        QListIterator<Enemigo *>Iterador(listaEnemigos);
+        while(Iterador.hasNext()){
+            Iterador.next()->ReiniciarTimers();
+        }
+    }
     else{
         jugadorBatalla->ReiniciarTimers();
         if (num_jugadores == 2)

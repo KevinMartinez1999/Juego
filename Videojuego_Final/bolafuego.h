@@ -22,7 +22,7 @@ public:
     inline int getX0() {return x0;}
     inline int getY0() {return y0;}
 
-    void colision(JugadorBatalla * obj);
+    bool colision(JugadorBatalla * obj);
 
     QPixmap Pixmap;
     QRectF boundingRect() const;
