@@ -12,7 +12,7 @@ Widget::Widget(QWidget *parent)
     ui->setupUi(this);
 
     //Sonido al presionar los botones
-    boton.setMedia(QUrl("qrc:/Musica/knifes_boton.mp3"));
+    boton.setMedia(QUrl("qrc:/Musica/ESPADA.mp3"));
     boton.setVolume(100);
 
     /*Sistema de reproducción de gif en el menú:

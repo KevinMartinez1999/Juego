@@ -38,11 +38,15 @@ bolaFuego::bolaFuego(QObject *parent, short int estado, short int tipo)
 
     connect(&animacion, SIGNAL(timeout()), this, SLOT(Actualizacion()));
     animacion.start(150);
+
+
 }
 
 void bolaFuego::colision(JugadorBatalla *obj)
 {
     if (abs(int(x() - obj->x())) < 40 and obj->y() - y() < 50){
+        if(obj->health>1)
+            obj->JugadorAtacado->play();
         obj->health -= 5;
         obj->vida.setRect(0,0,obj->health,40);
         delete this;

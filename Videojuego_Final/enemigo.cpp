@@ -45,6 +45,19 @@ Enemigo::Enemigo(QObject *parent) : QObject(parent)
     //Movimiento del enemigo
     connect(&mov_enemigo, SIGNAL(timeout()), this, SLOT(move()));
     mov_enemigo.start(60);
+
+    //Sonidos
+    JugadorAtacado = new QMediaPlayer(this);
+    JugadorAtacado->setMedia(QUrl("qrc:/Musica/PAIN.wav"));
+    JugadorAtacado->setVolume(100);
+
+    fantasma = new QMediaPlayer(this);
+    fantasma->setMedia(QUrl("qrc:/Musica/FANTASMA.wav"));
+    fantasma->setVolume(100);
+
+    connect(&SonidosTimer, SIGNAL(timeout()), this, SLOT(sonidos()));
+    SonidosTimer.start(5000);
+
 }
 
 /*Verifica cuando los enemigos atacan al jugador por la espalda o de frente
@@ -112,6 +125,7 @@ void Enemigo::PararTimers()
     at_enemigo.stop();
     at_jugador.stop();
     timer.stop();
+    SonidosTimer.stop();
 }
 
 QRectF Enemigo::boundingRect() const
@@ -150,6 +164,8 @@ void Enemigo::ataque_enemigo()
     if (box.collidesWithItem(&jugador->box) and jugador->health > 0){
         jugador->health -= 5;
         jugador->vida.setRect(0,0,jugador->health,5);
+        if(jugador->health>=1 and !jugador->muerto)
+            JugadorAtacado->play();
     }
     else{
         if (jugador->health < 25){
@@ -161,6 +177,8 @@ void Enemigo::ataque_enemigo()
         if (box.collidesWithItem(&jugador2->box) and jugador2->health > 0){
             jugador2->health -= 5;
             jugador2->vida.setRect(0,0,jugador2->health,5);
+            if(jugador2->health>=1 and !jugador2->muerto)
+                JugadorAtacado->play();;
         }
         else{
             if (jugador2->health < 25){
@@ -249,6 +267,8 @@ void Enemigo::muerte()
             jugador->hide();
             jugador->vida.hide();
         }
+        if(jugador->muerto and jugador2->muerto)
+            PararTimers();
     }
 }
 

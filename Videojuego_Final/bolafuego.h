@@ -6,6 +6,7 @@
 #include <QBrush>
 #include <cmath>
 #include <QTimer>
+#include <QMediaPlayer>
 #include "jugadorbatalla.h"
 
 class bolaFuego : public QObject, public QGraphicsPixmapItem

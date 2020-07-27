@@ -52,10 +52,15 @@
         <file>Imagenes/TECLAS.png</file>
         <file>Imagenes/TECLASMAPA.png</file>
         <file>Imagenes/BOLAFUEGO.png</file>
-        <file>Musica/knifes_boton.mp3</file>
+        <file>Musica/ESPADA.mp3</file>
         <file>Imagenes/ENEMIGOS.png</file>
         <file>Imagenes/ENEMIGOS2.png</file>
         <file>Imagenes/TUTORIALBOSS.png</file>
         <file>Imagenes/TUTORIALMAPA.png</file>
+        <file>Musica/PAIN.wav</file>
+        <file>Musica/MUERTO.mp3</file>
+        <file>Imagenes/TUTORIALMAPA2.png</file>
+        <file>Musica/GANAR.wav</file>
+        <file>Musica/FANTASMA.wav</file>
     </qresource>
 </RCC>

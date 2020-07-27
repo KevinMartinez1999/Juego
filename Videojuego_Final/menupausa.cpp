@@ -14,6 +14,11 @@ MenuPausa::MenuPausa(QWidget *parent,bool ventana) :
 {
     ui->setupUi(this);
     cerrar_sesion=false;
+
+    //Sonido al presionar los botones
+    boton.setMedia(QUrl("qrc:/Musica/ESPADA.mp3"));
+    boton.setVolume(100);
+
     QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
     QCursor cursor = QCursor(Pixmap_Cursor,0,0);
     setCursor(cursor);
@@ -39,6 +44,7 @@ MenuPausa::~MenuPausa()
 
 void MenuPausa::closeEvent(QCloseEvent *event)
 {
+    boton.play();
     if(VentanaPausada==0){
         jugador->ReiniciarTimers();
         if (num_jugadores == 2)
@@ -52,6 +58,7 @@ void MenuPausa::closeEvent(QCloseEvent *event)
 
 void MenuPausa::on_Reanudar_clicked()
 {
+    boton.play();
     if(VentanaPausada==0){
         jugador->ReiniciarTimers();
         if (num_jugadores == 2)

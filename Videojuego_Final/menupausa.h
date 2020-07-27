@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QMovie>
+#include <QMediaPlayer>
 #include <QCloseEvent>
 namespace Ui {
 class MenuPausa;
@@ -32,6 +33,7 @@ private:
     Ui::MenuPausa *ui;
     QMovie *movie;
     QLabel *w;
+    QMediaPlayer boton;
 };
 
 #endif // MENUPAUSA_H

@@ -38,9 +38,10 @@ public:
 
 private: //Atributos de la clase
     Ui::Mapa_GamePlay *ui;
-    QMediaPlayer * botonSound;
+    QMediaPlayer botonSound;
     QMediaPlaylist lista;
     QMediaPlayer ambiente;
+    QMediaPlayer *JugadorMuerto;
     QCursor cursor;
     QGraphicsScene *escena;
     QTimer timer, dead;
@@ -50,12 +51,12 @@ private: //Atributos de la clase
     QLabel *aviso;
     QPushButton *boton;
     int BossesMuertos;
-    int PosX0,PosY0,PosX02,PosY02;
+    int PosX0,PosY0,PosX02,PosY02,cont=0;
     int Xpos,YPos;
-    bool pj2;
+    bool pj2,freeze,tutorial;
 
  private slots:
-    void Controles();
+    void Tutorial();
     void Nivel();
     void ingreso_batalla();
     void ActualizarEscena(); //Centra constantemente la grafica en el jugador

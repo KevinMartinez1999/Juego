@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QGraphicsPixmapItem>
 #include <QTimer>
+#include <QMediaPlayer>
 #include <QPainter>
 #include <cmath>
 
@@ -64,6 +65,7 @@ public slots:
     void spawn();
 
 private:
+    QMediaPlayer *Ataque;
     bool banLeft;
     bool banRight;
     bool banUp;

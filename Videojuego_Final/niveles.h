@@ -9,8 +9,8 @@
 #include <QMediaPlaylist>
 #include <QMediaPlayer>
 #include <fstream>
-#include <QMessageBox>
 #include <iostream>
+#include <QMessageBox>
 #include "jugadorbatalla.h"
 #include "boss.h"
 
@@ -37,17 +37,19 @@ private:
     QGraphicsPixmapItem *fondo;
     QMediaPlaylist Lista;
     QMediaPlayer musicaNivel;
+    QMediaPlayer *JugadorMuerto,*victoria;
     QTimer timer, bolas;
+    int cont=0;
     bool pj2;
+    bool freeze,tutorial;
 
 public slots:
     void spawn_bolas();
-    void spawn_bolas2();
 
 private slots:
     void muerte();
     void verificar_muerte();
-    void Controles();
+    void Tutorial();
     void Level_Events();
     void on_Opciones_clicked();
 };

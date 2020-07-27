@@ -15,7 +15,7 @@ Menu_partida::Menu_partida(QWidget *parent) :
     ui->setupUi(this);
 
     //Sonido al presionar los botones
-    boton.setMedia(QUrl("qrc:/Musica/knifes_boton.mp3"));
+    boton.setMedia(QUrl("qrc:/Musica/ESPADA.mp3"));
     boton.setVolume(100);
 
     /*Sistema de reproducción de gif en el menú:
@@ -92,8 +92,8 @@ void Menu_partida::on_volver_clicked()
 
 void Menu_partida::on_nueva_partida_clicked()
 {
-    nueva_partida = true;
     boton.play();//Sonido del botón
+    nueva_partida = true;
     musica->stop();
     delete w;
     delete movie;
@@ -121,10 +121,11 @@ void Menu_partida::on_nueva_partida_clicked()
 
 void Menu_partida::on_cargar_partida_clicked()
 {
+    boton.play();//Sonido del botón
+
     nueva_partida = false;
     /*Botón en el que se implementara la función que nos permitirá leer los datos guardados del
      jugador y así generar una partida exactamente igual a como se guardó.*/
-    boton.play();//Sonido del botón
     musica->stop();
     delete w;
     delete movie;

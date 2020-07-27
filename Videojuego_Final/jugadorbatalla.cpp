@@ -55,6 +55,15 @@ JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
     Hechizo->setMedia(QUrl("qrc:/Musica/FUEGO.wav"));
     Hechizo->setVolume(100);
 
+    //Sonido de ataque
+    Ataque = new QMediaPlayer(this);
+    Ataque->setMedia(QUrl("qrc:/Musica/ESPADA.mp3"));
+    Ataque->setVolume(100);
+
+    //Sonido de daño
+    JugadorAtacado = new QMediaPlayer(this);
+    JugadorAtacado->setMedia(QUrl("qrc:/Musica/PAIN.wav"));
+    JugadorAtacado->setVolume(100);
 }
 
 void JugadorBatalla::PararTimers()
@@ -79,6 +88,7 @@ void JugadorBatalla::ReiniciarTimers()
 
 void JugadorBatalla::reset_golpe()
 {
+    Ataque->stop();
     golpe_izq = false;
     golpe_der = false;
 }
@@ -194,7 +204,11 @@ void JugadorBatalla::Attack()
         default:
             break;
         }
+        if(!muerto)
+            Ataque->play();
     }
+    if(muerto)
+        Ataque->stop();
 }
 
 void JugadorBatalla::Spell()

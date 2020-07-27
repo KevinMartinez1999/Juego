@@ -9,6 +9,7 @@
 extern short int nivel, nivelActual;
 extern short int num_jugadores;
 extern QString user,pass;
+extern bool nueva_partida;
 JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
 Boss *boss;
 
@@ -18,6 +19,8 @@ Niveles::Niveles(QWidget *parent) :
 {
     ui->setupUi(this);
     pj2 = false;//Inicializacion de la variable del segundo jugador por defecto apagado
+    freeze=false;
+    tutorial=false;
     srand(time(0));
 
     //Esconde el cursor
@@ -74,7 +77,17 @@ Niveles::Niveles(QWidget *parent) :
     timer.start(100);
 
     connect(&bolas, SIGNAL(timeout()), this, SLOT(spawn_bolas()));
-    bolas.start(1000);
+    if(nivel!=0)
+        bolas.start(1000);
+
+    //Sonidos
+    JugadorMuerto = new QMediaPlayer(this);
+    JugadorMuerto->setMedia(QUrl("qrc:/Musica/MUERTO.mp3"));
+    JugadorMuerto->setVolume(100);
+
+    victoria = new QMediaPlayer(this);
+    victoria->setMedia(QUrl("qrc:/Musica/GANAR.wav"));
+    victoria->setVolume(100);
 }
 
 Niveles::~Niveles()
@@ -96,7 +109,8 @@ void Niveles::NivelSetup()
             jugadorBatalla2->setY0(455);
         }
         ui->Controles->show(); //Se muestra la ayuda
-        QTimer::singleShot(500,this,SLOT(Controles()));
+        tutorial=true;
+        freeze=true;
     }
     else if(nivel==1){
         //Si el nivel==1 se prepararan en la escena los elementos del primer nivel
@@ -165,11 +179,13 @@ void Niveles::muerte()
     if (num_jugadores == 2){
         if (jugadorBatalla->health <= 1){
             jugadorBatalla->muerto=true;
+            JugadorMuerto->play();
             jugadorBatalla->hide();
             jugadorBatalla->vida.hide();
         }
         if (jugadorBatalla2->health <= 1){
             jugadorBatalla2->muerto=true;
+            JugadorMuerto->play();
             jugadorBatalla2->hide();
             jugadorBatalla2->vida.hide();
         }
@@ -177,6 +193,7 @@ void Niveles::muerte()
     else{
         if (jugadorBatalla->health <= 1){
             jugadorBatalla->muerto=true;
+            JugadorMuerto->play();
             jugadorBatalla->hide();
             jugadorBatalla->vida.hide();
         }
@@ -187,14 +204,15 @@ void Niveles::verificar_muerte()
 {
     if (num_jugadores == 2){
         if (jugadorBatalla->muerto and jugadorBatalla2->muerto){
+            bolas.stop();
             QMessageBox msgBox;
-            msgBox.setText("Has sido derrotado.");
+            msgBox.setText("Tu alma ha sido destruida.");
             msgBox.setWindowTitle("HellBurn");
             msgBox.setWindowIcon(QIcon(":/Imagenes/ICONO.png"));
             msgBox.setStyleSheet("background-color:#211b18;"
                                  "color:white;");
             msgBox.exec();
-
+            nueva_partida=false;
             Mapa_GamePlay *mapa=new Mapa_GamePlay;
             mapa->show();
             close();
@@ -203,19 +221,33 @@ void Niveles::verificar_muerte()
     }
     else{
         if (jugadorBatalla->muerto){
+            bolas.stop();
             QMessageBox msgBox;
-            msgBox.setText("Has sido derrotado.");
+            msgBox.setText("Tu alma ha sido destruida.");
             msgBox.setWindowTitle("HellBurn");
             msgBox.setWindowIcon(QIcon(":/Imagenes/ICONO.png"));
             msgBox.setStyleSheet("background-color:#211b18;"
                                  "color:white;");
             msgBox.exec();
-
+            nueva_partida=false;
             Mapa_GamePlay *mapa=new Mapa_GamePlay;
             mapa->show();
             close();
             delete this;
     }
+    }
+}
+
+void Niveles::Tutorial()
+{
+    cont++;
+    if(cont==1)
+        ui->Controles->setPixmap(QPixmap(":/Imagenes/TECLAS.png"));
+    else if(cont==2){
+        ui->Controles->hide();
+        tutorial=false;
+        freeze=false;
+        bolas.start(1000);
     }
 }
 /*Las siguientes son las funciones del teclado; existe tanto las teclas para el jugador
@@ -225,46 +257,52 @@ si no se escoge asi las teclas no van a tener ningun efecto cuando se este jugan
 
 void Niveles::keyPressEvent(QKeyEvent *event)
 {
-    //Segun la tecla que se presione se habilita su respectiva bandera de movimiento
-    if (event->key() == Qt::Key_A){
-        jugadorBatalla->setBanLeft();
+    if(!freeze){
+        //Segun la tecla que se presione se habilita su respectiva bandera de movimiento
+        if (event->key() == Qt::Key_A){
+            jugadorBatalla->setBanLeft();
+        }
+        else if (event->key() == Qt::Key_D){
+            jugadorBatalla->setBanRight();
+        }
+        else if (event->key() == Qt::Key_F){
+            jugadorBatalla->setBanAttack();
+        }
+        else if (event->key() == Qt::Key_C){
+            jugadorBatalla->setBanSpell();
+        }
+        else if (event->key() == Qt::Key_W){
+            jugadorBatalla->setBanJump();
+        }
+        //Tecla escape destinada para pausar el juego y ver las opciones
+        else if(event->key() == Qt::Key_Escape){
+            on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
+        }
+        /*Estas son las teclas de movimiento para el jugador 2. Solo estan habilitadas si asi
+          lo quiere el usuario.*/
+        else if(pj2){
+        if(event->key()==Qt::Key_J){
+            jugadorBatalla2->setBanLeft();
+        }
+        else if(event->key()==Qt::Key_L){
+            jugadorBatalla2->setBanRight();
+        }
+        else if (event->key() == Qt::Key_H){
+            jugadorBatalla2->setBanAttack();
+        }
+        else if (event->key() == Qt::Key_N){
+            jugadorBatalla2->setBanSpell();
+        }
+        else if (event->key() == Qt::Key_I){
+            jugadorBatalla2->setBanJump();
+        }
+        }
     }
-    else if (event->key() == Qt::Key_D){
-        jugadorBatalla->setBanRight();
+    if(tutorial){
+        if(event->key() == Qt::Key_Space){
+            emit Tutorial();
+        }
     }
-    else if (event->key() == Qt::Key_F){
-        jugadorBatalla->setBanAttack();
-    }
-    else if (event->key() == Qt::Key_C){
-        jugadorBatalla->setBanSpell();
-    }
-    else if (event->key() == Qt::Key_W){
-        jugadorBatalla->setBanJump();
-    }
-    //Tecla escape destinada para pausar el juego y ver las opciones
-    else if(event->key() == Qt::Key_Escape){
-        on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
-    }
-    /*Estas son las teclas de movimiento para el jugador 2. Solo estan habilitadas si asi
-      lo quiere el usuario.*/
-    else if(pj2){
-    if(event->key()==Qt::Key_J){
-        jugadorBatalla2->setBanLeft();
-    }
-    else if(event->key()==Qt::Key_L){
-        jugadorBatalla2->setBanRight();
-    }
-    else if (event->key() == Qt::Key_H){
-        jugadorBatalla2->setBanAttack();
-    }
-    else if (event->key() == Qt::Key_N){
-        jugadorBatalla2->setBanSpell();
-    }
-    else if (event->key() == Qt::Key_I){
-        jugadorBatalla2->setBanJump();
-    }
-    }
-
 }
 
 void Niveles::keyReleaseEvent(QKeyEvent *event)
@@ -309,24 +347,6 @@ void Niveles::spawn_bolas()
     escena->addItem(bola);
 }
 
-void Niveles::spawn_bolas2()
-{
-    bolaFuego * bola = new bolaFuego(this, 1, 1);
-    bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
-    int x=1000,y=470;
-    bola->setX0(x);
-    bola->setY0(y);
-    bola->setPos(x, y);
-    escena->addItem(bola);
-}
-
-
-
-void Niveles::Controles()
-{
-    ui->Controles->hide();
-}
-
 void Niveles::Level_Events()
 {
     /*Esta funcion se encarga de verificar si el boss ya ha sido derrotado.
@@ -334,9 +354,20 @@ void Niveles::Level_Events()
     usuario ha ganado el nivel y ahora puede volver al mapa principal, se abrira una nueva ventana mapa_gameplay
     y se eliminara la ventana del nivel.*/
     if(boss->Boss_Derrotado){
-        nivelActual++;
-        boss->Boss_Derrotado=false;
+        victoria->play();
         musicaNivel.stop();
+
+        bolas.stop();
+
+        nivelActual++;
+
+        boss->Boss_Derrotado=false;
+        delete boss;
+
+        jugadorBatalla->PararTimers();
+        if(num_jugadores==2)
+            jugadorBatalla2->PararTimers();
+
         fstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
         if (!file.is_open())
             return;
@@ -344,6 +375,15 @@ void Niveles::Level_Events()
         file<<'\n'<<num_jugadores<<'\n'<<nivel+1;
         file.flush();
         file.close();
+
+        QMessageBox msgBox;
+        msgBox.setText("Has sobrevivido a la batalla!");
+        msgBox.setWindowTitle("HellBurn");
+        msgBox.setWindowIcon(QIcon(":/Imagenes/ICONO.png"));
+        msgBox.setStyleSheet("background-color:#211b18;"
+                             "color:white;");
+        msgBox.exec();
+
         Mapa_GamePlay *mapa=new Mapa_GamePlay;
         mapa->show();
         close();

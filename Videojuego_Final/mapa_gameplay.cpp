@@ -37,9 +37,8 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     ambiente.play();
 
     //Sonido de los botones
-    botonSound = new QMediaPlayer(this);
-    botonSound->setMedia(QUrl("qrc:/Musica/Boton.mp3"));
-    botonSound->setVolume(100);
+    botonSound.setMedia(QUrl("qrc:/Musica/ESPADA.mp3"));
+    botonSound.setVolume(100);
       
     //Timer para actualizar la escena y centrarla en el jugador
     connect(&timer,SIGNAL(timeout()),this,SLOT(ActualizarEscena()));
@@ -142,10 +141,14 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
 
     if(BossesMuertos==0 and nueva_partida){
         nivelActual = 0;
-        QTimer::singleShot(5000,this,SLOT(Controles()));
+        tutorial=true;
+        freeze=true;
     }
-    else
+    else{
         ui->Controles->hide();
+        tutorial=false;
+        freeze=false;
+    }
 
     //Añadir barras de vida
     if (num_jugadores == 2){
@@ -155,6 +158,11 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     else{
         escena->addItem(&jugador->vida);
     }
+
+    //sonidos
+    JugadorMuerto = new QMediaPlayer(this);
+    JugadorMuerto->setMedia(QUrl("qrc:/Musica/MUERTO.mp3"));
+    JugadorMuerto->setVolume(100);
 }
 
 Mapa_GamePlay::~Mapa_GamePlay()
@@ -218,44 +226,50 @@ si no se escoge asi las teclas no van a tener ningun efecto cuando se este jugan
 void Mapa_GamePlay::keyPressEvent(QKeyEvent *event)
 {
     //Segun la tecla que se presione se habilita su respectiva bandera de movimiento
-
-    if (event->key() == Qt::Key_W){
-        jugador->setBanUp();
-    }
-    else if (event->key() == Qt::Key_S){
-        jugador->setBanDown();
-    }
-    else if (event->key() == Qt::Key_A){
-        jugador->setBanLeft();
-    }
-    else if (event->key() == Qt::Key_D){
-        jugador->setBanRight();
-    }
-    else if (event->key() == Qt::Key_F){
-        jugador->setBanAttack();
-    }
-    //Estas son las teclas de movimiento para el jugador 2.
-    //Solo estan habilitadas (o habilitadas) si asi lo quiere el usuario.
-    else if (pj2){
-        if(event->key()==Qt::Key_J){
-            jugador2->setBanLeft();
+    if(!freeze){
+        if (event->key() == Qt::Key_W){
+            jugador->setBanUp();
         }
-        else if(event->key()==Qt::Key_L){
-             jugador2->setBanRight();
+        else if (event->key() == Qt::Key_S){
+            jugador->setBanDown();
         }
-        else if(event->key()==Qt::Key_I){
-            jugador2->setBanUp();
+        else if (event->key() == Qt::Key_A){
+            jugador->setBanLeft();
         }
-        else if(event->key()==Qt::Key_K){
-            jugador2->setBanDown();
+        else if (event->key() == Qt::Key_D){
+            jugador->setBanRight();
         }
-        else if (event->key() == Qt::Key_H){
-            jugador2->setBanAttack();
+        else if (event->key() == Qt::Key_F){
+            jugador->setBanAttack();
+        }
+        //Estas son las teclas de movimiento para el jugador 2.
+        //Solo estan habilitadas (o habilitadas) si asi lo quiere el usuario.
+        else if (pj2){
+            if(event->key()==Qt::Key_J){
+                jugador2->setBanLeft();
+            }
+            else if(event->key()==Qt::Key_L){
+                 jugador2->setBanRight();
+            }
+            else if(event->key()==Qt::Key_I){
+                jugador2->setBanUp();
+            }
+            else if(event->key()==Qt::Key_K){
+                jugador2->setBanDown();
+            }
+            else if (event->key() == Qt::Key_H){
+                jugador2->setBanAttack();
+            }
+        }
+        //Tecla escape destinada para pausar el juego y ver las opciones
+        if(event->key() == Qt::Key_Escape){
+            on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
         }
     }
-    //Tecla escape destinada para pausar el juego y ver las opciones
-    if(event->key() == Qt::Key_Escape){
-        on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
+    if(tutorial){
+        if(event->key() == Qt::Key_Space){
+            emit Tutorial();
+        }
     }
 }
 
@@ -304,18 +318,30 @@ void Mapa_GamePlay::keyReleaseEvent(QKeyEvent *event)
     }
 }
 
-void Mapa_GamePlay::Controles()
+void Mapa_GamePlay::Tutorial()
 {
-    ui->Controles->hide();
+    cont++;
+    if(cont==1)
+        ui->Controles->setPixmap(QPixmap(":/Imagenes/TUTORIALMAPA.png"));
+    else if(cont==2)
+        ui->Controles->setPixmap(QPixmap(":/Imagenes/TECLASMAPA.png"));
+    else if(cont==3){
+        ui->Controles->hide();
+        tutorial=false;
+        freeze=false;
+    }
 }
+
 void Mapa_GamePlay::Nivel()
 {
+    botonSound.play();
     ambiente.stop();
-    botonSound->play();
+
     if(Xpos>=325 && Xpos<=405 && YPos>=2193 && YPos<=2215) nivel=0;//Verifica si se esta en la entrada del tutorial
     else if(Xpos>=755 && Xpos<=815 && YPos<=1465 && YPos>=1405) nivel=1;//Verifica si se esta en la entrada del nivel 1
     else if(Xpos>=1565 && Xpos<=1690 && YPos<=1825 && YPos>=1760) nivel=2;//Verifica si se esta en la entrada del nivel 2
     else if(Xpos>=2075 && Xpos<=2200 && YPos<=645 && YPos>=585) nivel=3;//Verifica si se esta en la entrada del nivel 3
+
     //Se abre la ventana determinada para las batallas contra Bosses
     Niveles * batalla = new Niveles;
     batalla->show();
@@ -379,9 +405,12 @@ void Mapa_GamePlay::ActualizarEscena()
 void Mapa_GamePlay::verificar_muerte()
 {
     if (num_jugadores == 2){
+        if(jugador2->muerto)
+            JugadorMuerto->play();
         if (jugador->muerto and jugador2->muerto){
+            JugadorMuerto->play();
             QMessageBox msgBox;
-            msgBox.setText("Has sido derrotado.");
+            msgBox.setText("Tu alma ha sido destruida.");
             msgBox.setWindowTitle("HellBurn");
             msgBox.setWindowIcon(QIcon(":/Imagenes/ICONO.png"));
             msgBox.setStyleSheet("background-color:#211b18;"
@@ -396,8 +425,9 @@ void Mapa_GamePlay::verificar_muerte()
     }
     else{
         if (jugador->muerto){
+            JugadorMuerto->play();
             QMessageBox msgBox;
-            msgBox.setText("Has sido derrotado.");
+            msgBox.setText("Tu alma ha sido destruida.");
             msgBox.setWindowTitle("HellBurn");
             msgBox.setWindowIcon(QIcon(":/Imagenes/ICONO.png"));
             msgBox.setStyleSheet("background-color:#211b18;"

@@ -8,6 +8,7 @@
 QList <Enemigo *> lista;
 
 extern Muro * muro;
+extern short int nivelActual;
 
 Jugador::Jugador(QObject *parent) : QObject(parent)
 {
@@ -54,6 +55,11 @@ Jugador::Jugador(QObject *parent) : QObject(parent)
     //Barra de vida
     vida.setRect(0,0,health,5);
     vida.setBrush(Qt::red);
+
+    //Sonido de ataque
+    Ataque = new QMediaPlayer(this);
+    Ataque->setMedia(QUrl("qrc:/Musica/ESPADA.mp3"));
+    Ataque->setVolume(100);
 }
 
 QRectF Jugador::boundingRect() const
@@ -101,6 +107,7 @@ void Jugador::Actualizacion()
 //las posiciones.
 void Jugador::reset_golpe()
 {
+    Ataque->stop();
     golpe_izq = false;
     golpe_der = false;
     golpe_arr = false;
@@ -259,7 +266,11 @@ void Jugador::Attack()
         default:
             break;
         }
+        if(!muerto)
+            Ataque->play();
     }
+    if(muerto)
+        Ataque->stop();
 }
 
 /*Esta función determina la posicion anterior del personaje para saber si el jugador está quieto*/
@@ -290,8 +301,7 @@ void Jugador::pos()
 
 void Jugador::spawn()
 {
-    if (lista.count() == 5){ //Maximo 5 enemigos para no colapsar el programa
-        //qDebug()<<"Maximo de enemigos alcanzados";
+    if (lista.count() == 5 or nivelActual<=0){ //Maximo 5 enemigos para no colapsar el programa
         return;
     }
 
@@ -329,7 +339,6 @@ void Jugador::spawn()
     //El enemigo se añade a la escena con su barra de vida
     scene()->addItem(enemigo);
     enemigo->vida.setPos(enemigo->x(),enemigo->y());
-    //scene()->addItem(&enemigo->box);
     scene()->addItem(&enemigo->vida);
     enemigo->vida.setZValue(2);
     lista.append(enemigo); //Se añade a una lista el enemigo para controlar cuando enemigos hay
