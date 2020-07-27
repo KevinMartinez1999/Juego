@@ -2,6 +2,8 @@
 #include "boss.h"
 
 #define g 9.81
+#define masa 0.5
+#define b 0.47
 
 extern Boss *boss;
 extern JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
@@ -23,15 +25,30 @@ bolaFuego::bolaFuego(QObject *parent, short int estado, short int tipo)
     ancho = 40;
     alto = 40;
 
+    //crear box
+    box.setRect(0,0,20,20);
+
     //Definicion de los timers
     switch (Tipo) {
     case 1:
         connect(&timer, SIGNAL(timeout()), this, SLOT(move1()));
         connect(&timer, SIGNAL(timeout()), this, SLOT(colision_con_boss()));
+        dano = 6;
         break;
     case 2:
         connect(&timer, SIGNAL(timeout()), this, SLOT(move2()));
         connect(&timer, SIGNAL(timeout()), this, SLOT(colision_con_jugador()));
+        dano = 6;
+        break;
+    case 3:
+        connect(&timer, SIGNAL(timeout()), this, SLOT(move3()));
+        connect(&timer, SIGNAL(timeout()), this, SLOT(colision_con_jugador()));
+        dano = 10;
+        break;
+    case 4:
+        connect(&timer, SIGNAL(timeout()), this, SLOT(move4()));
+        connect(&timer, SIGNAL(timeout()), this, SLOT(colision_con_jugador()));
+        dano = 10;
         break;
     }
     timer.start(30);
@@ -40,18 +57,6 @@ bolaFuego::bolaFuego(QObject *parent, short int estado, short int tipo)
     animacion.start(150);
 
 
-}
-
-bool bolaFuego::colision(JugadorBatalla *obj)
-{
-    if (abs(int(x() - obj->x())) < 40 and obj->y() - y() < 50){
-        if(obj->health>1)
-            obj->JugadorAtacado->play();
-        obj->health -= 5;
-        obj->vida.setRect(0,0,obj->health,40);
-        return true;
-    }
-    else return false;
 }
 
 QRectF bolaFuego::boundingRect() const
@@ -68,7 +73,6 @@ void bolaFuego::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
 void bolaFuego::move1()
 {
-    t += 0.03;
     m += 5;
     X = r*cos(w*t)+m;
     Y = r*sin(w*t);
@@ -76,21 +80,43 @@ void bolaFuego::move1()
         setPos(x0+X, y0-Y);
     else
         setPos(x0-X, y0-Y);
+    box.setPos(x()-10, y()-10);
+    t += 0.03;
 }
 
 void bolaFuego::move2()
 {
-    t += 0.03;
-    Y += g*t;
-    setPos(x(), y0+Y);
+    Y = (masa*g/b)*(1 - exp(-t*b/masa));
+    setPos(x(), y()+Y);
+    box.setPos(x()-10, y()-10);
+    t += 0.3;
     if (y() > 670)
         delete this;
+}
+
+void bolaFuego::move3()
+{
+    X = (masa*g/b)*(1 - exp(-t*b/masa));
+    setPos(x()-X, y());
+    box.setPos(x()-10, y()-10);
+    t += 0.03;
+    if (x() < -40)
+        delete this;
+}
+
+void bolaFuego::move4()
+{
+    double X = (v0*sqrt(2)/2*t); // => cos(45°)
+    double Y = (v0*sqrt(2)/2*t)-(0.5*9.81*pow(t,2)); // => sen(45°)
+    setPos(x()-X,y()-Y);
+    box.setPos(x()-10, y()-10);
+    t += 0.03;
 }
 
 void bolaFuego::colision_con_boss()
 {
     if (abs(x() - boss->x()) < 50){
-        boss->health -= 6;
+        boss->health -= dano;
         boss->vida.setRect(0,0,boss->health, 40);
         delete this;
     }
@@ -109,6 +135,18 @@ void bolaFuego::colision_con_jugador()
     else
         if(colision(jugadorBatalla))
             delete this;
+}
+
+bool bolaFuego::colision(JugadorBatalla *obj)
+{
+    if (box.collidesWithItem(&obj->box)){
+        if(obj->health>1)
+            obj->JugadorAtacado->play();
+        obj->health -= dano;
+        obj->vida.setRect(0,0,obj->health,40);
+        return true;
+    }
+    else return false;
 }
 
 void bolaFuego::Actualizacion()

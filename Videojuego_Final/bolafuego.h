@@ -5,6 +5,8 @@
 #include <QGraphicsPixmapItem>
 #include <QBrush>
 #include <cmath>
+#include <math.h>
+#include <QtMath>
 #include <QTimer>
 #include <QMediaPlayer>
 #include "jugadorbatalla.h"
@@ -24,6 +26,9 @@ public:
 
     bool colision(JugadorBatalla * obj);
 
+    QGraphicsRectItem box;
+    int v0;
+
     QPixmap Pixmap;
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
@@ -33,6 +38,8 @@ signals:
 public slots:
     void move1();
     void move2();
+    void move3();
+    void move4();
     void colision_con_boss();
     void colision_con_jugador();
     void Actualizacion();
@@ -41,7 +48,7 @@ private:
     double X, Y, w, r, t;
     int m, x0, y0;
     QTimer timer, animacion;
-    short int ultimoEstado, Tipo;
+    short int ultimoEstado, Tipo, dano;
     float columnas,ancho,alto;
 };
 

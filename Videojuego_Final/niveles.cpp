@@ -2,9 +2,6 @@
 #include "ui_niveles.h"
 #include "mapa_gameplay.h"
 #include "menupausa.h"
-#include "bolafuego.h"
-#include <stdlib.h>     /* srand, rand */
-#include <time.h>       /* time */
 
 extern short int nivel, nivelActual;
 extern short int num_jugadores;
@@ -75,10 +72,6 @@ Niveles::Niveles(QWidget *parent) :
     connect(&timer, SIGNAL(timeout()), this, SLOT(verificar_muerte()));
     connect(&timer, SIGNAL(timeout()), this, SLOT(muerte()));
     timer.start(100);
-
-    connect(&bolas, SIGNAL(timeout()), this, SLOT(spawn_bolas()));
-    if(nivel!=0)
-        bolas.start(1000);
 
     //Sonidos
     JugadorMuerto = new QMediaPlayer(this);
@@ -157,6 +150,7 @@ void Niveles::NivelSetup()
     //Se añade a la escena al jugador con las posiciones previamente seleccionadas
     jugadorBatalla->setPos(jugadorBatalla->GetX0(),jugadorBatalla->GetY0());
     escena->addItem(jugadorBatalla);
+    jugadorBatalla->box.setPos(jugadorBatalla->x()-25, jugadorBatalla->y()-50);
     jugadorBatalla->vida.setPos(90,28);
     jugadorBatalla->vida.setZValue(1);
     escena->addItem(&jugadorBatalla->vida);//Se añade la barra de vida del jugador a la escena
@@ -164,6 +158,7 @@ void Niveles::NivelSetup()
         //En el caso de que haya dos jugadores se añade al jugador2 con las posiciones previamente seleccionadas
         jugadorBatalla2->setPos(jugadorBatalla2->GetX0(),jugadorBatalla2->GetY0());
         escena->addItem(jugadorBatalla2);
+        jugadorBatalla2->box.setPos(jugadorBatalla2->x()-25, jugadorBatalla2->y()-50);
         jugadorBatalla2->vida.setPos(146,96);
         jugadorBatalla2->vida.setZValue(1);
         escena->addItem(&jugadorBatalla2->vida);//Se añade la barra de vida del jugador a la escena
@@ -333,17 +328,6 @@ void Niveles::keyReleaseEvent(QKeyEvent *event)
         jugadorBatalla2->resetBanSpell();
     }
     }
-}
-
-void Niveles::spawn_bolas()
-{
-    bolaFuego * bola = new bolaFuego(this, 1, 2);
-    bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
-    int x = 1+(rand()%1000), y = 0;
-    bola->setX0(x);
-    bola->setY0(y);
-    bola->setPos(x, y);
-    escena->addItem(bola);
 }
 
 void Niveles::Level_Events()

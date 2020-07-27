@@ -44,7 +44,6 @@ private:
     bool freeze,tutorial;
 
 public slots:
-    void spawn_bolas();
 
 private slots:
     void muerte();

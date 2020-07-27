@@ -43,7 +43,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     QPixmap *pixmap;
-    QGraphicsRectItem vida;
+    QGraphicsRectItem vida, box;
     QMediaPlayer *JugadorAtacado;
     int health;
 

@@ -29,10 +29,13 @@ signals:
 private slots:
     void ataque_jugador();
     void Actualizacion();
+    void elegir_ataque();
+    void cambiar_ataque();
+
 private:
-    QTimer at_jugador, timer;
+    QTimer at_jugador, timer, ataques, generar_ataque;
     float columnas,fila,ancho,alto,limiteSprite;
-    int tipoBoss;
+    int tipoBoss, tipoAtaque, tiempo_ataque;
 };
 
 #endif // BOSS_H

@@ -1,5 +1,8 @@
 #include "boss.h"
 #include "niveles.h"
+#include "bolafuego.h"
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 
 extern short int num_jugadores;
 extern JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
@@ -12,8 +15,10 @@ Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
     health = 160;
     Boss_Derrotado=false;
     vida_real = 0;
+    tipoAtaque = 2;
 
     if(tipoBoss==0){
+        tiempo_ataque = 20000;
         ancho = 256;
         alto  = 220;
         limiteSprite=1536;
@@ -21,6 +26,7 @@ Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
         setPos(890,450);
     }
     else if(tipoBoss==1){
+        tiempo_ataque = 15000;
         ancho = 192;
         alto  = 224;
         limiteSprite=1344;
@@ -28,6 +34,7 @@ Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
         setPos(900,490);
     }
     else if(tipoBoss==2){
+        tiempo_ataque = 10000;
         ancho = 165;
         alto  = 201;
         limiteSprite=825;
@@ -35,6 +42,7 @@ Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
         setPos(875,363);
     }
     else if(tipoBoss==3){
+        tiempo_ataque = 5000;
         ancho = 320;
         alto  = 288;
         limiteSprite=1600;
@@ -54,6 +62,12 @@ Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
 
     connect(&at_jugador, SIGNAL(timeout()), this, SLOT(ataque_jugador()));
     at_jugador.start(450);
+
+    connect(&ataques, SIGNAL(timeout()), this, SLOT(cambiar_ataque()));
+    ataques.start(tiempo_ataque);
+
+    connect(&generar_ataque, SIGNAL(timeout()), this, SLOT(elegir_ataque()));
+    generar_ataque.start(1000);
 
 }
 
@@ -163,4 +177,63 @@ void Boss::Actualizacion()
     }
     this->update(-ancho/2,-alto/2,ancho,alto);/*La funcion update constantemente actualiza el boundingRect del jugador para que su
     origen siempre sea la mitad de la imagen actual.*/
+}
+
+void Boss::elegir_ataque()
+{
+    //qDebug()<<tipoAtaque;
+    switch (tipoAtaque) {
+    case 0:{
+        bolaFuego * bola = new bolaFuego(this, 1, 2);
+        bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
+        int x = 1+(rand()%1000), y = 0;
+        bola->setX0(x);
+        bola->setY0(y);
+        bola->setPos(x, y);
+        scene()->addItem(bola);
+        bola->box.setPos(bola->x()-10, bola->y()-10);
+        break;
+    }
+    case 1:{
+        bolaFuego * bola = new bolaFuego(this, 1, 3);
+        bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
+        bola->setX0(x()-20);
+        bola->setY0(y()+60);
+        bola->setPos(bola->getX0(), bola->getY0());
+        scene()->addItem(bola);
+        bola->box.setPos(bola->x()-10, bola->y()-10);
+        break;
+    }
+    case 2:
+        bolaFuego * bola = new bolaFuego(this, 1, 4);
+        bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
+        bola->setX0(x()-20);
+        bola->setY0(y());
+        bola->setPos(bola->getX0(), bola->getY0());
+        int v = 0.014*(x() - jugadorBatalla->x())/(1);
+        bola->v0 = v;
+        scene()->addItem(bola);
+        bola->box.setPos(bola->x()-10, bola->y()-10);
+        break;
+    }
+}
+
+void Boss::cambiar_ataque()
+{
+    tipoAtaque++;
+    switch (tipoAtaque) {
+    case 0:
+        generar_ataque.stop();
+        generar_ataque.start(1000);
+        break;
+    case 1:
+    case 2:
+        generar_ataque.stop();
+        generar_ataque.start(2000);
+        break;
+    default:
+        break;
+    }
+    if (tipoAtaque > 2)
+        tipoAtaque = 0;
 }

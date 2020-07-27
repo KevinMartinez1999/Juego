@@ -2,8 +2,6 @@
 #include "niveles.h"
 #include "bolafuego.h"
 
-#define dt 0.03
-
 extern Boss *boss;
 
 JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
@@ -18,6 +16,8 @@ JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
     fila = 0;
     ancho = 168;
     alto  = 168;
+
+    box.setRect(0,0,50, 140);
 
     //Inicializacion de banderas de movimiento
     banLeft = false;
@@ -113,8 +113,10 @@ void JugadorBatalla::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 }
 
 void JugadorBatalla::setX(){
-    if(fila==0 or fila==168)
+    if(fila==0 or fila==168){
         t = 0;
+        columnas = 0;
+    }
     else if(t >= 1.5)
         return;
     xFinal = (vx*t)-(0.5*pow(t,2));
@@ -147,11 +149,14 @@ void JugadorBatalla::moveLeft()
     {
         reset_golpe();
         ultimoEstado = 1;
-        if(fila!=336 and fila!=0)
+        if(fila!=336 and fila!=0){
             t = 0;
+            columnas = 0;
+        }
         fila=336;
         if(x()>42){
             setPos(x()-xFinal,y());
+            box.setPos(x()-25, y()-50);
         }
     }
 }
@@ -162,11 +167,14 @@ void JugadorBatalla::moveRight()
     {
         reset_golpe();
         ultimoEstado = 2;
-        if(fila!=504 and fila!=168)
+        if(fila!=504 and fila!=168){
             t = 0;
+            columnas = 0;
+        }
         fila = 504;
         if(x()<930){
         setPos(x()+xFinal,y());
+        box.setPos(x()-25, y()-50);
     }
     }
 }
@@ -179,8 +187,10 @@ void JugadorBatalla::Jump()
     double X = (10*0*tsalto); //0 => cos(90°)
     double Y = (10*1*tsalto)-(0.5*9.81*pow(tsalto,2)); //1 => sen(90°)
     setPos(x()-X,y()-Y);
+    box.setPos(x()-25, y()-50);
     if(y()>=y0){
         setPos(x(),y0);
+        box.setPos(x()-25, y()-50);
         banJump=false;
         tsalto=0;
     }
