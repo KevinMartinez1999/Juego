@@ -55,8 +55,6 @@ bolaFuego::bolaFuego(QObject *parent, short int estado, short int tipo)
 
     connect(&animacion, SIGNAL(timeout()), this, SLOT(Actualizacion()));
     animacion.start(150);
-
-
 }
 
 QRectF bolaFuego::boundingRect() const
@@ -106,8 +104,16 @@ void bolaFuego::move3()
 
 void bolaFuego::move4()
 {
-    double X = (v0*sqrt(2)/2*t); // => cos(45°)
-    double Y = (v0*sqrt(2)/2*t)-(0.5*9.81*pow(t,2)); // => sen(45°)
+    if (y() > 530){
+        setPos(x(), 529);
+        double hmax = pow(v0, 2)*pow(sqrt(2)/2, 2)/(2*g);
+        vy = sqrt(pow(vy, 2)+2*g*hmax)*(0.8);
+        v0 = vy/(sqrt(2)/2);
+        vx = v0*sqrt(2)/2;
+        t = 0;
+    }
+    double X = (vx*t); // => cos(45°)
+    double Y = (vy*t)-(0.5*g*pow(t,2)); // => sen(45°)
     setPos(x()-X,y()-Y);
     box.setPos(x()-10, y()-10);
     t += 0.03;

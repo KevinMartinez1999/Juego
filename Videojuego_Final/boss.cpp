@@ -210,8 +210,12 @@ void Boss::elegir_ataque()
         bola->setX0(x()-20);
         bola->setY0(y());
         bola->setPos(bola->getX0(), bola->getY0());
-        int v = 0.014*(x() - jugadorBatalla->x())/(1);
+        double v = 0.014*(x() - jugadorBatalla->x())/(1);
+        double Vx = v*sqrt(2)/2;
+        double Vy = v*sqrt(2)/2;
         bola->v0 = v;
+        bola->vx = Vx;
+        bola->vy = Vy;
         scene()->addItem(bola);
         bola->box.setPos(bola->x()-10, bola->y()-10);
         break;
@@ -221,19 +225,20 @@ void Boss::elegir_ataque()
 void Boss::cambiar_ataque()
 {
     tipoAtaque++;
+    if (tipoAtaque > 2)
+        tipoAtaque = 0;
     switch (tipoAtaque) {
     case 0:
         generar_ataque.stop();
         generar_ataque.start(1000);
         break;
     case 1:
-    case 2:
         generar_ataque.stop();
         generar_ataque.start(2000);
         break;
-    default:
+    case 2:
+        generar_ataque.stop();
+        generar_ataque.start(4000);
         break;
     }
-    if (tipoAtaque > 2)
-        tipoAtaque = 0;
 }

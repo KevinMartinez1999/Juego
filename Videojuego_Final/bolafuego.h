@@ -27,7 +27,7 @@ public:
     bool colision(JugadorBatalla * obj);
 
     QGraphicsRectItem box;
-    int v0;
+    double v0, vx, vy;
 
     QPixmap Pixmap;
     QRectF boundingRect() const;
