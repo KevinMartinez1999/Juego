@@ -197,6 +197,7 @@ void Mapa_GamePlay::CargarPartida()
         nivelActual = 0;
         if(num_jugadores==2)
             PosX02=820,PosY02=2155;
+        ui->label_2->hide();
         break;
     case 1:
         PosX0=330,PosY0=2200;
@@ -236,39 +237,41 @@ void Mapa_GamePlay::keyPressEvent(QKeyEvent *event)
 {
     //Segun la tecla que se presione se habilita su respectiva bandera de movimiento
     if(!freeze){
-        if (event->key() == Qt::Key_W){
-            jugador->setBanUp();
-        }
-        else if (event->key() == Qt::Key_S){
-            jugador->setBanDown();
-        }
-        else if (event->key() == Qt::Key_A){
-            jugador->setBanLeft();
-        }
-        else if (event->key() == Qt::Key_D){
-            jugador->setBanRight();
-        }
-        else if (event->key() == Qt::Key_F){
-            jugador->setBanAttack();
+        if(!jugador->muerto){
+            if (event->key() == Qt::Key_W){
+                jugador->setBanUp();
+            }
+            else if (event->key() == Qt::Key_S){
+                jugador->setBanDown();
+            }
+            else if (event->key() == Qt::Key_A){
+                jugador->setBanLeft();
+            }
+            else if (event->key() == Qt::Key_D){
+                jugador->setBanRight();
+            }
+            else if (event->key() == Qt::Key_F){
+                jugador->setBanAttack();
+            }
         }
         //Estas son las teclas de movimiento para el jugador 2.
         //Solo estan habilitadas (o habilitadas) si asi lo quiere el usuario.
-        else if (pj2){
-            if(event->key()==Qt::Key_J){
-                jugador2->setBanLeft();
-            }
-            else if(event->key()==Qt::Key_L){
-                 jugador2->setBanRight();
-            }
-            else if(event->key()==Qt::Key_I){
-                jugador2->setBanUp();
-            }
-            else if(event->key()==Qt::Key_K){
-                jugador2->setBanDown();
-            }
-            else if (event->key() == Qt::Key_H){
-                jugador2->setBanAttack();
-            }
+            if (pj2 and !jugador2->muerto){
+                if(event->key()==Qt::Key_J){
+                    jugador2->setBanLeft();
+                }
+                else if(event->key()==Qt::Key_L){
+                     jugador2->setBanRight();
+                }
+                else if(event->key()==Qt::Key_I){
+                    jugador2->setBanUp();
+                }
+                else if(event->key()==Qt::Key_K){
+                    jugador2->setBanDown();
+                }
+                else if (event->key() == Qt::Key_H){
+                    jugador2->setBanAttack();
+                }
         }
         //Tecla escape destinada para pausar el juego y ver las opciones
         if(event->key() == Qt::Key_Escape){

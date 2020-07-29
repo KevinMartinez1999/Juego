@@ -77,7 +77,7 @@ void JugadorBatalla::PararTimers()
     resetBanAttack();
     mov.stop();
     timer.stop();
-    boss->PararTimers();
+//    boss->PararTimers();
 }
 
 void JugadorBatalla::ReiniciarTimers()
@@ -85,7 +85,7 @@ void JugadorBatalla::ReiniciarTimers()
     mov.start(30);
     timer.start(150);
 
-    boss->ReiniciarTimers();
+//    boss->ReiniciarTimers();
 }
 
 void JugadorBatalla::reset_golpe()

@@ -121,6 +121,22 @@ border-image: url(:/Imagenes/OPCIONES_PUSH.png);
     <string/>
    </property>
   </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>20</y>
+     <width>251</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string> ENEMIGOS RESTANTES:  20</string>
+   </property>
+  </widget>
  </widget>
  <resources>
   <include location="Recursos.qrc"/>

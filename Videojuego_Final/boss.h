@@ -29,6 +29,7 @@ signals:
 private slots:
     void ataque_jugador();
     void Actualizacion();
+    void AnimacionMuerte();
     void elegir_ataque();
     void cambiar_ataque();
     void orbitas();

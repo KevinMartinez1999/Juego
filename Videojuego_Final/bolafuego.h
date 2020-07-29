@@ -41,7 +41,7 @@ public slots:
 private:
     QTimer timer, animacion;
     short int ultimoEstado, Tipo;
-    float columnas,ancho,alto, dano;
+    float columnas,ancho,alto, limiteSprite, dano;
 };
 
 #endif // BOLAFUEGO_H

@@ -62,5 +62,7 @@
         <file>Imagenes/TUTORIALMAPA2.png</file>
         <file>Musica/GANAR.wav</file>
         <file>Musica/FANTASMA.wav</file>
+        <file>Imagenes/FUEGO.png</file>
+        <file>Imagenes/FUEGO2.png</file>
     </qresource>
 </RCC>

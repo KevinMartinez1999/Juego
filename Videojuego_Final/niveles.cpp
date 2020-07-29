@@ -346,9 +346,6 @@ void Niveles::Level_Events()
 
         nivelActual++;
 
-        boss->Boss_Derrotado=false;
-        delete boss;
-
         jugadorBatalla->PararTimers();
         if(num_jugadores==2)
             jugadorBatalla2->PararTimers();
@@ -360,6 +357,8 @@ void Niveles::Level_Events()
         file<<'\n'<<num_jugadores<<'\n'<<nivel+1;
         file.flush();
         file.close();
+
+        boss->Boss_Derrotado=false;
 
         QMessageBox msgBox;
         msgBox.setText("Has sobrevivido a la batalla!");

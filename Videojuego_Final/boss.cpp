@@ -31,6 +31,7 @@ Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
         limiteSprite=1536;
         pixmap = new QPixmap(":/Imagenes/BOSS4.png");
         setPos(890,450);
+        connect(&timer,SIGNAL(timeout()),this,SLOT(AnimacionMuerte()));
     }
     else if(tipoBoss==1){
         tiempo_ataque = 15000;
@@ -39,7 +40,7 @@ Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
         limiteSprite=1344;
         pixmap = new QPixmap(":/Imagenes/BOSS2.png");
         setPos(900,490);
-        connect(&generar_ataque, SIGNAL(timeout()), this, SLOT(orbitas()));
+//        connect(&generar_ataque, SIGNAL(timeout()), this, SLOT(orbitas()));
     }
     else if(tipoBoss==2){
         tiempo_ataque = 10000;
@@ -123,6 +124,21 @@ void Boss::ReiniciarTimers()
     generar_ataque.start(1000);
 }
 
+void Boss::AnimacionMuerte()
+{
+    if(Boss_Derrotado){
+        if(fila!=220){
+            columnas=0;
+        }
+        fila=220;
+        if(columnas==limiteSprite){
+            hide();
+            PararTimers();}
+        else return;
+    }
+    else return;
+}
+
 void Boss::ataque_jugador()
 {
     if (health <= 1)
@@ -179,7 +195,7 @@ void Boss::Actualizacion()
     accion diferente hecha por el jugador, y las columnas son frames que permiten que esa accion se vea con movimiento, entonces mediante
     un timer estaremos constantemente interactuando en las columnas de determinada fila para asi ir generando una animacion fluida y
     continua.*/
-    if(columnas >= limiteSprite)//El archivo consta de 6 columnas de 84x84, cuando se llegue a la sexta columna se iniciara de nuevo
+    if(columnas >= limiteSprite)
     {
         columnas = 0;
     }
@@ -196,7 +212,10 @@ void Boss::elegir_ataque()
     switch (tipoAtaque) {
     case 0:{
         bolaFuego * bola = new bolaFuego(this, 1, 2);
-        bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
+        if(tipoBoss==0)
+            bola->Pixmap = QPixmap(":/Imagenes/FUEGO2.png");
+        else
+            bola->Pixmap = QPixmap(":/Imagenes/FUEGO.png");
         int x = 1+(rand()%1000), y = 0;
         bola->X = x;
         bola->Y = y;
