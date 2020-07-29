@@ -38,7 +38,7 @@ private:
     QMediaPlaylist Lista;
     QMediaPlayer musicaNivel;
     QMediaPlayer *JugadorMuerto,*victoria;
-    QTimer timer, bolas;
+    QTimer timer;
     int cont=0;
     bool pj2;
     bool freeze,tutorial;

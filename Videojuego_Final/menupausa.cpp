@@ -9,6 +9,7 @@ extern JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
 extern Jugador *jugador, *jugador2;
 extern short int num_jugadores;
 extern QList <Enemigo *> listaEnemigos;
+extern QTimer enemigos;
 
 MenuPausa::MenuPausa(QWidget *parent,bool ventana) :
     QWidget(parent), VentanaPausada(ventana),
@@ -55,6 +56,7 @@ void MenuPausa::closeEvent(QCloseEvent *event)
         while(Iterador.hasNext()){
             Iterador.next()->ReiniciarTimers();
         }
+        enemigos.start(7000);
     }
     else{
         jugadorBatalla->ReiniciarTimers();
@@ -74,6 +76,7 @@ void MenuPausa::on_Reanudar_clicked()
         while(Iterador.hasNext()){
             Iterador.next()->ReiniciarTimers();
         }
+        enemigos.start(7000);
     }
     else{
         jugadorBatalla->ReiniciarTimers();

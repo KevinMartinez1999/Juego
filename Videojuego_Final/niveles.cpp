@@ -81,6 +81,9 @@ Niveles::Niveles(QWidget *parent) :
     victoria = new QMediaPlayer(this);
     victoria->setMedia(QUrl("qrc:/Musica/GANAR.wav"));
     victoria->setVolume(100);
+
+    if(tutorial)
+        boss->PararTimers();
 }
 
 Niveles::~Niveles()
@@ -178,6 +181,7 @@ void Niveles::muerte()
             jugadorBatalla->vida.hide();
         }
         if (jugadorBatalla2->health <= 1){
+            jugadorBatalla2->muerto=true;
             JugadorMuerto->play();
             jugadorBatalla2->hide();
             jugadorBatalla2->vida.hide();
@@ -196,7 +200,6 @@ void Niveles::verificar_muerte()
 {
     if (num_jugadores == 2){
         if (jugadorBatalla->muerto and jugadorBatalla2->muerto){
-            bolas.stop();
             JugadorMuerto->play();
             QMessageBox msgBox;
             msgBox.setText("Tu alma ha sido destruida.");
@@ -214,7 +217,6 @@ void Niveles::verificar_muerte()
     }
     else{
         if (jugadorBatalla->muerto){
-            bolas.stop();
             JugadorMuerto->play();
             QMessageBox msgBox;
             msgBox.setText("Tu alma ha sido destruida.");
@@ -241,7 +243,7 @@ void Niveles::Tutorial()
         ui->Controles->hide();
         tutorial=false;
         freeze=false;
-        bolas.start(1000);
+        boss->ReiniciarTimers();
     }
 }
 /*Las siguientes son las funciones del teclado; existe tanto las teclas para el jugador
@@ -252,29 +254,27 @@ si no se escoge asi las teclas no van a tener ningun efecto cuando se este jugan
 void Niveles::keyPressEvent(QKeyEvent *event)
 {
     if(!freeze){
-        //Segun la tecla que se presione se habilita su respectiva bandera de movimiento
-        if (event->key() == Qt::Key_A){
-            jugadorBatalla->setBanLeft();
-        }
-        else if (event->key() == Qt::Key_D){
-            jugadorBatalla->setBanRight();
-        }
-        else if (event->key() == Qt::Key_F){
-            jugadorBatalla->setBanAttack();
-        }
-        else if (event->key() == Qt::Key_C){
-            jugadorBatalla->setBanSpell();
-        }
-        else if (event->key() == Qt::Key_W){
-            jugadorBatalla->setBanJump();
-        }
-        //Tecla escape destinada para pausar el juego y ver las opciones
-        else if(event->key() == Qt::Key_Escape){
-            on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
+        if(!jugadorBatalla->muerto){
+            //Segun la tecla que se presione se habilita su respectiva bandera de movimiento
+            if (event->key() == Qt::Key_A){
+                jugadorBatalla->setBanLeft();
+            }
+            else if (event->key() == Qt::Key_D){
+                jugadorBatalla->setBanRight();
+            }
+            else if (event->key() == Qt::Key_F){
+                jugadorBatalla->setBanAttack();
+            }
+            else if (event->key() == Qt::Key_C){
+                jugadorBatalla->setBanSpell();
+            }
+            else if (event->key() == Qt::Key_W){
+                jugadorBatalla->setBanJump();
+            }
         }
         /*Estas son las teclas de movimiento para el jugador 2. Solo estan habilitadas si asi
           lo quiere el usuario.*/
-        else if(pj2){
+         if(pj2 and !jugadorBatalla2->muerto){
         if(event->key()==Qt::Key_J){
             jugadorBatalla2->setBanLeft();
         }
@@ -296,6 +296,10 @@ void Niveles::keyPressEvent(QKeyEvent *event)
         if(event->key() == Qt::Key_Space){
             emit Tutorial();
         }
+    }
+    //Tecla escape destinada para pausar el juego y ver las opciones
+    if(event->key() == Qt::Key_Escape){
+        on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
     }
 }
 
@@ -340,8 +344,6 @@ void Niveles::Level_Events()
         victoria->play();
         musicaNivel.stop();
 
-        bolas.stop();
-
         nivelActual++;
 
         boss->Boss_Derrotado=false;
@@ -385,6 +387,8 @@ void Niveles::on_Opciones_clicked()
     jugadorBatalla->PararTimers();
     if (num_jugadores == 2)
         jugadorBatalla2->PararTimers();
+    boss->PararTimers();
+
     MenuPausa *opciones = new MenuPausa(nullptr,1);
     opciones->show();
 }

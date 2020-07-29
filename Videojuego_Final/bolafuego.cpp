@@ -183,7 +183,9 @@ bool bolaFuego::colision(JugadorBatalla *obj)
             obj->JugadorAtacado->play();
         obj->health -= dano;
         obj->vida.setRect(0,0,obj->health,40);
-        return true;
+        if(!obj->muerto)
+                    return true;
+                else return false;
     }
     else return false;
 }

@@ -15,6 +15,7 @@ Muro *muro;
 Jugador *jugador, *jugador2;
 short int nivel, nivelActual;
 QList <Enemigo *> listaEnemigos;
+QTimer enemigos;
 
 Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     QWidget(parent),
@@ -506,7 +507,8 @@ void Mapa_GamePlay::on_Opciones_clicked()
     QListIterator<Enemigo *>Iterador(listaEnemigos);
     while(Iterador.hasNext()){
         Iterador.next()->PararTimers();
+    }
+    enemigos.stop();
     MenuPausa *opciones = new MenuPausa(nullptr,0);
     opciones->show();
-}
 }

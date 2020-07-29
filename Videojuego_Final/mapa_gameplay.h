@@ -45,7 +45,7 @@ private: //Atributos de la clase
     QMediaPlayer *JugadorMuerto;
     QCursor cursor;
     QGraphicsScene *escena;
-    QTimer timer, dead, enemigos;
+    QTimer timer, dead;
     QString nombre;
     QGraphicsPixmapItem *mapa;
     QGraphicsPixmapItem *objetos;  

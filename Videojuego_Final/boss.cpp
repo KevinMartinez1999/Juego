@@ -22,7 +22,7 @@ Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
     health = 160;
     Boss_Derrotado=false;
     vida_real = 0;
-    tipoAtaque = 2;
+    tipoAtaque = 0;
 
     if(tipoBoss==0){
         tiempo_ataque = 20000;
@@ -39,6 +39,7 @@ Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
         limiteSprite=1344;
         pixmap = new QPixmap(":/Imagenes/BOSS2.png");
         setPos(900,490);
+        connect(&generar_ataque, SIGNAL(timeout()), this, SLOT(orbitas()));
     }
     else if(tipoBoss==2){
         tiempo_ataque = 10000;
@@ -74,9 +75,7 @@ Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
     ataques.start(tiempo_ataque);
 
     connect(&generar_ataque, SIGNAL(timeout()), this, SLOT(elegir_ataque()));
-    connect(&generar_ataque, SIGNAL(timeout()), this, SLOT(orbitas()));
     generar_ataque.start(1000);
-
 }
 
 bool Boss::verificar_golpe(JugadorBatalla *obj)
@@ -110,14 +109,18 @@ void Boss::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
 void Boss::PararTimers()
 {
-    at_jugador.stop();
     timer.stop();
+    at_jugador.stop();
+    ataques.stop();
+    generar_ataque.stop();
 }
 
 void Boss::ReiniciarTimers()
 {
     at_jugador.start(450);
     timer.start(100);
+    ataques.start(tiempo_ataque);
+    generar_ataque.start(1000);
 }
 
 void Boss::ataque_jugador()
@@ -234,8 +237,13 @@ void Boss::elegir_ataque()
 void Boss::cambiar_ataque()
 {
     tipoAtaque++;
-    if (tipoAtaque > 2)
+    if (tipoAtaque > 0 and tipoBoss==0)
+            tipoAtaque = 0;
+    else if(tipoAtaque>1 and tipoBoss==1)
         tipoAtaque = 0;
+    else if(tipoAtaque>2 and tipoBoss>1)
+        tipoAtaque=0;
+
     switch (tipoAtaque) {
     case 0:
         generar_ataque.stop();
