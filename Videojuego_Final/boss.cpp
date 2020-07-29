@@ -3,6 +3,13 @@
 #include "bolafuego.h"
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
+#include <QList>
+
+#define pi 3.14159265
+#define g 9.81
+#define e 0.0375
+
+QList<bolaFuego *> bolas;
 
 extern short int num_jugadores;
 extern JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
@@ -67,6 +74,7 @@ Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
     ataques.start(tiempo_ataque);
 
     connect(&generar_ataque, SIGNAL(timeout()), this, SLOT(elegir_ataque()));
+    connect(&generar_ataque, SIGNAL(timeout()), this, SLOT(orbitas()));
     generar_ataque.start(1000);
 
 }
@@ -114,9 +122,9 @@ void Boss::ReiniciarTimers()
 
 void Boss::ataque_jugador()
 {
-    if (health <= 1){
+    if (health <= 1)
         Boss_Derrotado = true;
-    }
+
     if (abs(this->x()-jugadorBatalla->x()) < 184 and jugadorBatalla->banAttack){
         if (verificar_golpe(jugadorBatalla)){
             vida_real++;
@@ -187,37 +195,38 @@ void Boss::elegir_ataque()
         bolaFuego * bola = new bolaFuego(this, 1, 2);
         bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
         int x = 1+(rand()%1000), y = 0;
-        bola->setX0(x);
-        bola->setY0(y);
-        bola->setPos(x, y);
+        bola->X = x;
+        bola->Y = y;
+        bola->setPos(bola->X, bola->Y);
         scene()->addItem(bola);
-        bola->box.setPos(bola->x()-10, bola->y()-10);
+        bola->box.setPos(bola->x()-5, bola->y()-5);
         break;
     }
     case 1:{
         bolaFuego * bola = new bolaFuego(this, 1, 3);
         bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
-        bola->setX0(x()-20);
-        bola->setY0(y()+60);
-        bola->setPos(bola->getX0(), bola->getY0());
+        bola->X = x() - 20;
+        bola->Y = y() + 60;
+        bola->Vx = 1;
+        bola->Vy = 1;
+        bola->Ax = 0.8;
+        bola->Ay = 0.8;
+        bola->setPos(bola->X, bola->Y);
         scene()->addItem(bola);
-        bola->box.setPos(bola->x()-10, bola->y()-10);
+        bola->box.setPos(bola->x()-5, bola->y()-5);
         break;
     }
     case 2:
         bolaFuego * bola = new bolaFuego(this, 1, 4);
         bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
-        bola->setX0(x()-20);
-        bola->setY0(y());
-        bola->setPos(bola->getX0(), bola->getY0());
-        double v = 0.014*(x() - jugadorBatalla->x())/(1);
-        double Vx = v*sqrt(2)/2;
-        double Vy = v*sqrt(2)/2;
-        bola->v0 = v;
-        bola->vx = Vx;
-        bola->vy = Vy;
+        bola->X = x() - 20;
+        bola->Y = y();
+        double V = pow(0.03*g*(x() - jugadorBatalla->x()),0.5);
+        bola->Vx = V*cos(pi/4);
+        bola->Vy = V*sin(pi/4);
+        bola->setPos(bola->X, bola->Y);
         scene()->addItem(bola);
-        bola->box.setPos(bola->x()-10, bola->y()-10);
+        bola->box.setPos(bola->x()-5, bola->y()-5);
         break;
     }
 }
@@ -241,4 +250,63 @@ void Boss::cambiar_ataque()
         generar_ataque.start(4000);
         break;
     }
+}
+
+void Boss::orbitas()
+{
+    if (bolas.count() == 5)
+        return;
+
+    bolaFuego * bola = new bolaFuego(this, 1, 5);
+    bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
+    switch (cont) {
+    case 0:
+        bola->setPos(x(),y());
+        bola->X = x();
+        bola->Y = y();
+        bola->Vx = 0;
+        bola->Vy = 0;
+        bola->masa = 50000*e;
+        cont++;
+        break;
+    case 1:
+        bola->setPos(x(),y());
+        bola->X = x();
+        bola->Y = y() - 5000*e;
+        bola->Vx = -2;
+        bola->Vy = 0;
+        bola->masa = 70*e;
+        cont++;
+        break;
+    case 2:
+        bola->setPos(x(),y());
+        bola->X = x();
+        bola->Y = y() + 5000*e;
+        bola->Vx = 2;
+        bola->Vy = 0;
+        bola->masa = 70*e;
+        cont++;
+        break;
+    case 3:
+        bola->setPos(x(),y());
+        bola->X = x() + 5000*e;
+        bola->Y = y();
+        bola->Vx = 0;
+        bola->Vy = -2;
+        bola->masa = 70*e;
+        cont++;
+        break;
+    case 4:
+        bola->setPos(x(),y());
+        bola->X = x() - 5000*e;
+        bola->Y = y();
+        bola->Vx = 0;
+        bola->Vy = 2;
+        bola->masa = 70*e;
+        cont = 1;
+        break;
+    }
+    scene()->addItem(bola);
+    bola->box.setPos(bola->x(), bola->y());
+    bolas.append(bola);
 }

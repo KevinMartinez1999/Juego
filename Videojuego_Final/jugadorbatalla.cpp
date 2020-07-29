@@ -2,6 +2,8 @@
 #include "niveles.h"
 #include "bolafuego.h"
 
+#define g 9.81
+
 extern Boss *boss;
 
 JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
@@ -182,11 +184,14 @@ void JugadorBatalla::moveRight()
 void JugadorBatalla::Jump()
 {
     if(banJump){
-    tsalto+=0.1;
+    tsalto+=0.3;
+    double X, Y;
     //Salto con un angulo de 90°
-    double X = (10*0*tsalto); //0 => cos(90°)
-    double Y = (10*1*tsalto)-(0.5*9.81*pow(tsalto,2)); //1 => sen(90°)
-    setPos(x()-X,y()-Y);
+    X = (15*0*tsalto); //0 => cos(90°)
+    Y = (15*1*tsalto)-(0.5*g*pow(tsalto,2)); //1 => sen(90°)
+
+    setPos(x()+X, y()-Y);
+
     box.setPos(x()-25, y()-50);
     if(y()>=y0){
         setPos(x(),y0);
@@ -243,9 +248,9 @@ void JugadorBatalla::Spell()
                 //Añadir bola de fuego
                 bolaFuego *bola = new bolaFuego(this, ultimoEstado, 1);
                 bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
-                bola->setX0(x());
-                bola->setY0(y());
-                bola->setPos(bola->getX0(),bola->getY0());
+                bola->X = this->x();
+                bola->Y = this->y();
+                bola->setPos(bola->X,bola->Y);
                 scene()->addItem(bola);
 
                 TiempoHechizo=false;

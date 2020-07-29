@@ -31,11 +31,12 @@ private slots:
     void Actualizacion();
     void elegir_ataque();
     void cambiar_ataque();
+    void orbitas();
 
 private:
     QTimer at_jugador, timer, ataques, generar_ataque;
     float columnas,fila,ancho,alto,limiteSprite;
-    int tipoBoss, tipoAtaque, tiempo_ataque;
+    int tipoBoss, tipoAtaque, tiempo_ataque, cont = 0;
 };
 
 #endif // BOSS_H

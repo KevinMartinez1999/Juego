@@ -1,24 +1,30 @@
 #include "bolafuego.h"
 #include "boss.h"
+#include <stdlib.h>
+#include <math.h>
+#include <stdio.h>
 
 #define g 9.81
-#define masa 0.5
 #define b 0.47
+#define pi 3.14159265
+#define e 0.7
+#define u 0.8
+#define G 1
+#define T 1
 
 extern Boss *boss;
 extern JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
 extern short int num_jugadores;
+extern QList<bolaFuego *> bolas;
 
 bolaFuego::bolaFuego(QObject *parent, short int estado, short int tipo)
     : QObject(parent), ultimoEstado(estado), Tipo(tipo)
 {
     //Inicializar constantes del mov
-    X = 0.00;
-    Y = 0.00;
-    w = 25;
-    r = 30;
     t = 0;
-    m = 0;
+    m = 5;
+    r = 15;
+    w = 7;
 
     //Dimensiones del sprite
     columnas = 0;
@@ -26,7 +32,7 @@ bolaFuego::bolaFuego(QObject *parent, short int estado, short int tipo)
     alto = 40;
 
     //crear box
-    box.setRect(0,0,20,20);
+    box.setRect(0,0,10,10);
 
     //Definicion de los timers
     switch (Tipo) {
@@ -50,6 +56,11 @@ bolaFuego::bolaFuego(QObject *parent, short int estado, short int tipo)
         connect(&timer, SIGNAL(timeout()), this, SLOT(colision_con_jugador()));
         dano = 10;
         break;
+    case 5:
+        connect(&timer, SIGNAL(timeout()), this, SLOT(move5()));
+        connect(&timer, SIGNAL(timeout()), this, SLOT(colision_con_jugador()));
+        dano = 20;
+        break;
     }
     timer.start(30);
 
@@ -69,54 +80,76 @@ void bolaFuego::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->drawPixmap(-ancho/2,-alto/2,Pixmap,columnas,0,ancho,alto);
 }
 
-void bolaFuego::move1()
+void bolaFuego::move1() //Golpe del jugador
 {
-    m += 5;
-    X = r*cos(w*t)+m;
-    Y = r*sin(w*t);
-    if (ultimoEstado == 2)
-        setPos(x0+X, y0-Y);
-    else
-        setPos(x0-X, y0-Y);
-    box.setPos(x()-10, y()-10);
-    t += 0.03;
+    t += 0.1;
+    X += r*cos(w*t) + m;
+    Y += -r*sin(w*t);
+    setPos(X,Y);
+    box.setPos(x()-5, y()-5);
 }
 
-void bolaFuego::move2()
+void bolaFuego::move2() //Caida libre con rozamiento con el aire
 {
-    Y = (masa*g/b)*(1 - exp(-t*b/masa));
-    setPos(x(), y()+Y);
-    box.setPos(x()-10, y()-10);
-    t += 0.3;
+    t += 0.1;
+    Y += g*exp(-t*b/masa);
+    setY(Y);
+    box.setPos(x()-5, y()-5);
     if (y() > 670)
         delete this;
 }
 
-void bolaFuego::move3()
+void bolaFuego::move3() //Bolas del enemigo con MRUA
 {
-    X = (masa*g/b)*(1 - exp(-t*b/masa));
-    setPos(x()-X, y());
-    box.setPos(x()-10, y()-10);
-    t += 0.03;
+    t += 0.1;
+    X += -((Vx*t) + (0.5*Ax*t*t));
+    setX(X);
+    box.setPos(x()-5, y()-5);
     if (x() < -40)
         delete this;
 }
 
-void bolaFuego::move4()
+void bolaFuego::move4() //Bolas parabolicas del enemigo
 {
     if (y() > 530){
-        setPos(x(), 529);
-        double hmax = pow(v0, 2)*pow(sqrt(2)/2, 2)/(2*g);
-        vy = sqrt(pow(vy, 2)+2*g*hmax)*(0.8);
-        v0 = vy/(sqrt(2)/2);
-        vx = v0*sqrt(2)/2;
-        t = 0;
+        setY(529);
+        t = 0.5;
+        Vy *= e;
+        Vx *= u;
+        if (abs(Vx) < 0.1)
+            delete this;
     }
-    double X = (vx*t); // => cos(45°)
-    double Y = (vy*t)-(0.5*g*pow(t,2)); // => sen(45°)
+
+    t += 0.1;
+    X = (Vx*t); // => cos(45°)
+    Y = (Vy*t)-(0.5*g*t*t); // => sen(45°)
     setPos(x()-X,y()-Y);
-    box.setPos(x()-10, y()-10);
-    t += 0.03;
+    box.setPos(x()-5, y()-5);
+}
+
+void bolaFuego::move5()
+{
+    double ax = 0.00, ay = 0.00;
+    int len = bolas.size();
+    for (int i = 0; i < len; i++)
+    {
+        if (bolas[i] == 0){
+            setPos(boss->x(), boss->y());
+            return;
+        }
+        if (bolas[i] != this)
+        {
+            double r = sqrt(pow(bolas[i]->X-X, 2)+pow(bolas[i]->Y-Y, 2));
+            ax += G*bolas[i]->masa*(bolas[i]->X-X)/(pow(r, 3));
+            ay += G*bolas[i]->masa*(bolas[i]->Y-Y)/(pow(r, 3));
+        }
+    }
+    Vx += ax*T;
+    Vy += ay*T;
+    X += Vx*T;
+    Y += Vy*T;
+    setPos(X,Y);
+    box.setPos(x()-5, y()-5);
 }
 
 void bolaFuego::colision_con_boss()
