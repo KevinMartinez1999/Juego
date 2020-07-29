@@ -32,7 +32,7 @@
    <string>HellBurn</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="Imagenes.qrc">
+   <iconset resource="recursos.qrc">
     <normaloff>:/Imagenes/ICONO.png</normaloff>:/Imagenes/ICONO.png</iconset>
   </property>
   <property name="styleSheet">
@@ -63,7 +63,7 @@ border-image: url(:/Imagenes/BOTONGRISPUSH.png);
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="Imagenes.qrc">:/Imagenes/MENUPAUSA.png</pixmap>
+    <pixmap resource="recursos.qrc">:/Imagenes/MENUPAUSA.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -105,12 +105,12 @@ border-image: url(:/Imagenes/BOTONGRISPUSH.png);
     </rect>
    </property>
    <property name="text">
-    <string>CERRAR SESION</string>
+    <string>SALIR</string>
    </property>
   </widget>
  </widget>
  <resources>
-  <include location="Imagenes.qrc"/>
+  <include location="recursos.qrc"/>
  </resources>
  <connections/>
 </ui>

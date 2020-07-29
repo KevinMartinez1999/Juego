@@ -44,7 +44,7 @@ public:
 
     QPixmap *pixmap;
     QGraphicsRectItem vida, box;
-    QMediaPlayer *JugadorAtacado;
+    QMediaPlayer JugadorAtacado;
     int health;
 
 signals:
@@ -67,8 +67,7 @@ private:
     bool banRight;
     bool banSpell;
     short int ultimoEstado;
-    QMediaPlayer *Hechizo;
-    QMediaPlayer *Ataque;
+    QMediaPlayer Hechizo, Ataque;
     QPoint posAnterior;
     QTimer mov, timer;
 };

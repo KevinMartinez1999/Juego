@@ -11,11 +11,11 @@
 #define u 0.8
 #define G 1
 #define T 1
+#define es 0.0375
 
 extern Boss *boss;
 extern JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
 extern short int num_jugadores;
-extern QList<bolaFuego *> bolas;
 
 bolaFuego::bolaFuego(QObject *parent, short int estado, short int tipo)
     : QObject(parent), ultimoEstado(estado), Tipo(tipo)
@@ -80,7 +80,7 @@ void bolaFuego::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->drawPixmap(-ancho/2,-alto/2,Pixmap,columnas,0,ancho,alto);
 }
 
-void bolaFuego::move1() //Golpe del jugador
+void bolaFuego::move1() //Golpe del jugador (movimiento circular)
 {
     t += 0.1;
     X += r*cos(w*t) + m;
@@ -127,31 +127,46 @@ void bolaFuego::move4() //Bolas parabolicas del enemigo
     box.setPos(x()-5, y()-5);
 }
 
-void bolaFuego::move5()
+void bolaFuego::move5() //Movimiento planetario al rededor del Boss
 {
     double ax = 0.00, ay = 0.00;
-    int len = bolas.size();
-    for (int i = 0; i < len; i++)
-    {
-        if (bolas[i] == 0){
-            setPos(boss->x(), boss->y());
-            return;
-        }
-        if (bolas[i] != this)
-        {
-            double r = sqrt(pow(bolas[i]->X-X, 2)+pow(bolas[i]->Y-Y, 2));
-            ax += G*bolas[i]->masa*(bolas[i]->X-X)/(pow(r, 3));
-            ay += G*bolas[i]->masa*(bolas[i]->Y-Y)/(pow(r, 3));
-        }
-    }
+    double r = sqrt(pow(boss->x()-X, 2)+pow(boss->y()-Y, 2));
+    ax += G*(50000*es)*(boss->x()-X)/(pow(r, 3));
+    ay += G*(50000*es)*(boss->y()-Y)/(pow(r, 3));
     Vx += ax*T;
     Vy += ay*T;
     X += Vx*T;
     Y += Vy*T;
     setPos(X,Y);
-    box.setPos(x()-5, y()-5);
+
+    /*Lo siguiente es para el caso que queramos que todos los planetas interactuen
+    entre ellos*/
+
+//    double ax = 0.00, ay = 0.00;
+//    int len = bolas.size();
+//    for (int i = 0; i < len; i++)
+//    {
+//        if (bolas[i] == 0){
+//            setPos(boss->x(), boss->y());
+//            return;
+//        }
+//        if (bolas[i] != this)
+//        {
+//            double r = sqrt(pow(bolas[i]->X-X, 2)+pow(bolas[i]->Y-Y, 2));
+//            ax += G*bolas[i]->masa*(bolas[i]->X-X)/(pow(r, 3));
+//            ay += G*bolas[i]->masa*(bolas[i]->Y-Y)/(pow(r, 3));
+//        }
+//    }
+//    Vx += ax*T;
+//    Vy += ay*T;
+//    X += Vx*T;
+//    Y += Vy*T;
+//    setPos(X,Y);
+//    box.setPos(x()-5, y()-5);
 }
 
+/*Esta funcion verifica cuando los ataques del jugador golpean al
+ enemigo y le bajan vida; Luego de golpearlo elimina el objeto bolaFuego*/
 void bolaFuego::colision_con_boss()
 {
     if (abs(x() - boss->x()) < 50){
@@ -163,6 +178,8 @@ void bolaFuego::colision_con_boss()
         delete this;
 }
 
+/*Esta funcion se llama cuando el jugador es golpeado por una bola ya sea de las que lanza
+ el enemigo o de las que aparecen aleatoriamente pero jamas lo golpea la misma que el jugador dispara*/
 void bolaFuego::colision_con_jugador()
 {
     if (num_jugadores == 2){
@@ -176,27 +193,31 @@ void bolaFuego::colision_con_jugador()
             delete this;
 }
 
+/*Verifica cuando hay una colision entre el jugador y una bola*/
 bool bolaFuego::colision(JugadorBatalla *obj)
 {
     if (box.collidesWithItem(&obj->box)){
         if(obj->health>1)
-            obj->JugadorAtacado->play();
+            obj->JugadorAtacado.play();
         obj->health -= dano;
         obj->vida.setRect(0,0,obj->health,40);
         if(!obj->muerto)
-                    return true;
-                else return false;
+            return true;
+        else
+            return false;
     }
-    else return false;
+    else
+        return false;
 }
 
+//Actualiza el Sprite de la bola
 void bolaFuego::Actualizacion()
 {
     if (columnas >= 160)
         columnas = 0;
     else
         columnas += 40;
-    this->update(-ancho/2,-alto/2,ancho,alto);
+    update(-ancho/2,-alto/2,ancho,alto);
 }
 
 

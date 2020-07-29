@@ -24,6 +24,8 @@ Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
     vida_real = 0;
     tipoAtaque = 0;
 
+    //Se inicializa la posicion del Boss, su Sprite y tiempo de ataque segun la variable tipoBoss
+    //Para cada valor de tipoBoss cambian todas las variables
     if(tipoBoss==0){
         tiempo_ataque = 20000;
         ancho = 256;
@@ -78,6 +80,9 @@ Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
     generar_ataque.start(1000);
 }
 
+//Verifica el lado por el que golpea el jugador
+/*Si el jugador golpea hacia la izquierda y el enemigo esta a la derecha de el entonces
+ el ataque no debe hacer ningun efecto sobre el enemigo, esto es lo que hace esta funcón*/
 bool Boss::verificar_golpe(JugadorBatalla *obj)
 {
     if (obj->golpe_izq and this->x() < obj->x())
@@ -131,6 +136,9 @@ void Boss::ataque_jugador()
     if (abs(this->x()-jugadorBatalla->x()) < 184 and jugadorBatalla->banAttack){
         if (verificar_golpe(jugadorBatalla)){
             vida_real++;
+
+            /*este switch se usa para, dependiendo del Boss, los ataques tengan cada vez menos efecto sobre
+              los Bosses dando la sensacion de dificultad*/
             switch (tipoBoss) {
             case 0:
                 if (vida_real == 1){
@@ -173,6 +181,7 @@ void Boss::ataque_jugador()
     }
 }
 
+//Actualizacion del sprite
 void Boss::Actualizacion()
 {
     /*La imagen sprite del jugador es una imagen que estaba dividida por filas y por columnas, cada fila determina un movimiento o
@@ -190,6 +199,9 @@ void Boss::Actualizacion()
     origen siempre sea la mitad de la imagen actual.*/
 }
 
+/*Aqui el boss elige un ataque y lo lanza por cierta cantidad de tiempo hasta que lo cambia
+  por otro. La variable tipo ataque es la que hace posible esto, cuando tipoAtaque cambia el
+  switch de esta funcion hace que el boss haga un ataque nuevo*/
 void Boss::elegir_ataque()
 {
     //qDebug()<<tipoAtaque;
@@ -234,16 +246,22 @@ void Boss::elegir_ataque()
     }
 }
 
+/*Aqui se elige cada cierto tiempo un ataque nuevo para que el Boss lo haga.
+  el tiempo esta determinado por un timer que se repite cada cierto tiempo y ese tiempo
+  depende del Boss contra el que estamos peleando. Así, cada vez los ataques son mas impredecibles
+  y dificiles de esquivar para el jugador*/
 void Boss::cambiar_ataque()
 {
     tipoAtaque++;
     if (tipoAtaque > 0 and tipoBoss==0)
-            tipoAtaque = 0;
+        tipoAtaque = 0;
     else if(tipoAtaque>1 and tipoBoss==1)
         tipoAtaque = 0;
     else if(tipoAtaque>2 and tipoBoss>1)
         tipoAtaque=0;
 
+    //Aqui se le da a acada ataque un tiempo de repeticion entre
+    //un lanzamiento y otro
     switch (tipoAtaque) {
     case 0:
         generar_ataque.stop();
@@ -260,58 +278,47 @@ void Boss::cambiar_ataque()
     }
 }
 
+/*Aqui hay una habilidad especial que consiste en unas bolas que orbitan al rededor
+  del enemigo y lo protegen de ser golpeado*/
 void Boss::orbitas()
 {
-    if (bolas.count() == 5)
+    if (bolas.count() == 4)
         return;
 
     bolaFuego * bola = new bolaFuego(this, 1, 5);
     bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
     switch (cont) {
     case 0:
-        bola->setPos(x(),y());
         bola->X = x();
-        bola->Y = y();
-        bola->Vx = 0;
+        bola->Y = y() - 4000*e;
+        bola->Vx = -3.2;
         bola->Vy = 0;
-        bola->masa = 50000*e;
+        bola->masa = 70*e;
         cont++;
         break;
     case 1:
-        bola->setPos(x(),y());
         bola->X = x();
-        bola->Y = y() - 5000*e;
-        bola->Vx = -2;
+        bola->Y = y() + 4000*e;
+        bola->Vx = 3.2;
         bola->Vy = 0;
         bola->masa = 70*e;
         cont++;
         break;
     case 2:
-        bola->setPos(x(),y());
-        bola->X = x();
-        bola->Y = y() + 5000*e;
-        bola->Vx = 2;
-        bola->Vy = 0;
+        bola->X = x() + 4000*e;
+        bola->Y = y();
+        bola->Vx = 0;
+        bola->Vy = -3.2;
         bola->masa = 70*e;
         cont++;
         break;
     case 3:
-        bola->setPos(x(),y());
-        bola->X = x() + 5000*e;
+        bola->X = x() - 4000*e;
         bola->Y = y();
         bola->Vx = 0;
-        bola->Vy = -2;
+        bola->Vy = 3.2;
         bola->masa = 70*e;
-        cont++;
-        break;
-    case 4:
-        bola->setPos(x(),y());
-        bola->X = x() - 5000*e;
-        bola->Y = y();
-        bola->Vx = 0;
-        bola->Vy = 2;
-        bola->masa = 70*e;
-        cont = 1;
+        cont = 0;
         break;
     }
     scene()->addItem(bola);

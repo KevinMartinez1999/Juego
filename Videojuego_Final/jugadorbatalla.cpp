@@ -53,19 +53,16 @@ JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
     vida.setBrush(Qt::red);
 
     //Sonido del lanzamiento de la bola de fuego
-    Hechizo = new QMediaPlayer(this);
-    Hechizo->setMedia(QUrl("qrc:/Musica/FUEGO.wav"));
-    Hechizo->setVolume(100);
+    Hechizo.setMedia(QUrl("qrc:/Musica/FUEGO.wav"));
+    Hechizo.setVolume(100);
 
     //Sonido de ataque
-    Ataque = new QMediaPlayer(this);
-    Ataque->setMedia(QUrl("qrc:/Musica/ESPADA.mp3"));
-    Ataque->setVolume(100);
+    Ataque.setMedia(QUrl("qrc:/Musica/ESPADA.mp3"));
+    Ataque.setVolume(100);
 
     //Sonido de daño
-    JugadorAtacado = new QMediaPlayer(this);
-    JugadorAtacado->setMedia(QUrl("qrc:/Musica/PAIN.wav"));
-    JugadorAtacado->setVolume(100);
+    JugadorAtacado.setMedia(QUrl("qrc:/Musica/PAIN.wav"));
+    JugadorAtacado.setVolume(100);
 }
 
 void JugadorBatalla::PararTimers()
@@ -90,7 +87,7 @@ void JugadorBatalla::ReiniciarTimers()
 
 void JugadorBatalla::reset_golpe()
 {
-    Ataque->stop();
+    Ataque.stop();
     golpe_izq = false;
     golpe_der = false;
 }
@@ -116,7 +113,7 @@ void JugadorBatalla::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 
 void JugadorBatalla::setX(){
     if(fila==0 or fila==168){
-        t = 0;
+        t = 0.3;
         columnas = 0;
     }
     else if(t >= 1.5)
@@ -152,7 +149,7 @@ void JugadorBatalla::moveLeft()
         reset_golpe();
         ultimoEstado = 1;
         if(fila!=336 and fila!=0){
-            t = 0;
+            t = 0.3;
             columnas = 0;
         }
         fila=336;
@@ -170,7 +167,7 @@ void JugadorBatalla::moveRight()
         reset_golpe();
         ultimoEstado = 2;
         if(fila!=504 and fila!=168){
-            t = 0;
+            t = 0.3;
             columnas = 0;
         }
         fila = 504;
@@ -220,10 +217,10 @@ void JugadorBatalla::Attack()
             break;
         }
         if(!muerto)
-            Ataque->play();
+            Ataque.play();
     }
     if(muerto)
-        Ataque->stop();
+        Ataque.stop();
 }
 
 void JugadorBatalla::Spell()
@@ -243,7 +240,7 @@ void JugadorBatalla::Spell()
                 break;
             }
             if (columnas==672){
-                Hechizo->play();
+                Hechizo.play();
 
                 //Añadir bola de fuego
                 bolaFuego *bola = new bolaFuego(this, ultimoEstado, 1);

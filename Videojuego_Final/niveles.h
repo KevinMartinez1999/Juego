@@ -36,8 +36,7 @@ private:
     QGraphicsScene *escena;
     QGraphicsPixmapItem *fondo;
     QMediaPlaylist Lista;
-    QMediaPlayer musicaNivel;
-    QMediaPlayer *JugadorMuerto,*victoria;
+    QMediaPlayer musicaNivel, JugadorMuerto, victoria;
     QTimer timer;
     int cont=0;
     bool pj2;

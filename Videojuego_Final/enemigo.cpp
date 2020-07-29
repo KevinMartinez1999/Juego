@@ -47,13 +47,11 @@ Enemigo::Enemigo(QObject *parent) : QObject(parent)
     mov_enemigo.start(60);
 
     //Sonidos
-    JugadorAtacado = new QMediaPlayer(this);
-    JugadorAtacado->setMedia(QUrl("qrc:/Musica/PAIN.wav"));
-    JugadorAtacado->setVolume(100);
+    JugadorAtacado.setMedia(QUrl("qrc:/Musica/PAIN.wav"));
+    JugadorAtacado.setVolume(100);
 
-    fantasma = new QMediaPlayer(this);
-    fantasma->setMedia(QUrl("qrc:/Musica/FANTASMA.wav"));
-    fantasma->setVolume(100);
+    fantasma.setMedia(QUrl("qrc:/Musica/FANTASMA.wav"));
+    fantasma.setVolume(100);
 
     connect(&SonidosTimer, SIGNAL(timeout()), this, SLOT(sonidos()));
     SonidosTimer.start(5000);
@@ -77,6 +75,7 @@ bool Enemigo::verificar_golpe(Jugador *obj)
         return false;
 }
 
+/*Dependiendo de la posicion del jugador los fantasmas van a seguirlo por todo el mapa*/
 void Enemigo::follow(Jugador *obj)
 {
     if (box.x() > obj->box.x() and box.y() > obj->box.y()){
@@ -159,30 +158,35 @@ void Enemigo::Actualizacion()
     this->update(-ancho/2,-alto/2,ancho,alto);
 }
 
+//Sonidos de los fantasmas mientras van por el jugador
 void Enemigo::sonidos()
 {
     if(num_jugadores==2){
         if(jugador->muerto and jugador2->muerto)
-            fantasma->stop();
-        else fantasma->play();
+            fantasma.stop();
+        else fantasma.play();
     }
     else{
         if(jugador->muerto)
-            fantasma->stop();
+            fantasma.stop();
         else
-             fantasma->play();
+             fantasma.play();
     }
 }
 
+//Aqui los enemigos hacen daño cuando tocan al jugador
 void Enemigo::ataque_enemigo()
 {
     if (box.collidesWithItem(&jugador->box) and !jugador->muerto){
         jugador->health -= 5;
         jugador->vida.setRect(0,0,jugador->health,5);
         if(!jugador->muerto)
-            JugadorAtacado->play();
+            JugadorAtacado.play();
     }
     else{
+        //Si el jugador tiene menos de la mitad de la vida
+        //a modo de ayuda la vida se le va a recuperar de a poco
+        //mientras no sea atacado
         if (jugador->health < 25){
             jugador->health++;
             jugador->vida.setRect(0,0,jugador->health,5);
@@ -193,7 +197,7 @@ void Enemigo::ataque_enemigo()
             jugador2->health -= 5;
             jugador2->vida.setRect(0,0,jugador2->health,5);
             if(!jugador2->muerto)
-                JugadorAtacado->play();;
+                JugadorAtacado.play();;
         }
         else{
             if (jugador2->health <  25){

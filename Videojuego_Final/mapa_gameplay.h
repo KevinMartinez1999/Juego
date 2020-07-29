@@ -39,18 +39,17 @@ public:
 
 private: //Atributos de la clase
     Ui::Mapa_GamePlay *ui;
-    QMediaPlayer botonSound;
-    QMediaPlaylist lista;
-    QMediaPlayer ambiente;
-    QMediaPlayer *JugadorMuerto;
-    QCursor cursor;
-    QGraphicsScene *escena;
+    QMediaPlayer botonSound, ambiente, jugadorMuerto;
     QTimer timer, dead;
+    QPushButton boton;
     QString nombre;
+    QMediaPlaylist lista;
+    QCursor cursor;
+    QPixmap Pixmap_Cursor;
+    QGraphicsScene *escena;
     QGraphicsPixmapItem *mapa;
     QGraphicsPixmapItem *objetos;  
     QLabel *aviso;
-    QPushButton *boton;
     int BossesMuertos;
     int PosX0,PosY0,PosX02,PosY02,cont=0;
     int Xpos,YPos;

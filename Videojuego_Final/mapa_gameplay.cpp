@@ -27,8 +27,8 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     pj2 = false; //Inicializacion de la variable del segundo jugador por defecto apagado
 
     //Esconde el cursor
-    QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
-    cursor = QCursor(Pixmap_Cursor,0,0);
+    Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
+    cursor = QCursor(Qt::BlankCursor);
     setCursor(cursor);
 
     //Musica de fondo
@@ -143,10 +143,11 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     aviso->hide();//Por defecto se encontrara escondido para simplemente mostrarse cuando se este en una entrada
 
     //Boton que permitira al usuario decidir si desea entrar a la batalla contra el Boss o no
-    boton = new QPushButton("Entrar",this);
-    boton->setGeometry(326,326,130,35);
-    boton->hide();//Por defecto se encontrara escondido para simplemente mostrarse cuando se este en una entrada
-    connect(boton,SIGNAL(clicked()),this,SLOT(Nivel()));//Se ejecutara la funcion Nivel() si se presiona el boton
+    boton.setParent(this);
+    boton.setText("Entrar");
+    boton.setGeometry(326,326,130,35);
+    boton.hide();//Por defecto se encontrara escondido para simplemente mostrarse cuando se este en una entrada
+    connect(&boton,SIGNAL(clicked()),this,SLOT(Nivel()));//Se ejecutara la funcion Nivel() si se presiona el boton
 
     if(BossesMuertos==0 and nueva_partida){
         nivelActual = 0;
@@ -169,9 +170,8 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     }
 
     //sonidos
-    JugadorMuerto = new QMediaPlayer(this);
-    JugadorMuerto->setMedia(QUrl("qrc:/Musica/MUERTO.mp3"));
-    JugadorMuerto->setVolume(100);
+    jugadorMuerto.setMedia(QUrl("qrc:/Musica/MUERTO.mp3"));
+    jugadorMuerto.setVolume(100);
 }
 
 Mapa_GamePlay::~Mapa_GamePlay()
@@ -275,7 +275,7 @@ void Mapa_GamePlay::keyPressEvent(QKeyEvent *event)
             on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
         }
     }
-    if(tutorial){
+    else if(tutorial){
         if(event->key() == Qt::Key_Space){
             emit Tutorial();
         }
@@ -335,9 +335,9 @@ void Mapa_GamePlay::Tutorial()
     else if(cont==2)
         ui->Controles->setPixmap(QPixmap(":/Imagenes/TECLASMAPA.png"));
     else if(cont==3){
-        ui->Controles->hide();
-        tutorial=false;
         freeze=false;
+        tutorial=false;
+        ui->Controles->hide();
     }
 }
 
@@ -421,18 +421,17 @@ void Mapa_GamePlay::ingreso_batalla()
             (Xpos>=2075 && Xpos<=2200 && YPos<=645 && YPos>=585 and nivelActual == 3)){
         //Se le muestra al usuario el aviso y el boton para asi seleccionarlo.
         aviso->show();
-        boton->show();
+        boton.show();
         //Se le muestra al usuario el cursor personalizado.
-        QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
-        QCursor cursor = QCursor(Pixmap_Cursor,0,0);
+        cursor = QCursor(Pixmap_Cursor,0,0);
         setCursor(cursor);
     }
     else{
         /*Si el jugador no se encuentra en esas posiciones simplemente se procedera a no mostrarle el aviso y el boton; y
         tambien el cursor seguira siendo invisible*/
         aviso->hide();
-        boton->hide();
-        QCursor cursor = QCursor(Qt::BlankCursor);
+        boton.hide();
+        cursor = QCursor(Qt::BlankCursor);
         setCursor(cursor);
     }
 }
@@ -460,7 +459,7 @@ void Mapa_GamePlay::verificar_muerte()
 {
     if (num_jugadores == 2){
         if (jugador->muerto and jugador2->muerto){
-            JugadorMuerto->play();
+            jugadorMuerto.play();
             QMessageBox msgBox;
             msgBox.setText("Tu alma ha sido destruida.");
             msgBox.setWindowTitle("HellBurn");
@@ -477,7 +476,7 @@ void Mapa_GamePlay::verificar_muerte()
     }
     else{
         if (jugador->muerto){
-            JugadorMuerto->play();
+            jugadorMuerto.play();
             QMessageBox msgBox;
             msgBox.setText("Tu alma ha sido destruida.");
             msgBox.setWindowTitle("HellBurn");

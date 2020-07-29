@@ -74,13 +74,11 @@ Niveles::Niveles(QWidget *parent) :
     timer.start(100);
 
     //Sonidos
-    JugadorMuerto = new QMediaPlayer(this);
-    JugadorMuerto->setMedia(QUrl("qrc:/Musica/MUERTO.mp3"));
-    JugadorMuerto->setVolume(100);
+    JugadorMuerto.setMedia(QUrl("qrc:/Musica/MUERTO.mp3"));
+    JugadorMuerto.setVolume(100);
 
-    victoria = new QMediaPlayer(this);
-    victoria->setMedia(QUrl("qrc:/Musica/GANAR.wav"));
-    victoria->setVolume(100);
+    victoria.setMedia(QUrl("qrc:/Musica/GANAR.wav"));
+    victoria.setVolume(100);
 
     if(tutorial)
         boss->PararTimers();
@@ -182,7 +180,7 @@ void Niveles::muerte()
         }
         if (jugadorBatalla2->health <= 1){
             jugadorBatalla2->muerto=true;
-            JugadorMuerto->play();
+            JugadorMuerto.play();
             jugadorBatalla2->hide();
             jugadorBatalla2->vida.hide();
         }
@@ -200,7 +198,7 @@ void Niveles::verificar_muerte()
 {
     if (num_jugadores == 2){
         if (jugadorBatalla->muerto and jugadorBatalla2->muerto){
-            JugadorMuerto->play();
+            JugadorMuerto.play();
             QMessageBox msgBox;
             msgBox.setText("Tu alma ha sido destruida.");
             msgBox.setWindowTitle("HellBurn");
@@ -217,7 +215,7 @@ void Niveles::verificar_muerte()
     }
     else{
         if (jugadorBatalla->muerto){
-            JugadorMuerto->play();
+            JugadorMuerto.play();
             QMessageBox msgBox;
             msgBox.setText("Tu alma ha sido destruida.");
             msgBox.setWindowTitle("HellBurn");
@@ -341,7 +339,7 @@ void Niveles::Level_Events()
     usuario ha ganado el nivel y ahora puede volver al mapa principal, se abrira una nueva ventana mapa_gameplay
     y se eliminara la ventana del nivel.*/
     if(boss->Boss_Derrotado){
-        victoria->play();
+        victoria.play();
         musicaNivel.stop();
 
         nivelActual++;

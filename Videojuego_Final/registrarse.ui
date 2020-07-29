@@ -26,7 +26,7 @@
    <string>HellBurn</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="Imagenes.qrc">
+   <iconset resource="Recursos.qrc">
     <normaloff>:/Imagenes/ICONO.png</normaloff>:/Imagenes/ICONO.png</iconset>
   </property>
   <property name="styleSheet">
@@ -166,7 +166,7 @@ border-image:url(:/Imagenes/TEXT-INPUT.png);
     <string/>
    </property>
    <property name="pixmap">
-    <pixmap resource="Imagenes.qrc">:/Imagenes/INTERFAZ.png</pixmap>
+    <pixmap resource="Recursos.qrc">:/Imagenes/INTERFAZ.png</pixmap>
    </property>
    <property name="scaledContents">
     <bool>true</bool>
@@ -195,7 +195,7 @@ border-image:url(:/Imagenes/TEXT-INPUT.png);
   <zorder>mostrar</zorder>
  </widget>
  <resources>
-  <include location="Imagenes.qrc"/>
+  <include location="Recursos.qrc"/>
  </resources>
  <connections/>
 </ui>

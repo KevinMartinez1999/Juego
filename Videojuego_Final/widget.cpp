@@ -11,6 +11,27 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
 
+    //Sistema de autocompletado de usuarios
+    QString letras = "";
+    QStringList lista;
+    QCompleter *cmpt;
+    QDir directorio;
+    directorio.setPath("../Videojuego_Final/Partidas");
+    int len = directorio.count();
+    for (int i = 2; i < len; i++){
+        for (int j = 0; j < directorio[i].length(); j++){
+            if (directorio[i][j] == '.'){
+                lista.append(letras);
+                letras = "";
+                break;
+            }
+            letras += directorio[i][j];
+        }
+    }
+    cmpt = new QCompleter(lista, this);
+    ui->usuario->setCompleter(cmpt);
+
+
     //Sonido al presionar los botones
     boton.setMedia(QUrl("qrc:/Musica/ESPADA.mp3"));
     boton.setVolume(100);

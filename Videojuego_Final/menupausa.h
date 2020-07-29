@@ -34,6 +34,8 @@ private:
     QMovie *movie;
     QLabel *w;
     QMediaPlayer boton;
+    QPixmap Pixmap_Cursor;
+    QCursor cursor;
 };
 
 #endif // MENUPAUSA_H

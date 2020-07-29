@@ -22,8 +22,8 @@ MenuPausa::MenuPausa(QWidget *parent,bool ventana) :
     boton.setMedia(QUrl("qrc:/Musica/ESPADA.mp3"));
     boton.setVolume(100);
 
-    QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
-    QCursor cursor = QCursor(Pixmap_Cursor,0,0);
+    Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
+    cursor = QCursor(Pixmap_Cursor,0,0);
     setCursor(cursor);
 
     w = new QLabel(this);
@@ -92,6 +92,6 @@ void MenuPausa::on_Controles_clicked()
 
 void MenuPausa::on_Cerrar_Sesion_clicked()
 {
-
+    exit(EXIT_FAILURE);
 }
 

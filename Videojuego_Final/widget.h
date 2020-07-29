@@ -9,6 +9,8 @@
 #include <QMovie>
 #include <QLabel>
 #include <QMediaPlayer>
+#include <QDir>
+#include <QCompleter>
 
 using namespace std;
 

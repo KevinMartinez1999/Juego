@@ -33,7 +33,6 @@ signals:
 public slots:
     void Actualizacion(); //Actualiza el sprite
     void sonidos();
-
     void ataque_enemigo();
     void detectar_enemigos();
     void ataque_jugador();
@@ -41,13 +40,10 @@ public slots:
     void move();
 
 private:
-    float columnas,fila,ancho,alto;
+    QMediaPlayer JugadorAtacado, JugadorMuerto, fantasma;
     QTimer at_enemigo, at_jugador, mov_enemigo, timer, SonidosTimer;
+    float columnas,fila,ancho,alto;
     int health;
-
-    QMediaPlayer *JugadorAtacado;
-    QMediaPlayer *JugadorMuerto;
-    QMediaPlayer *fantasma;
 };
 
 #endif // ENEMIGO_H
