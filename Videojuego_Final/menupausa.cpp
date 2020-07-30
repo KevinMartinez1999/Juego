@@ -95,6 +95,10 @@ void MenuPausa::on_Controles_clicked()
 
 void MenuPausa::on_Cerrar_Sesion_clicked()
 {
-
+    Widget *w = new Widget;
+    w->show();
+    close();
+    emit Cerrar_Sesion();
+    delete this;
 }
 

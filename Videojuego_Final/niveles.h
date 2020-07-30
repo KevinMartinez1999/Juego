@@ -43,14 +43,13 @@ private:
     bool pj2;
     bool freeze,tutorial;
 
-public slots:
-
 private slots:
     void muerte();
     void verificar_muerte();
     void Tutorial();
     void Level_Events();
     void on_Opciones_clicked();
+    void Cerrar_Ventana();
 };
 
 #endif // NIVELES_H

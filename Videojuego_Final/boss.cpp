@@ -208,11 +208,10 @@ void Boss::Actualizacion()
 
 void Boss::elegir_ataque()
 {
-    //qDebug()<<tipoAtaque;
     switch (tipoAtaque) {
     case 0:{
         bolaFuego * bola = new bolaFuego(this, 1, 2);
-        if(tipoBoss==0)
+        if(tipoBoss==0 or tipoBoss==4)
             bola->Pixmap = QPixmap(":/Imagenes/FUEGO2.png");
         else
             bola->Pixmap = QPixmap(":/Imagenes/FUEGO.png");

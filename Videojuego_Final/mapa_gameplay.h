@@ -57,7 +57,7 @@ private: //Atributos de la clase
     int EnemigosTotales;
     bool pj2,freeze,tutorial;
 
- private slots:
+ private slots:    
     void Tutorial();
     void Nivel();
     void spawn();
@@ -66,6 +66,7 @@ private: //Atributos de la clase
     void ActualizarEscena(); //Centra constantemente la grafica en el jugador
     void verificar_muerte();
     void on_Opciones_clicked();
+    void Cerrar_Ventana();
 
 };
 

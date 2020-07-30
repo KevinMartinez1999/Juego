@@ -2,6 +2,7 @@
 #include "ui_niveles.h"
 #include "mapa_gameplay.h"
 #include "menupausa.h"
+#include <QGraphicsRectItem>
 
 extern short int nivel, nivelActual;
 extern short int num_jugadores;
@@ -9,6 +10,8 @@ extern QString user,pass;
 extern bool nueva_partida;
 extern QList <QGraphicsPixmapItem *> Muros;
 JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
+QGraphicsRectItem *rectangulo;
+
 Boss *boss;
 
 Niveles::Niveles(QWidget *parent) :
@@ -41,6 +44,8 @@ Niveles::Niveles(QWidget *parent) :
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setScene(escena);
+
+    rectangulo = new QGraphicsRectItem;
 
     //Pixmap fondo que sera modificado dependiendo a que nivel se esta entrando
     fondo = new QGraphicsPixmapItem;
@@ -259,7 +264,6 @@ si no se escoge asi las teclas no van a tener ningun efecto cuando se este jugan
 void Niveles::keyPressEvent(QKeyEvent *event)
 {
     if(!freeze){
-        if(!jugadorBatalla->muerto){
             //Segun la tecla que se presione se habilita su respectiva bandera de movimiento
             if (event->key() == Qt::Key_A){
                 jugadorBatalla->setBanLeft();
@@ -276,25 +280,24 @@ void Niveles::keyPressEvent(QKeyEvent *event)
             else if (event->key() == Qt::Key_W){
                 jugadorBatalla->setBanJump();
             }
-        }
         /*Estas son las teclas de movimiento para el jugador 2. Solo estan habilitadas si asi
           lo quiere el usuario.*/
-         if(pj2 and !jugadorBatalla2->muerto){
-        if(event->key()==Qt::Key_J){
-            jugadorBatalla2->setBanLeft();
-        }
-        else if(event->key()==Qt::Key_L){
-            jugadorBatalla2->setBanRight();
-        }
-        else if (event->key() == Qt::Key_H){
-            jugadorBatalla2->setBanAttack();
-        }
-        else if (event->key() == Qt::Key_N){
-            jugadorBatalla2->setBanSpell();
-        }
-        else if (event->key() == Qt::Key_I){
-            jugadorBatalla2->setBanJump();
-        }
+        else if(pj2){
+            if(event->key()==Qt::Key_J){
+                jugadorBatalla2->setBanLeft();
+            }
+            else if(event->key()==Qt::Key_L){
+                jugadorBatalla2->setBanRight();
+            }
+            else if (event->key() == Qt::Key_H){
+                jugadorBatalla2->setBanAttack();
+            }
+            else if (event->key() == Qt::Key_N){
+                jugadorBatalla2->setBanSpell();
+            }
+            else if (event->key() == Qt::Key_I){
+                jugadorBatalla2->setBanJump();
+            }
         }
     }
     if(tutorial){
@@ -400,4 +403,12 @@ void Niveles::on_Opciones_clicked()
 
     MenuPausa *opciones = new MenuPausa(nullptr,1);
     opciones->show();
+    connect(opciones,&MenuPausa::Cerrar_Sesion,this,&Niveles::Cerrar_Ventana);
+}
+
+void Niveles::Cerrar_Ventana()
+{
+    Muros.clear();
+    close();
+    delete this;
 }

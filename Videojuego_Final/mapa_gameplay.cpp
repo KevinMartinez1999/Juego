@@ -99,7 +99,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
 
     //Spawn de los enemigos
     connect(&enemigos,SIGNAL(timeout()),this,SLOT(spawn()));
-    enemigos.start(6000);
+    enemigos.start(5000);
 
     if (num_jugadores == 2){ //Dos jugadores
         pj2 = true; //Se activa la presencia de un jugador dos en mapa
@@ -247,9 +247,9 @@ void Mapa_GamePlay::CargarPartida()
             Enemigos_Asesinar=10;
         }
         else{
-            PosX0=1715,PosY0=1785;
+            PosX0=1625,PosY0=1765;
             if(num_jugadores==2)
-                PosX02=1705,PosY02=1825;
+                PosX02=1585,PosY02=1765;
             Enemigos_Asesinar=0;
         }
         EnemigosTotales=Enemigos_Asesinar;
@@ -299,7 +299,6 @@ void Mapa_GamePlay::keyPressEvent(QKeyEvent *event)
 {
     //Segun la tecla que se presione se habilita su respectiva bandera de movimiento
     if(!freeze){
-        if(!jugador->muerto){
             if (event->key() == Qt::Key_W){
                 jugador->setBanUp();
             }
@@ -315,10 +314,9 @@ void Mapa_GamePlay::keyPressEvent(QKeyEvent *event)
             else if (event->key() == Qt::Key_F){
                 jugador->setBanAttack();
             }
-        }
         //Estas son las teclas de movimiento para el jugador 2.
         //Solo estan habilitadas (o habilitadas) si asi lo quiere el usuario.
-            if (pj2 and !jugador2->muerto){
+            else if(pj2){
                 if(event->key()==Qt::Key_J){
                     jugador2->setBanLeft();
                 }
@@ -435,7 +433,7 @@ void Mapa_GamePlay::spawn()
     switch (cont) {
     case 0:
         enemigo->setPos(1095, 1830);
-        cont++;
+//        cont++;
         break;
     case 1:
         enemigo->setPos(510, 1495);
@@ -566,8 +564,10 @@ void Mapa_GamePlay::verificar_muerte()
                                  "color:white;");
             msgBox.exec();
 
-            Menu_partida * menu = new Menu_partida;
-            menu->show();
+            Muros.clear();
+            Mapa_GamePlay *Mapa = new Mapa_GamePlay;
+            Mapa->show();
+
             close();
             delete this;
         }
@@ -583,8 +583,10 @@ void Mapa_GamePlay::verificar_muerte()
                                  "color:white;");
             msgBox.exec();
 
-            Menu_partida * menu = new Menu_partida;
-            menu->show();
+            Muros.clear();
+            Mapa_GamePlay *Mapa = new Mapa_GamePlay;
+            Mapa->show();
+
             close();
             delete this;
         }
@@ -608,4 +610,12 @@ void Mapa_GamePlay::on_Opciones_clicked()
     enemigos.stop();
     MenuPausa *opciones = new MenuPausa(nullptr,0);
     opciones->show();
+    connect(opciones,&MenuPausa::Cerrar_Sesion,this,&Mapa_GamePlay::Cerrar_Ventana);
+}
+
+void Mapa_GamePlay::Cerrar_Ventana()
+{
+    Muros.clear();
+    close();
+    delete this;
 }

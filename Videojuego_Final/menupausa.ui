@@ -73,7 +73,7 @@ border-image: url(:/Imagenes/BOTONGRISPUSH.png);
    <property name="geometry">
     <rect>
      <x>145</x>
-     <y>20</y>
+     <y>120</y>
      <width>150</width>
      <height>50</height>
     </rect>
@@ -86,7 +86,7 @@ border-image: url(:/Imagenes/BOTONGRISPUSH.png);
    <property name="geometry">
     <rect>
      <x>145</x>
-     <y>80</y>
+     <y>180</y>
      <width>150</width>
      <height>50</height>
     </rect>
@@ -99,7 +99,7 @@ border-image: url(:/Imagenes/BOTONGRISPUSH.png);
    <property name="geometry">
     <rect>
      <x>145</x>
-     <y>140</y>
+     <y>240</y>
      <width>150</width>
      <height>50</height>
     </rect>
