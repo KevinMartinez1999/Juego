@@ -13,7 +13,7 @@ extern bool nueva_partida;
 
 Muro *muro;
 Jugador *jugador, *jugador2;
-short int nivel, nivelActual;
+short int nivel, nivelActual, Enemigos_Asesinar;
 QList <Enemigo *> listaEnemigos;
 QTimer enemigos;
 
@@ -50,6 +50,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     //Verificar la muerte del jugador
     connect(&dead,SIGNAL(timeout()),this,SLOT(verificar_muerte()));
     connect(&dead,SIGNAL(timeout()),this,SLOT(ingreso_batalla()));
+    connect(&dead,SIGNAL(timeout()),this,SLOT(Contador_Enemigos()));
     dead.start(100);
 
     //Aqui se añade la escena; la escena es bastante grande ya que el mapa del juego no es una pantalla fija
@@ -198,30 +199,35 @@ void Mapa_GamePlay::CargarPartida()
         if(num_jugadores==2)
             PosX02=820,PosY02=2155;
         ui->label_2->hide();
+        Enemigos_Asesinar=0;
         break;
     case 1:
         PosX0=330,PosY0=2200;
         nivelActual = 1;
         if(num_jugadores==2)
             PosX02=415,PosY02=2200;
+        Enemigos_Asesinar=5;
         break;
     case 2:
         PosX0=755,PosY0=1485;
         nivelActual = 2;
         if(num_jugadores==2)
             PosX02=815,PosY02=1480;
+        Enemigos_Asesinar=10;
         break;
     case 3:
         PosX0=1715,PosY0=1785;
         nivelActual = 3;
         if(num_jugadores==2)
             PosX02=1705,PosY02=1825;
+        Enemigos_Asesinar=15;
         break;
     case 4:
         PosX0=2015,PosY0=585;
         nivelActual = 4;
         if(num_jugadores==2)
             PosX02=2175,PosY02=600;
+        Enemigos_Asesinar=0;
         break;
     }
 
@@ -362,7 +368,10 @@ void Mapa_GamePlay::Nivel()
 
 void Mapa_GamePlay::spawn()
 {
-    if (listaEnemigos.count() == 5 or nivelActual<=0){ //Maximo 5 enemigos para no colapsar el programa
+    if (listaEnemigos.count() == 5 or
+            nivelActual<=0 or
+            Enemigos_Asesinar==0 or
+            (listaEnemigos.count()==1 and Enemigos_Asesinar==1)){ //Maximo 5 enemigos para no colapsar el programa
         return;
     }
 
@@ -422,13 +431,21 @@ void Mapa_GamePlay::ingreso_batalla()
             (Xpos>=755 && Xpos<=815 && YPos<=1465 && YPos>=1405 and nivelActual == 1)or
             (Xpos>=1565 && Xpos<=1690 && YPos<=1825 && YPos>=1760 and nivelActual == 2)or
             (Xpos>=2075 && Xpos<=2200 && YPos<=645 && YPos>=585 and nivelActual == 3)){
-        //Se le muestra al usuario el aviso y el boton para asi seleccionarlo.
-        aviso->show();
-        boton->show();
-        //Se le muestra al usuario el cursor personalizado.
-        QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
-        QCursor cursor = QCursor(Pixmap_Cursor,0,0);
-        setCursor(cursor);
+        if(Enemigos_Asesinar==0){
+            //Se le muestra al usuario el aviso y el boton para asi seleccionarlo.
+            aviso->setPixmap(QPixmap(":/Imagenes/LETRERO.png"));
+            aviso->show();
+            boton->show();
+            //Se le muestra al usuario el cursor personalizado.
+            QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
+            QCursor cursor = QCursor(Pixmap_Cursor,0,0);
+            setCursor(cursor);
+        }
+        else{
+            aviso->setPixmap(QPixmap(":/Imagenes/ADVERTENCIA.png"));
+            aviso->show();
+        }
+
     }
     else{
         /*Si el jugador no se encuentra en esas posiciones simplemente se procedera a no mostrarle el aviso y el boton; y
@@ -438,6 +455,12 @@ void Mapa_GamePlay::ingreso_batalla()
         QCursor cursor = QCursor(Qt::BlankCursor);
         setCursor(cursor);
     }
+}
+
+void Mapa_GamePlay::Contador_Enemigos()
+{
+    if(nivelActual!=0)
+        ui->Contador->setText(QString::number(Enemigos_Asesinar));
 }
 
 /*Esta funcion actualiza el mapa constantemente con un timer para centrarlo en el jugador y dar la

@@ -64,5 +64,6 @@
         <file>Musica/FANTASMA.wav</file>
         <file>Imagenes/FUEGO.png</file>
         <file>Imagenes/FUEGO2.png</file>
+        <file>Imagenes/ADVERTENCIA.png</file>
     </qresource>
 </RCC>

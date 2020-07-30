@@ -126,7 +126,7 @@ border-image: url(:/Imagenes/OPCIONES_PUSH.png);
     <rect>
      <x>290</x>
      <y>20</y>
-     <width>251</width>
+     <width>191</width>
      <height>21</height>
     </rect>
    </property>
@@ -134,7 +134,24 @@ border-image: url(:/Imagenes/OPCIONES_PUSH.png);
     <string notr="true">color: rgb(255, 255, 255);</string>
    </property>
    <property name="text">
-    <string> ENEMIGOS RESTANTES:  20</string>
+    <string> ENEMIGOS RESTANTES:  </string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="Contador">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>10</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 14pt &quot;Copperplate Gothic Bold&quot;;
+color: rgb(255, 255, 255);</string>
+   </property>
+   <property name="text">
+    <string/>
    </property>
   </widget>
  </widget>

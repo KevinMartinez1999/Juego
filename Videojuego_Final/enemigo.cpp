@@ -3,7 +3,7 @@
 
 #define paso 2.5
 
-extern short int num_jugadores;
+extern short int num_jugadores, Enemigos_Asesinar;
 extern Jugador *jugador, *jugador2;
 extern QList <Enemigo *> listaEnemigos;
 
@@ -258,6 +258,7 @@ void Enemigo::ataque_jugador()
 
     if (health <= 1){
         listaEnemigos.removeOne(this);
+        Enemigos_Asesinar--;
         delete this;
     }
 }

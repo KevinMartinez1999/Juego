@@ -49,7 +49,7 @@ private: //Atributos de la clase
     QString nombre;
     QGraphicsPixmapItem *mapa;
     QGraphicsPixmapItem *objetos;  
-    QLabel *aviso;
+    QLabel *aviso,*advertencia;
     QPushButton *boton;
     int BossesMuertos;
     int PosX0,PosY0,PosX02,PosY02,cont=0;
@@ -61,6 +61,7 @@ private: //Atributos de la clase
     void Nivel();
     void spawn();
     void ingreso_batalla();
+    void Contador_Enemigos();
     void ActualizarEscena(); //Centra constantemente la grafica en el jugador
     void verificar_muerte();
     void on_Opciones_clicked();
