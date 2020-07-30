@@ -201,6 +201,7 @@ void Niveles::verificar_muerte()
     if (num_jugadores == 2){
         if (jugadorBatalla->muerto and jugadorBatalla2->muerto){
             JugadorMuerto->play();
+            boss->PararTimers();
             QMessageBox msgBox;
             msgBox.setText("Tu alma ha sido destruida.");
             msgBox.setWindowTitle("HellBurn");
@@ -217,6 +218,7 @@ void Niveles::verificar_muerte()
     }
     else{
         if (jugadorBatalla->muerto){
+            boss->PararTimers();
             JugadorMuerto->play();
             QMessageBox msgBox;
             msgBox.setText("Tu alma ha sido destruida.");
@@ -354,11 +356,14 @@ void Niveles::Level_Events()
         if (!file.is_open())
             return;
         file<<user.toStdString()<<"\n"<<pass.toStdString();
-        file<<'\n'<<num_jugadores<<'\n'<<nivel+1;
+        file<<'\n'<<num_jugadores<<'\n'<<nivel+1<<'\n'<<0;
         file.flush();
         file.close();
 
         boss->Boss_Derrotado=false;
+        if(nivel!=0){
+            boss->PararTimers();
+        }
 
         QMessageBox msgBox;
         msgBox.setText("Has sobrevivido a la batalla!");

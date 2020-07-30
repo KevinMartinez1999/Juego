@@ -13,7 +13,8 @@ extern bool nueva_partida;
 
 Muro *muro;
 Jugador *jugador, *jugador2;
-short int nivel, nivelActual, Enemigos_Asesinar;
+short int nivel, nivelActual, Enemigos_Asesinar, EnemigosCreados;
+bool ObjetivosCumplidos;
 QList <Enemigo *> listaEnemigos;
 QTimer enemigos;
 
@@ -25,6 +26,8 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
 
     nombre = user;
     pj2 = false; //Inicializacion de la variable del segundo jugador por defecto apagado
+
+    ObjetivosCumplidos = false;
 
     //Esconde el cursor
     QPixmap Pixmap_Cursor = QPixmap(":/Imagenes/CURSOR.png");
@@ -182,8 +185,8 @@ Mapa_GamePlay::~Mapa_GamePlay()
 
 void Mapa_GamePlay::CargarPartida()
 {
-
     string Usuario, password;
+    bool ObjetivosCompletados;
     ifstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
     if (!file.is_open()){
         return;}
@@ -191,6 +194,7 @@ void Mapa_GamePlay::CargarPartida()
     file>>password;
     file>>num_jugadores;
     file>>BossesMuertos;
+    file>>ObjetivosCompletados;
     file.close();
     switch (BossesMuertos) {
     case 0:
@@ -202,36 +206,58 @@ void Mapa_GamePlay::CargarPartida()
         Enemigos_Asesinar=0;
         break;
     case 1:
-        PosX0=330,PosY0=2200;
         nivelActual = 1;
-        if(num_jugadores==2)
-            PosX02=415,PosY02=2200;
-        Enemigos_Asesinar=5;
+        if(ObjetivosCompletados==0){
+            PosX0=330,PosY0=2200;
+            if(num_jugadores==2)
+                PosX02=415,PosY02=2200;
+            Enemigos_Asesinar=5;
+        }
+        else{
+            PosX0=755,PosY0=1485;
+            if(num_jugadores==2)
+                PosX02=815,PosY02=1480;
+            Enemigos_Asesinar=0;
+        }
         break;
     case 2:
-        PosX0=755,PosY0=1485;
         nivelActual = 2;
-        if(num_jugadores==2)
-            PosX02=815,PosY02=1480;
-        Enemigos_Asesinar=10;
+        if(ObjetivosCompletados==0){
+            PosX0=755,PosY0=1485;
+            if(num_jugadores==2)
+                PosX02=815,PosY02=1480;
+            Enemigos_Asesinar=10;
+        }
+        else{
+            PosX0=1715,PosY0=1785;
+            if(num_jugadores==2)
+                PosX02=1705,PosY02=1825;
+            Enemigos_Asesinar=0;
+        }
         break;
     case 3:
-        PosX0=1715,PosY0=1785;
         nivelActual = 3;
-        if(num_jugadores==2)
-            PosX02=1705,PosY02=1825;
-        Enemigos_Asesinar=15;
+        if(ObjetivosCompletados==0){
+            PosX0=1715,PosY0=1785;
+            if(num_jugadores==2)
+                PosX02=1705,PosY02=1825;
+            Enemigos_Asesinar=15;
+        }
+        else{
+            PosX0=2015,PosY0=585;
+            if(num_jugadores==2)
+                PosX02=2175,PosY02=600;
+            Enemigos_Asesinar=0;
+        }
         break;
     case 4:
-        PosX0=2015,PosY0=585;
         nivelActual = 4;
         if(num_jugadores==2)
             PosX02=2175,PosY02=600;
         Enemigos_Asesinar=0;
         break;
     }
-
-
+    EnemigosTotales=Enemigos_Asesinar;
 }
 
 /*Las siguientes son las funciones del teclado; existe tanto las teclas para el jugador
@@ -368,10 +394,7 @@ void Mapa_GamePlay::Nivel()
 
 void Mapa_GamePlay::spawn()
 {
-    if (listaEnemigos.count() == 5 or
-            nivelActual<=0 or
-            Enemigos_Asesinar==0 or
-            (listaEnemigos.count()==1 and Enemigos_Asesinar==1)){ //Maximo 5 enemigos para no colapsar el programa
+    if (listaEnemigos.count() == 5 or nivelActual<=0 or EnemigosCreados==EnemigosTotales or Enemigos_Asesinar==0){ //Maximo 5 enemigos para no colapsar el programa
         return;
     }
 
@@ -412,6 +435,7 @@ void Mapa_GamePlay::spawn()
     escena->addItem(&enemigo->vida);
     enemigo->vida.setZValue(2);
     listaEnemigos.append(enemigo); //Se añade a una lista el enemigo para controlar cuando enemigos hay
+    EnemigosCreados++;
 }
 
 void Mapa_GamePlay::ingreso_batalla()
@@ -459,8 +483,23 @@ void Mapa_GamePlay::ingreso_batalla()
 
 void Mapa_GamePlay::Contador_Enemigos()
 {
+    if(ObjetivosCumplidos==true){
+        fstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
+        if (!file.is_open())
+            return;
+        file<<user.toStdString()<<"\n"<<pass.toStdString();
+        file<<'\n'<<num_jugadores<<'\n'<<nivelActual<<'\n'<<1;
+        file.flush();
+        file.close();
+        ObjetivosCumplidos=false;
+    }
     if(nivelActual!=0)
         ui->Contador->setText(QString::number(Enemigos_Asesinar));
+    if(Enemigos_Asesinar==0){
+        ui->Contador->hide();
+        ui->label_2->hide();
+    }
+
 }
 
 /*Esta funcion actualiza el mapa constantemente con un timer para centrarlo en el jugador y dar la

@@ -54,6 +54,7 @@ private: //Atributos de la clase
     int BossesMuertos;
     int PosX0,PosY0,PosX02,PosY02,cont=0;
     int Xpos,YPos;
+    int EnemigosTotales;
     bool pj2,freeze,tutorial;
 
  private slots:

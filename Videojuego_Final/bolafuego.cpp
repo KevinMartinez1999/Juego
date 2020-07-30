@@ -140,7 +140,6 @@ void bolaFuego::move4() //Bolas parabolicas del enemigo
         if (abs(Vx) < 0.1)
             delete this;
     }
-
     t += 0.1;
     X = (Vx*t); // => cos(45°)
     Y = (Vy*t)-(0.5*g*t*t); // => sen(45°)

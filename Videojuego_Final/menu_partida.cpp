@@ -110,7 +110,7 @@ void Menu_partida::on_nueva_partida_clicked()
     if (!file.is_open())
         return;
     file<<user.toStdString()<<"\n"<<pass.toStdString();
-    file<<'\n'<<num_jugadores<<'\n'<<"0";
+    file<<'\n'<<num_jugadores<<'\n'<<"0"<<'\n'<<"0";
     file.flush();
     file.close();
 
