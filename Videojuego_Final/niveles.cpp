@@ -2,12 +2,16 @@
 #include "ui_niveles.h"
 #include "mapa_gameplay.h"
 #include "menupausa.h"
+#include <QGraphicsRectItem>
 
 extern short int nivel, nivelActual;
 extern short int num_jugadores;
 extern QString user,pass;
 extern bool nueva_partida;
+extern QList <QGraphicsPixmapItem *> Muros;
 JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
+QGraphicsRectItem *rectangulo;
+
 Boss *boss;
 
 Niveles::Niveles(QWidget *parent) :
@@ -40,6 +44,8 @@ Niveles::Niveles(QWidget *parent) :
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setScene(escena);
+
+    rectangulo = new QGraphicsRectItem;
 
     //Pixmap fondo que sera modificado dependiendo a que nivel se esta entrando
     fondo = new QGraphicsPixmapItem;
@@ -199,6 +205,7 @@ void Niveles::verificar_muerte()
     if (num_jugadores == 2){
         if (jugadorBatalla->muerto and jugadorBatalla2->muerto){
             JugadorMuerto.play();
+            boss->PararTimers();
             QMessageBox msgBox;
             msgBox.setText("Tu alma ha sido destruida.");
             msgBox.setWindowTitle("HellBurn");
@@ -206,6 +213,7 @@ void Niveles::verificar_muerte()
             msgBox.setStyleSheet("background-color:#211b18;"
                                  "color:white;");
             msgBox.exec();
+            Muros.clear();
             nueva_partida=false;
             Mapa_GamePlay *mapa=new Mapa_GamePlay;
             mapa->show();
@@ -215,6 +223,7 @@ void Niveles::verificar_muerte()
     }
     else{
         if (jugadorBatalla->muerto){
+            boss->PararTimers();
             JugadorMuerto.play();
             QMessageBox msgBox;
             msgBox.setText("Tu alma ha sido destruida.");
@@ -223,6 +232,7 @@ void Niveles::verificar_muerte()
             msgBox.setStyleSheet("background-color:#211b18;"
                                  "color:white;");
             msgBox.exec();
+            Muros.clear();
             nueva_partida=false;
             Mapa_GamePlay *mapa=new Mapa_GamePlay;
             mapa->show();
@@ -252,7 +262,6 @@ si no se escoge asi las teclas no van a tener ningun efecto cuando se este jugan
 void Niveles::keyPressEvent(QKeyEvent *event)
 {
     if(!freeze){
-        if(!jugadorBatalla->muerto){
             //Segun la tecla que se presione se habilita su respectiva bandera de movimiento
             if (event->key() == Qt::Key_A){
                 jugadorBatalla->setBanLeft();
@@ -269,25 +278,24 @@ void Niveles::keyPressEvent(QKeyEvent *event)
             else if (event->key() == Qt::Key_W){
                 jugadorBatalla->setBanJump();
             }
-        }
         /*Estas son las teclas de movimiento para el jugador 2. Solo estan habilitadas si asi
           lo quiere el usuario.*/
-         if(pj2 and !jugadorBatalla2->muerto){
-        if(event->key()==Qt::Key_J){
-            jugadorBatalla2->setBanLeft();
-        }
-        else if(event->key()==Qt::Key_L){
-            jugadorBatalla2->setBanRight();
-        }
-        else if (event->key() == Qt::Key_H){
-            jugadorBatalla2->setBanAttack();
-        }
-        else if (event->key() == Qt::Key_N){
-            jugadorBatalla2->setBanSpell();
-        }
-        else if (event->key() == Qt::Key_I){
-            jugadorBatalla2->setBanJump();
-        }
+        else if(pj2){
+            if(event->key()==Qt::Key_J){
+                jugadorBatalla2->setBanLeft();
+            }
+            else if(event->key()==Qt::Key_L){
+                jugadorBatalla2->setBanRight();
+            }
+            else if (event->key() == Qt::Key_H){
+                jugadorBatalla2->setBanAttack();
+            }
+            else if (event->key() == Qt::Key_N){
+                jugadorBatalla2->setBanSpell();
+            }
+            else if (event->key() == Qt::Key_I){
+                jugadorBatalla2->setBanJump();
+            }
         }
     }
     if(tutorial){
@@ -344,9 +352,6 @@ void Niveles::Level_Events()
 
         nivelActual++;
 
-        boss->Boss_Derrotado=false;
-        delete boss;
-
         jugadorBatalla->PararTimers();
         if(num_jugadores==2)
             jugadorBatalla2->PararTimers();
@@ -355,9 +360,14 @@ void Niveles::Level_Events()
         if (!file.is_open())
             return;
         file<<user.toStdString()<<"\n"<<pass.toStdString();
-        file<<'\n'<<num_jugadores<<'\n'<<nivel+1;
+        file<<'\n'<<num_jugadores<<'\n'<<nivel+1<<'\n'<<0;
         file.flush();
         file.close();
+
+        boss->Boss_Derrotado=false;
+        if(nivel!=0){
+            boss->PararTimers();
+        }
 
         QMessageBox msgBox;
         msgBox.setText("Has sobrevivido a la batalla!");
@@ -366,6 +376,8 @@ void Niveles::Level_Events()
         msgBox.setStyleSheet("background-color:#211b18;"
                              "color:white;");
         msgBox.exec();
+
+        Muros.clear();
 
         Mapa_GamePlay *mapa=new Mapa_GamePlay;
         mapa->show();
@@ -389,4 +401,12 @@ void Niveles::on_Opciones_clicked()
 
     MenuPausa *opciones = new MenuPausa(nullptr,1);
     opciones->show();
+    connect(opciones,&MenuPausa::Cerrar_Sesion,this,&Niveles::Cerrar_Ventana);
+}
+
+void Niveles::Cerrar_Ventana()
+{
+    Muros.clear();
+    close();
+    delete this;
 }

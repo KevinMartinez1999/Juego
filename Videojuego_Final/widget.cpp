@@ -5,11 +5,16 @@
 
 QString user, pass;
 
+extern QMediaPlayer * musica;
+
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Widget)
 {
     ui->setupUi(this);
+
+    if (musica->state() == QMediaPlayer::StoppedState)
+        musica->play();
 
     //Sistema de autocompletado de usuarios
     QString letras = "";

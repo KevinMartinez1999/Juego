@@ -3,7 +3,8 @@
 
 #define paso 2.5
 
-extern short int num_jugadores;
+extern short int num_jugadores, Enemigos_Asesinar, EnemigosCreados;
+extern bool ObjetivosCumplidos;
 extern Jugador *jugador, *jugador2;
 extern QList <Enemigo *> listaEnemigos;
 
@@ -216,6 +217,7 @@ void Enemigo::detectar_enemigos()
         if (jugador->muerto){
             if (abs(int(x()-jugador2->x())) > 900 or abs(int(y()-jugador2->y())) > 700){
                 listaEnemigos.removeOne(this);
+                EnemigosCreados--;
                 delete this;
                 return;
             }
@@ -223,6 +225,7 @@ void Enemigo::detectar_enemigos()
         else{
             if (abs(int(x()-jugador->x())) > 900 or abs(int(y()-jugador->y())) > 700){
                 listaEnemigos.removeOne(this);
+                EnemigosCreados--;
                 delete this;
                 return;
             }
@@ -231,7 +234,7 @@ void Enemigo::detectar_enemigos()
     else{
         if (abs(int(x()-jugador->x())) > 900 or abs(int(y()-jugador->y())) > 700){
             listaEnemigos.removeOne(this);
-            //qDebug()<<"Enemigo fuera de rango";
+            EnemigosCreados--;
             delete this;
             return;
         }
@@ -261,6 +264,9 @@ void Enemigo::ataque_jugador()
     }
 
     if (health <= 1){
+        Enemigos_Asesinar--;
+        if(Enemigos_Asesinar==0){
+            ObjetivosCumplidos=true;}
         listaEnemigos.removeOne(this);
         delete this;
     }

@@ -1,11 +1,10 @@
 #include "jugador.h"
-#include "muro.h"
 #include "mapa_gameplay.h"
 
 #define X 5
 
-extern Muro * muro;
 extern short int nivelActual;
+extern QList <QGraphicsPixmapItem *> Muros;
 
 Jugador::Jugador(QObject *parent) : QObject(parent)
 {
@@ -145,12 +144,13 @@ void Jugador::moveLeft()
             setPos(x()-X,y()); //Movimiento del jugador
             box.setPos(x()-15-X,y()+12); //Movimiento del hiteBox que colisiona
             vida.setPos(x()-30-X,y()-50);
-            if (box.collidesWithItem(muro)){ //Verifica la colision
-
-                //En este punto con el fin de no intersectar al jugador con los objetos del mapa
-                //lo que se hace es retroceder al jugador y a su vez a las caja que lo sigue una
-                //vez esta colisiona con alguna part del mapa.
-                setPos(x()+X,y());
+            for(short int i=0;i<Muros.size();i++){
+                if (box.collidesWithItem(Muros.at(i))){ //Verifica la colision
+                    //En este punto con el fin de no intersectar al jugador con los objetos del mapa
+                    //lo que se hace es retroceder al jugador y a su vez a las caja que lo sigue una
+                    //vez esta colisiona con alguna part del mapa.
+                    setPos(x()+X,y());
+            }
             }
         }
     }
@@ -169,11 +169,13 @@ void Jugador::moveRight()
             setPos(x()+X,y());//Movimiento del jugador
             box.setPos(x()-15+X,y()+12);//Movimiento del hiteBox que colisiona
             vida.setPos(x()-30+X,y()-50);
-            if (box.collidesWithItem(muro)){//Verifica la colision
+            for(short int i=0;i<Muros.size();i++){
+                if (box.collidesWithItem(Muros.at(i))){//Verifica la colision
                 //En este punto con el fin de no intersectar al jugador con los objetos del mapa
                 //lo que se hace es retroceder al jugador y a su vez a las caja que lo sigue una
                 //vez esta colisiona con alguna part del mapa.
                 setPos(x()-X,y());
+                }
             }
         }
     }
@@ -190,11 +192,13 @@ void Jugador::moveUp()
             setPos(x(),y()-X);//Movimiento del jugador
             box.setPos(x()-15,y()+12-X);//Movimiento del hiteBox que colisiona
             vida.setPos(x()-30,y()-50-X);
-            if (box.collidesWithItem(muro)){//Verifica la colision
+            for(short int i=0;i<Muros.size();i++){
+                if (box.collidesWithItem(Muros.at(i))){//Verifica la colision
                 //En este punto con el fin de no intersectar al jugador con los objetos del mapa
                 //lo que se hace es retroceder al jugador y a su vez a las caja que lo sigue una
                 //vez esta colisiona con alguna part del mapa.
                 setPos(x(),y()+X);
+                }
             }
         }
     }
@@ -211,11 +215,13 @@ void Jugador::moveDown()
             setPos(x(),y()+X);//Movimiento del hiteBox que colisiona
             box.setPos(x()-15,y()+12+X);
             vida.setPos(x()-30,y()-50+X);
-            if (box.collidesWithItem(muro)){//Verifica la colision
+            for(short int i=0;i<Muros.size();i++){
+                if (box.collidesWithItem(Muros.at(i))){//Verifica la colision
                 //En este punto con el fin de no intersectar al jugador con los objetos del mapa
                 //lo que se hace es retroceder al jugador y a su vez a las caja que lo sigue una
                 //vez esta colisiona con alguna part del mapa.
                 setPos(x(),y()-X);
+                }
             }
         }
     }

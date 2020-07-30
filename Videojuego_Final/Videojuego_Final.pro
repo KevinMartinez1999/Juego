@@ -25,7 +25,6 @@ SOURCES += \
     mapa_gameplay.cpp \
     menu_partida.cpp \
     menupausa.cpp \
-    muro.cpp \
     niveles.cpp \
     registrarse.cpp \
     widget.cpp
@@ -39,7 +38,6 @@ HEADERS += \
     mapa_gameplay.h \
     menu_partida.h \
     menupausa.h \
-    muro.h \
     niveles.h \
     registrarse.h \
     widget.h
@@ -58,4 +56,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    recursos.qrc
+    Recursos.qrc

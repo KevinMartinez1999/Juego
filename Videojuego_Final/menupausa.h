@@ -21,6 +21,9 @@ public:
     bool cerrar_sesion;
     bool VentanaPausada;
 
+signals:
+    void Cerrar_Sesion();
+
 private slots:
 
     void on_Controles_clicked();

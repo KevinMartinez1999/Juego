@@ -7,6 +7,7 @@
 
 extern JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
 extern Jugador *jugador, *jugador2;
+extern Boss *boss;
 extern short int num_jugadores;
 extern QList <Enemigo *> listaEnemigos;
 extern QTimer enemigos;
@@ -61,7 +62,8 @@ void MenuPausa::closeEvent(QCloseEvent *event)
     else{
         jugadorBatalla->ReiniciarTimers();
         if (num_jugadores == 2)
-            jugadorBatalla2->ReiniciarTimers();}
+            jugadorBatalla2->ReiniciarTimers();
+        boss->ReiniciarTimers();}
     event->accept();
 }
 
@@ -81,7 +83,8 @@ void MenuPausa::on_Reanudar_clicked()
     else{
         jugadorBatalla->ReiniciarTimers();
         if (num_jugadores == 2)
-            jugadorBatalla2->ReiniciarTimers();}
+            jugadorBatalla2->ReiniciarTimers();
+        boss->ReiniciarTimers();}
     delete this;
 }
 
@@ -92,6 +95,10 @@ void MenuPausa::on_Controles_clicked()
 
 void MenuPausa::on_Cerrar_Sesion_clicked()
 {
-    exit(EXIT_FAILURE);
+    Widget *w = new Widget;
+    w->show();
+    close();
+    emit Cerrar_Sesion();
+    delete this;
 }
 

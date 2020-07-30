@@ -12,10 +12,9 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QList>
-#include "jugador.h"
-#include "muro.h"
 #include <QMediaPlaylist>
 #include <QMessageBox>
+#include "jugador.h"
 
 using namespace std;
 
@@ -47,22 +46,26 @@ private: //Atributos de la clase
     QCursor cursor;
     QPixmap Pixmap_Cursor;
     QGraphicsScene *escena;
+    QGraphicsPixmapItem * muros;
     QGraphicsPixmapItem *mapa;
     QGraphicsPixmapItem *objetos;  
-    QLabel *aviso;
+    QLabel *aviso,*advertencia;
     int BossesMuertos;
     int PosX0,PosY0,PosX02,PosY02,cont=0;
     int Xpos,YPos;
+    int EnemigosTotales;
     bool pj2,freeze,tutorial;
 
- private slots:
+ private slots:    
     void Tutorial();
     void Nivel();
     void spawn();
     void ingreso_batalla();
+    void Contador_Enemigos();
     void ActualizarEscena(); //Centra constantemente la grafica en el jugador
     void verificar_muerte();
     void on_Opciones_clicked();
+    void Cerrar_Ventana();
 
 };
 

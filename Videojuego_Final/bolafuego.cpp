@@ -28,8 +28,6 @@ bolaFuego::bolaFuego(QObject *parent, short int estado, short int tipo)
 
     //Dimensiones del sprite
     columnas = 0;
-    ancho = 40;
-    alto = 40;
 
     //crear box
     box.setRect(0,0,10,10);
@@ -37,26 +35,41 @@ bolaFuego::bolaFuego(QObject *parent, short int estado, short int tipo)
     //Definicion de los timers
     switch (Tipo) {
     case 1:
+        ancho = 40;
+        alto = 40;
+        limiteSprite=160;
         connect(&timer, SIGNAL(timeout()), this, SLOT(move1()));
         connect(&timer, SIGNAL(timeout()), this, SLOT(colision_con_boss()));
         dano = 6;
         break;
     case 2:
+        ancho=20;
+        alto=56;
+        limiteSprite=180;
         connect(&timer, SIGNAL(timeout()), this, SLOT(move2()));
         connect(&timer, SIGNAL(timeout()), this, SLOT(colision_con_jugador()));
         dano = 6;
         break;
     case 3:
+        ancho = 40;
+        alto = 40;
+        limiteSprite=160;
         connect(&timer, SIGNAL(timeout()), this, SLOT(move3()));
         connect(&timer, SIGNAL(timeout()), this, SLOT(colision_con_jugador()));
         dano = 10;
         break;
     case 4:
+        ancho = 40;
+        alto = 40;
+        limiteSprite=160;
         connect(&timer, SIGNAL(timeout()), this, SLOT(move4()));
         connect(&timer, SIGNAL(timeout()), this, SLOT(colision_con_jugador()));
         dano = 10;
         break;
     case 5:
+        ancho = 40;
+        alto = 40;
+        limiteSprite=160;
         connect(&timer, SIGNAL(timeout()), this, SLOT(move5()));
         connect(&timer, SIGNAL(timeout()), this, SLOT(colision_con_jugador()));
         dano = 20;
@@ -65,7 +78,7 @@ bolaFuego::bolaFuego(QObject *parent, short int estado, short int tipo)
     timer.start(30);
 
     connect(&animacion, SIGNAL(timeout()), this, SLOT(Actualizacion()));
-    animacion.start(150);
+    animacion.start(125);
 }
 
 QRectF bolaFuego::boundingRect() const
@@ -83,9 +96,17 @@ void bolaFuego::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 void bolaFuego::move1() //Golpe del jugador (movimiento circular)
 {
     t += 0.1;
-    X += r*cos(w*t) + m;
-    Y += -r*sin(w*t);
-    setPos(X,Y);
+    if(ultimoEstado==2){
+        X += r*cos(w*t) + m;
+        Y += -r*sin(w*t);
+        setPos(X,Y);}
+    else{
+        X += r*cos(w*t) - m;
+        Y += -r*sin(w*t);
+        setPos(X,Y);
+        if(x()<-40)
+            delete this;
+    }
     box.setPos(x()-5, y()-5);
 }
 
@@ -119,7 +140,6 @@ void bolaFuego::move4() //Bolas parabolicas del enemigo
         if (abs(Vx) < 0.1)
             delete this;
     }
-
     t += 0.1;
     X = (Vx*t); // => cos(45°)
     Y = (Vy*t)-(0.5*g*t*t); // => sen(45°)
@@ -213,10 +233,10 @@ bool bolaFuego::colision(JugadorBatalla *obj)
 //Actualiza el Sprite de la bola
 void bolaFuego::Actualizacion()
 {
-    if (columnas >= 160)
+    if (columnas >= limiteSprite)
         columnas = 0;
     else
-        columnas += 40;
+        columnas += ancho;
     update(-ancho/2,-alto/2,ancho,alto);
 }
 
