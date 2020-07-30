@@ -65,5 +65,8 @@
         <file>Imagenes/FUEGO.png</file>
         <file>Imagenes/FUEGO2.png</file>
         <file>Imagenes/ADVERTENCIA.png</file>
+        <file>Imagenes/BLOQUEO1.png</file>
+        <file>Imagenes/BLOQUEO2.png</file>
+        <file>Imagenes/BLOQUEO3.png</file>
     </qresource>
 </RCC>

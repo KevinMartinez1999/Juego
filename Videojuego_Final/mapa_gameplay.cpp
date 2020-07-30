@@ -3,7 +3,6 @@
 #include "niveles.h"
 #include "menu_partida.h"
 #include "jugador.h"
-#include "muro.h"
 #include "menupausa.h"
 #include "enemigo.h"
 
@@ -11,11 +10,11 @@ extern short int num_jugadores;
 extern QString user, pass;
 extern bool nueva_partida;
 
-Muro *muro;
 Jugador *jugador, *jugador2;
 short int nivel, nivelActual, Enemigos_Asesinar, EnemigosCreados;
 bool ObjetivosCumplidos;
 QList <Enemigo *> listaEnemigos;
+QList <QGraphicsPixmapItem *> Muros;
 QTimer enemigos;
 
 Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
@@ -77,14 +76,16 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     //del mapa completo y antes del mapa de las estructuras.
 
     //Primera capa del mapa
-    muro = new Muro;
-    muro->setPos(0,0);
-    escena->addItem(muro);
+    muros = new QGraphicsPixmapItem;
+    muros->setPixmap(QPixmap(":/Imagenes/MUROS.png"));
+    muros->setPos(0,0);
+    escena->addItem(muros);
+    Muros.push_back(muros);
 
     //Segunda capa del mapa
     mapa = new QGraphicsPixmapItem;
-    mapa->setPos(0,0);
     mapa->setPixmap(QPixmap(":/Imagenes/MAPA.png"));
+    mapa->setPos(0,0);
     escena->addItem(mapa);
 
     /*Con la variable global num_jugadores que viene de la clase menu_partida sabemos cuantos
@@ -98,7 +99,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
 
     //Spawn de los enemigos
     connect(&enemigos,SIGNAL(timeout()),this,SLOT(spawn()));
-    enemigos.start(7000);
+    enemigos.start(6000);
 
     if (num_jugadores == 2){ //Dos jugadores
         pj2 = true; //Se activa la presencia de un jugador dos en mapa
@@ -197,20 +198,29 @@ void Mapa_GamePlay::CargarPartida()
     file>>ObjetivosCompletados;
     file.close();
     switch (BossesMuertos) {
-    case 0:
+    case 0:{
         PosX0=770,PosY0=2155;
         nivelActual = 0;
         if(num_jugadores==2)
             PosX02=820,PosY02=2155;
         ui->label_2->hide();
+
         Enemigos_Asesinar=0;
+        EnemigosTotales=Enemigos_Asesinar;
+
+        muros = new QGraphicsPixmapItem;
+        muros->setPixmap(QPixmap(":/Imagenes/BLOQUEO1.png"));
+        muros->setPos(0,0);
+        escena->addItem(muros);
+        Muros.push_back(muros);
         break;
-    case 1:
+    }
+    case 1:{
         nivelActual = 1;
         if(ObjetivosCompletados==0){
-            PosX0=330,PosY0=2200;
+            PosX0=415,PosY0=2200;
             if(num_jugadores==2)
-                PosX02=415,PosY02=2200;
+                PosX02=330,PosY02=2200;
             Enemigos_Asesinar=5;
         }
         else{
@@ -219,8 +229,16 @@ void Mapa_GamePlay::CargarPartida()
                 PosX02=815,PosY02=1480;
             Enemigos_Asesinar=0;
         }
+        EnemigosTotales=Enemigos_Asesinar;
+
+        muros = new QGraphicsPixmapItem;
+        muros->setPixmap(QPixmap(":/Imagenes/BLOQUEO2.png"));
+        muros->setPos(0,0);
+        escena->addItem(muros);
+        Muros.push_back(muros);
         break;
-    case 2:
+    }
+    case 2:{
         nivelActual = 2;
         if(ObjetivosCompletados==0){
             PosX0=755,PosY0=1485;
@@ -234,13 +252,21 @@ void Mapa_GamePlay::CargarPartida()
                 PosX02=1705,PosY02=1825;
             Enemigos_Asesinar=0;
         }
+        EnemigosTotales=Enemigos_Asesinar;
+
+        muros = new QGraphicsPixmapItem;
+        muros->setPixmap(QPixmap(":/Imagenes/BLOQUEO3.png"));
+        muros->setPos(0,0);
+        escena->addItem(muros);
+        Muros.push_back(muros);
         break;
-    case 3:
+    }
+    case 3:{
         nivelActual = 3;
         if(ObjetivosCompletados==0){
-            PosX0=1715,PosY0=1785;
+            PosX0=1625,PosY0=1765;
             if(num_jugadores==2)
-                PosX02=1705,PosY02=1825;
+                PosX02=1585,PosY02=1765;
             Enemigos_Asesinar=15;
         }
         else{
@@ -249,15 +275,19 @@ void Mapa_GamePlay::CargarPartida()
                 PosX02=2175,PosY02=600;
             Enemigos_Asesinar=0;
         }
+        EnemigosTotales=Enemigos_Asesinar;
         break;
-    case 4:
+    }
+    case 4:{
         nivelActual = 4;
+        PosX0=2125,PosY0=600;
         if(num_jugadores==2)
             PosX02=2175,PosY02=600;
         Enemigos_Asesinar=0;
+        EnemigosTotales=Enemigos_Asesinar;
         break;
+        }
     }
-    EnemigosTotales=Enemigos_Asesinar;
 }
 
 /*Las siguientes son las funciones del teclado; existe tanto las teclas para el jugador
@@ -385,6 +415,8 @@ void Mapa_GamePlay::Nivel()
     else if(Xpos>=755 && Xpos<=815 && YPos<=1465 && YPos>=1405) nivel=1;//Verifica si se esta en la entrada del nivel 1
     else if(Xpos>=1565 && Xpos<=1690 && YPos<=1825 && YPos>=1760) nivel=2;//Verifica si se esta en la entrada del nivel 2
     else if(Xpos>=2075 && Xpos<=2200 && YPos<=645 && YPos>=585) nivel=3;//Verifica si se esta en la entrada del nivel 3
+
+    EnemigosCreados=0;
 
     //Se abre la ventana determinada para las batallas contra Bosses
     Niveles * batalla = new Niveles;

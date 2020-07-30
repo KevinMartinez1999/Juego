@@ -7,6 +7,7 @@ extern short int nivel, nivelActual;
 extern short int num_jugadores;
 extern QString user,pass;
 extern bool nueva_partida;
+extern QList <QGraphicsPixmapItem *> Muros;
 JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
 Boss *boss;
 
@@ -209,6 +210,7 @@ void Niveles::verificar_muerte()
             msgBox.setStyleSheet("background-color:#211b18;"
                                  "color:white;");
             msgBox.exec();
+            Muros.clear();
             nueva_partida=false;
             Mapa_GamePlay *mapa=new Mapa_GamePlay;
             mapa->show();
@@ -227,6 +229,7 @@ void Niveles::verificar_muerte()
             msgBox.setStyleSheet("background-color:#211b18;"
                                  "color:white;");
             msgBox.exec();
+            Muros.clear();
             nueva_partida=false;
             Mapa_GamePlay *mapa=new Mapa_GamePlay;
             mapa->show();
@@ -372,6 +375,8 @@ void Niveles::Level_Events()
         msgBox.setStyleSheet("background-color:#211b18;"
                              "color:white;");
         msgBox.exec();
+
+        Muros.clear();
 
         Mapa_GamePlay *mapa=new Mapa_GamePlay;
         mapa->show();

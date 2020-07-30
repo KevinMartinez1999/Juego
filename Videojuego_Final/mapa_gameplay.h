@@ -12,10 +12,9 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QList>
-#include "jugador.h"
-#include "muro.h"
 #include <QMediaPlaylist>
 #include <QMessageBox>
+#include "jugador.h"
 
 using namespace std;
 
@@ -47,6 +46,7 @@ private: //Atributos de la clase
     QGraphicsScene *escena;
     QTimer timer, dead;
     QString nombre;
+    QGraphicsPixmapItem * muros;
     QGraphicsPixmapItem *mapa;
     QGraphicsPixmapItem *objetos;  
     QLabel *aviso,*advertencia;
