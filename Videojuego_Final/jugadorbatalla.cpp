@@ -58,11 +58,11 @@ JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
 
     //Sonido de ataque
     Ataque.setMedia(QUrl("qrc:/Musica/ESPADA.mp3"));
-    Ataque.setVolume(100);
+    Ataque.setVolume(80);
 
     //Sonido de daño
     JugadorAtacado.setMedia(QUrl("qrc:/Musica/PAIN.wav"));
-    JugadorAtacado.setVolume(100);
+    JugadorAtacado.setVolume(80);
 }
 
 void JugadorBatalla::PararTimers()

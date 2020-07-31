@@ -14,7 +14,8 @@ class bolaFuego : public QObject, public QGraphicsPixmapItem
 public:
     explicit bolaFuego(QObject *parent = nullptr,
                        short int estado = 2,
-                       short int tipo = 1);
+                       short int tipo = 1,
+                       short int suelo=0);
 
     bool colision(JugadorBatalla * obj);
 
@@ -40,7 +41,7 @@ public slots:
 
 private:
     QTimer timer, animacion;
-    short int ultimoEstado, Tipo;
+    short int ultimoEstado, Tipo, SueloNivel;
     float columnas,ancho,alto, limiteSprite, dano;
 };
 

@@ -8,9 +8,7 @@ extern short int nivel, nivelActual;
 extern short int num_jugadores;
 extern QString user,pass;
 extern bool nueva_partida;
-extern QList <QGraphicsPixmapItem *> Muros;
 JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
-QGraphicsRectItem *rectangulo;
 
 Boss *boss;
 
@@ -29,13 +27,14 @@ Niveles::Niveles(QWidget *parent) :
     setCursor(cursor); 
 
     //Musica de los niveles
+    //Dependiendo del nivel ingresado se añadira al loop una cancion diferente
     if(nivel==0)Lista.addMedia(QUrl("qrc:/Musica/MUSICA0.mp3"));
     else if(nivel==1)Lista.addMedia(QUrl("qrc:/Musica/MUSICA1.mp3"));
     else if(nivel==2)Lista.addMedia(QUrl("qrc:/Musica/MUSICA3.mp3"));
     else if(nivel==3)Lista.addMedia(QUrl("qrc:/Musica/MUSICA2.mp3"));
     Lista.setPlaybackMode(QMediaPlaylist::Loop);
     musicaNivel.setPlaylist(&Lista);
-    musicaNivel.setVolume(60);
+    musicaNivel.setVolume(80);
     musicaNivel.play();
 
     //Añadido de la escena y grafica del nivel
@@ -44,8 +43,6 @@ Niveles::Niveles(QWidget *parent) :
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setScene(escena);
-
-    rectangulo = new QGraphicsRectItem;
 
     //Pixmap fondo que sera modificado dependiendo a que nivel se esta entrando
     fondo = new QGraphicsPixmapItem;
@@ -213,8 +210,8 @@ void Niveles::verificar_muerte()
             msgBox.setStyleSheet("background-color:#211b18;"
                                  "color:white;");
             msgBox.exec();
-            Muros.clear();
             nueva_partida=false;
+
             Mapa_GamePlay *mapa=new Mapa_GamePlay;
             mapa->show();
             close();
@@ -232,8 +229,8 @@ void Niveles::verificar_muerte()
             msgBox.setStyleSheet("background-color:#211b18;"
                                  "color:white;");
             msgBox.exec();
-            Muros.clear();
             nueva_partida=false;
+
             Mapa_GamePlay *mapa=new Mapa_GamePlay;
             mapa->show();
             close();
@@ -377,8 +374,6 @@ void Niveles::Level_Events()
                              "color:white;");
         msgBox.exec();
 
-        Muros.clear();
-
         Mapa_GamePlay *mapa=new Mapa_GamePlay;
         mapa->show();
         close();
@@ -406,7 +401,6 @@ void Niveles::on_Opciones_clicked()
 
 void Niveles::Cerrar_Ventana()
 {
-    Muros.clear();
     close();
     delete this;
 }

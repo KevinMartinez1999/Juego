@@ -48,7 +48,7 @@ private: //Atributos de la clase
     QGraphicsScene *escena;
     QGraphicsPixmapItem * muros;
     QGraphicsPixmapItem *mapa;
-    QGraphicsPixmapItem *objetos;  
+    QGraphicsPixmapItem *objetos;
     QLabel *aviso,*advertencia;
     int BossesMuertos;
     int PosX0,PosY0,PosX02,PosY02,cont=0;
@@ -56,7 +56,7 @@ private: //Atributos de la clase
     int EnemigosTotales;
     bool pj2,freeze,tutorial;
 
- private slots:    
+ private slots:
     void Tutorial();
     void Nivel();
     void spawn();

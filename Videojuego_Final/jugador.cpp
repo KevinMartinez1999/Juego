@@ -4,7 +4,6 @@
 #define X 5
 
 extern short int nivelActual;
-extern QList <QGraphicsPixmapItem *> Muros;
 
 Jugador::Jugador(QObject *parent) : QObject(parent)
 {
@@ -49,7 +48,7 @@ Jugador::Jugador(QObject *parent) : QObject(parent)
     //Sonido de ataque
     Ataque = new QMediaPlayer(this);
     Ataque->setMedia(QUrl("qrc:/Musica/ESPADA.mp3"));
-    Ataque->setVolume(100);
+    Ataque->setVolume(80);
 }
 
 QRectF Jugador::boundingRect() const

@@ -13,6 +13,7 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
 
+    //Si por alguna razon al volver con el boton cerrar sesion y la musica se de menu se encuentra parada esta se volvera a reproducir.
     if (musica->state() == QMediaPlayer::StoppedState)
         musica->play();
 
@@ -103,6 +104,7 @@ Widget::~Widget()
 
 void Widget::on_login_clicked()
 {
+    //Sonido del boton
     boton.play();
 
     //Obtenemos el usuario y contraseña que digitó el usuario
@@ -115,6 +117,7 @@ void Widget::on_login_clicked()
     ifstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
     if (!file.is_open())
     {
+        //En el caso de que no se encuentre el usuario se indicara que es incorrecto y se pedira que se ingrese otra vez.,
         QMessageBox msgBox;
         msgBox.setText("Contraseña o usuario incorrecto.");
         msgBox.setWindowTitle("HellBurn");
@@ -123,7 +126,7 @@ void Widget::on_login_clicked()
                              "color:white;");
         msgBox.exec();
 
-        //Se borran las casillas de usuario y contraseña para una nueva
+        //Se borran las casillas de usuario y contraseña para un nuevo ingreso.
         ui->usuario->clear();
         ui->clave->clear();
         return;
@@ -147,7 +150,7 @@ void Widget::on_login_clicked()
     }
     else
     {
-        //Muestra mensaje de error en caso de un login fallido
+        //Muestra mensaje de error en caso de un login fallido y limpia los lineedit para un nuevo ingreso
         QMessageBox msgBox;
         msgBox.setText("Contraseña o usuario incorrecto.");
         msgBox.setWindowTitle("HellBurn");
@@ -170,6 +173,7 @@ void Widget::on_registrarse_clicked()
     delete w;
     delete val;
 
+    //Abrimos una nueva ventana registro y cerramos la ventana actual
     Registrarse *registro = new Registrarse;
     registro->show();
     close();

@@ -36,6 +36,8 @@ public:
 
     QTimer timer, timer1;
 
+    QList <QGraphicsPixmapItem *> Muros;
+
     QGraphicsRectItem box, vida;
     int health;
     bool muerto;
