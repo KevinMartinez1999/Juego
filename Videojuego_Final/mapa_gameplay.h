@@ -6,6 +6,9 @@
 #include <QKeyEvent>
 #include <fstream>
 #include <iostream>
+#include <ctime>
+#include <stdio.h>
+#include <stdlib.h>
 #include <QGraphicsPixmapItem>
 #include <QTimer>
 #include <QMediaPlayer>
@@ -15,6 +18,7 @@
 #include <QMediaPlaylist>
 #include <QMessageBox>
 #include "jugador.h"
+#include "enemigo.h"
 
 using namespace std;
 
@@ -30,6 +34,8 @@ public:
     explicit Mapa_GamePlay(QWidget *parent = nullptr);
     ~Mapa_GamePlay();
 
+    QList <Enemigo *> listaEnemigos;
+
     void CargarPartida();
 
     //Funciones detectoras de del teclado
@@ -39,7 +45,7 @@ public:
 private: //Atributos de la clase
     Ui::Mapa_GamePlay *ui;
     QMediaPlayer botonSound, ambiente, jugadorMuerto;
-    QTimer timer, dead;
+    QTimer timer, dead, enemigos;
     QPushButton boton;
     QString nombre;
     QMediaPlaylist lista;
@@ -54,9 +60,13 @@ private: //Atributos de la clase
     int PosX0,PosY0,PosX02,PosY02,cont=0;
     int Xpos,YPos;
     int EnemigosTotales;
-    bool pj2,freeze,tutorial;
+    short int Enemigos_Asesinar, EnemigosCreados;
+    bool tutorial, ObjetivosCumplidos;
+    QList<QPoint> nivel1, nivel2, nivel3;
 
- private slots:    
+ private slots:
+    void EliminarEnemigos(Enemigo *obj, bool v);
+    void reanudarTimers();
     void Tutorial();
     void Nivel();
     void spawn();

@@ -11,6 +11,7 @@
 #include <QMediaPlayer>
 #include <QDir>
 #include <QCompleter>
+#include <QMessageBox>
 
 using namespace std;
 
@@ -26,6 +27,14 @@ public:
     Widget(QWidget *parent = nullptr);
     ~Widget();
 
+    QPixmap Pixmap_Cursor;
+    QCursor cursor;
+    QMovie *movie;
+    QMediaPlayer boton;
+    QLabel *w;
+    QRegExp rx;
+    QRegExpValidator * val;
+
 private slots:
     void on_login_clicked();
 
@@ -35,12 +44,5 @@ private slots:
 
 private:
     Ui::Widget *ui;
-    QPixmap Pixmap_Cursor;
-    QCursor cursor;
-    QMovie *movie;
-    QMediaPlayer boton;
-    QLabel *w;
-    QRegExp rx;
-    QRegExpValidator * val;
 };
 #endif // WIDGET_H

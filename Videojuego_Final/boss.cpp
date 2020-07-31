@@ -275,7 +275,9 @@ void Boss::cambiar_ataque()
         tipoAtaque = 0;
     else if(tipoAtaque>1 and tipoBoss==1)
         tipoAtaque = 0;
-    else if(tipoAtaque>2 and tipoBoss>1)
+    else if(tipoAtaque>2 and tipoBoss==2)
+        tipoAtaque=0;
+    else if (tipoAtaque>3 and tipoBoss>2)
         tipoAtaque=0;
 
     //Aqui se le da a acada ataque un tiempo de repeticion entre
@@ -292,6 +294,10 @@ void Boss::cambiar_ataque()
     case 2:
         generar_ataque.stop();
         generar_ataque.start(4000);
+        break;
+    case 3:
+        generar_ataque.stop();
+        emit orbitas();
         break;
     }
 }

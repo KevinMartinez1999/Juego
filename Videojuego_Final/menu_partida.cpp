@@ -1,6 +1,5 @@
 #include "menu_partida.h"
 #include "ui_menu_partida.h"
-#include "widget.h"
 #include "mapa_gameplay.h"
 
 short int num_jugadores;
@@ -8,8 +7,8 @@ bool nueva_partida;
 extern QString user, pass;
 extern QMediaPlayer * musica;
 
-Menu_partida::Menu_partida(QWidget *parent) :
-    QWidget(parent),
+Menu_partida::Menu_partida(Widget *parent) :
+    Widget(parent),
     ui(new Ui::Menu_partida)
 {
     ui->setupUi(this);
@@ -94,7 +93,7 @@ void Menu_partida::on_nueva_partida_clicked()
 {
     boton.play();//Sonido del botón
     nueva_partida = true;
-    musica->stop();
+    musica->pause();
     delete w;
     delete movie;
 
@@ -126,7 +125,7 @@ void Menu_partida::on_cargar_partida_clicked()
     nueva_partida = false;
     /*Botón en el que se implementara la función que nos permitirá leer los datos guardados del
      jugador y así generar una partida exactamente igual a como se guardó.*/
-    musica->stop();
+    musica->pause();
     delete w;
     delete movie;
 

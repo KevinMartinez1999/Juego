@@ -45,7 +45,7 @@ public:
 
     //Los sig. metodos y atributos son los necesarios para crear la animacion de
     //movimiento del jugador
-    QPixmap pixmap;
+    QPixmap *pixmap;
     QRectF boundingRect() const;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 

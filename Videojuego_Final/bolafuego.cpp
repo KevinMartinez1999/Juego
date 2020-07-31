@@ -158,6 +158,7 @@ void bolaFuego::move5() //Movimiento planetario al rededor del Boss
     X += Vx*T;
     Y += Vy*T;
     setPos(X,Y);
+    box.setPos(x()-5,y()-5);
 
     /*Lo siguiente es para el caso que queramos que todos los planetas interactuen
     entre ellos*/

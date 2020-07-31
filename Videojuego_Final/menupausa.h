@@ -2,27 +2,26 @@
 #define MENUPAUSA_H
 
 #include <QWidget>
-#include <QLabel>
-#include <QMovie>
-#include <QMediaPlayer>
 #include <QCloseEvent>
+#include "widget.h"
+
 namespace Ui {
 class MenuPausa;
 }
 
-class MenuPausa : public QWidget
+class MenuPausa : public Widget
 {
     Q_OBJECT
 
 public:
-    explicit MenuPausa(QWidget *parent = nullptr,bool ventana=0);
+    explicit MenuPausa(Widget *parent = nullptr);
     ~MenuPausa();
     void closeEvent(QCloseEvent *event);
     bool cerrar_sesion;
-    bool VentanaPausada;
 
 signals:
     void Cerrar_Sesion();
+    void reanudar();
 
 private slots:
 
@@ -34,11 +33,6 @@ private slots:
 
 private:
     Ui::MenuPausa *ui;
-    QMovie *movie;
-    QLabel *w;
-    QMediaPlayer boton;
-    QPixmap Pixmap_Cursor;
-    QCursor cursor;
 };
 
 #endif // MENUPAUSA_H

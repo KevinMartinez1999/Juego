@@ -1,19 +1,12 @@
 #include "menupausa.h"
 #include "ui_menupausa.h"
-#include "widget.h"
 #include "mapa_gameplay.h"
 #include "niveles.h"
 #include "enemigo.h"
 
-extern JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
-extern Jugador *jugador, *jugador2;
-extern Boss *boss;
-extern short int num_jugadores;
-extern QList <Enemigo *> listaEnemigos;
-extern QTimer enemigos;
+extern QMediaPlayer * musica;
 
-MenuPausa::MenuPausa(QWidget *parent,bool ventana) :
-    QWidget(parent), VentanaPausada(ventana),
+MenuPausa::MenuPausa(Widget *parent) : Widget(parent),
     ui(new Ui::MenuPausa)
 {
     ui->setupUi(this);
@@ -49,42 +42,14 @@ MenuPausa::~MenuPausa()
 void MenuPausa::closeEvent(QCloseEvent *event)
 {
     boton.play();
-    if(VentanaPausada==0){
-        jugador->ReiniciarTimers();
-        if (num_jugadores == 2)
-            jugador2->ReiniciarTimers();
-        QListIterator<Enemigo *>Iterador(listaEnemigos);
-        while(Iterador.hasNext()){
-            Iterador.next()->ReiniciarTimers();
-        }
-        enemigos.start(7000);
-    }
-    else{
-        jugadorBatalla->ReiniciarTimers();
-        if (num_jugadores == 2)
-            jugadorBatalla2->ReiniciarTimers();
-        boss->ReiniciarTimers();}
+    emit reanudar();
     event->accept();
 }
 
 void MenuPausa::on_Reanudar_clicked()
 {
     boton.play();
-    if(VentanaPausada==0){
-        jugador->ReiniciarTimers();
-        if (num_jugadores == 2)
-            jugador2->ReiniciarTimers();
-        QListIterator<Enemigo *>Iterador(listaEnemigos);
-        while(Iterador.hasNext()){
-            Iterador.next()->ReiniciarTimers();
-        }
-        enemigos.start(7000);
-    }
-    else{
-        jugadorBatalla->ReiniciarTimers();
-        if (num_jugadores == 2)
-            jugadorBatalla2->ReiniciarTimers();
-        boss->ReiniciarTimers();}
+    emit reanudar();
     delete this;
 }
 
@@ -95,6 +60,7 @@ void MenuPausa::on_Controles_clicked()
 
 void MenuPausa::on_Cerrar_Sesion_clicked()
 {
+    musica->stop();
     Widget *w = new Widget;
     w->show();
     close();

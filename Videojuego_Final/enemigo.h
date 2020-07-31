@@ -29,6 +29,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 signals:
+    void EliminarDeLista(Enemigo *, bool);
 
 public slots:
     void Actualizacion(); //Actualiza el sprite

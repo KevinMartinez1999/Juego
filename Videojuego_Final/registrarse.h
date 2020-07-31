@@ -2,13 +2,7 @@
 #define REGISTRARSE_H
 
 #include <QWidget>
-#include <fstream>
-#include <iostream>
-#include <QMessageBox>
-#include <QRegExpValidator>
-#include <QLabel>
-#include <QMovie>
-#include <QMediaPlayer>
+#include "widget.h"
 
 using namespace std;
 
@@ -16,12 +10,12 @@ namespace Ui {
 class Registrarse;
 }
 
-class Registrarse : public QWidget
+class Registrarse : public Widget
 {
     Q_OBJECT
 
 public:
-    explicit Registrarse(QWidget *parent = nullptr);
+    explicit Registrarse(Widget *parent = nullptr);
     ~Registrarse();
 
 private slots:
@@ -32,13 +26,6 @@ private slots:
 
 private:
     Ui::Registrarse *ui;
-    QPixmap Pixmap_Cursor;
-    QCursor cursor;
-    QLabel *w;
-    QMovie *movie;
-    QMediaPlayer boton;
-    QRegExp rx;
-    QRegExpValidator * val;
 };
 
 #endif // REGISTRARSE_H

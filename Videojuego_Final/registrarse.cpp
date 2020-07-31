@@ -1,9 +1,8 @@
 #include "registrarse.h"
 #include "ui_registrarse.h"
-#include "widget.h"
 
-Registrarse::Registrarse(QWidget *parent) :
-    QWidget(parent),
+Registrarse::Registrarse(Widget *parent) :
+    Widget(parent),
     ui(new Ui::Registrarse)
 {
     ui->setupUi(this);

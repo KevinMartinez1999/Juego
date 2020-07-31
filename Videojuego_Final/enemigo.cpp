@@ -3,10 +3,8 @@
 
 #define paso 2.5
 
-extern short int num_jugadores, Enemigos_Asesinar, EnemigosCreados;
-extern bool ObjetivosCumplidos;
+extern short int num_jugadores;
 extern Jugador *jugador, *jugador2;
-extern QList <Enemigo *> listaEnemigos;
 
 Enemigo::Enemigo(QObject *parent) : QObject(parent)
 {
@@ -216,16 +214,14 @@ void Enemigo::detectar_enemigos()
     if (num_jugadores == 2){
         if (jugador->muerto){
             if (abs(int(x()-jugador2->x())) > 900 or abs(int(y()-jugador2->y())) > 700){
-                listaEnemigos.removeOne(this);
-                EnemigosCreados--;
+                emit EliminarDeLista(this, 0);
                 delete this;
                 return;
             }
         }
         else{
             if (abs(int(x()-jugador->x())) > 900 or abs(int(y()-jugador->y())) > 700){
-                listaEnemigos.removeOne(this);
-                EnemigosCreados--;
+                emit EliminarDeLista(this, 0);
                 delete this;
                 return;
             }
@@ -233,8 +229,8 @@ void Enemigo::detectar_enemigos()
     }
     else{
         if (abs(int(x()-jugador->x())) > 900 or abs(int(y()-jugador->y())) > 700){
-            listaEnemigos.removeOne(this);
-            EnemigosCreados--;
+            emit EliminarDeLista(this, 0);
+
             delete this;
             return;
         }
@@ -264,10 +260,7 @@ void Enemigo::ataque_jugador()
     }
 
     if (health <= 1){
-        Enemigos_Asesinar--;
-        if(Enemigos_Asesinar==0){
-            ObjetivosCumplidos=true;}
-        listaEnemigos.removeOne(this);
+        emit EliminarDeLista(this, 1);
         delete this;
     }
 }

@@ -3,7 +3,6 @@
 
 #define X 5
 
-extern short int nivelActual;
 extern QList <QGraphicsPixmapItem *> Muros;
 
 Jugador::Jugador(QObject *parent) : QObject(parent)
@@ -72,7 +71,7 @@ void Jugador::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
      jugador, esta variable cambia cuando el usuario activa un KeyEvent.*/
     Q_UNUSED(option);
     Q_UNUSED(widget);
-    painter->drawPixmap(-ancho/2,-alto/2,pixmap,columnas,fila,ancho,alto);
+    painter->drawPixmap(-ancho/2,-alto/2,*pixmap,columnas,fila,ancho,alto);
 }
 
 void Jugador::Actualizacion()
@@ -90,7 +89,7 @@ void Jugador::Actualizacion()
         columnas += 84;
     /*La funcion update constantemente actualiza el boundingRect del jugador para que su
      origen siempre sea la mitad de la imagen actual.*/
-    this->update(-ancho/2,-alto/2,ancho,alto);
+    update(-ancho/2,-alto/2,ancho,alto);
 }
 
 //Cuando el jugador se mueve se resetean todas las banderas de ataque en todas
@@ -141,7 +140,7 @@ void Jugador::moveLeft()
         ultimoEstado = 2;
         fila = 420; //Actualiza el sprite
         if(box.x() > 0){ //Condiciones del borde de las escena
-            setPos(x()-X,y()); //Movimiento del jugador
+            this->setPos(x()-X,y()); //Movimiento del jugador
             box.setPos(x()-15-X,y()+12); //Movimiento del hiteBox que colisiona
             vida.setPos(x()-30-X,y()-50);
             for(short int i=0;i<Muros.size();i++){
@@ -166,7 +165,7 @@ void Jugador::moveRight()
         ultimoEstado = 4;
         fila = 504;//Actualiza el sprite
         if(box.x() < 2239-25){//Condiciones del borde de las escena
-            setPos(x()+X,y());//Movimiento del jugador
+            this->setPos(x()+X,y());//Movimiento del jugador
             box.setPos(x()-15+X,y()+12);//Movimiento del hiteBox que colisiona
             vida.setPos(x()-30+X,y()-50);
             for(short int i=0;i<Muros.size();i++){

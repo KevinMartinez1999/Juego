@@ -2,11 +2,7 @@
 #define MENU_PARTIDA_H
 
 #include <QWidget>
-#include <iostream>
-#include <fstream>
-#include <QLabel>
-#include <QMovie>
-#include <QMediaPlayer>
+#include "widget.h"
 
 using namespace std;
 
@@ -14,13 +10,14 @@ namespace Ui {
 class Menu_partida;
 }
 
-class Menu_partida : public QWidget
+class Menu_partida : public Widget
 {
     Q_OBJECT
 
 public:
-    explicit Menu_partida(QWidget *parent = nullptr);
+    explicit Menu_partida(Widget *parent = nullptr);
     ~Menu_partida();
+
 private slots:
     void on_volver_clicked();
 
@@ -30,11 +27,6 @@ private slots:
 
 private:
     Ui::Menu_partida *ui;
-    QPixmap Pixmap_Cursor;
-    QCursor cursor;
-    QLabel *w;
-    QMovie *movie;
-    QMediaPlayer boton;
 };
 
 #endif // MENU_PARTIDA_H

@@ -4,18 +4,14 @@
 #include "menu_partida.h"
 #include "jugador.h"
 #include "menupausa.h"
-#include "enemigo.h"
 
 extern short int num_jugadores;
 extern QString user, pass;
 extern bool nueva_partida;
 
 Jugador *jugador, *jugador2;
-short int nivel, nivelActual, Enemigos_Asesinar, EnemigosCreados;
-bool ObjetivosCumplidos;
-QList <Enemigo *> listaEnemigos;
+short int nivel, nivelActual;
 QList <QGraphicsPixmapItem *> Muros;
-QTimer enemigos;
 
 Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     QWidget(parent),
@@ -23,8 +19,17 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    srand(time(0));
+
+    EnemigosCreados = 0;
+
+    nivel1 = {QPoint(660,1800), QPoint(220,1680), QPoint(1130,1460), QPoint(485,1470), QPoint(1150,2100)};
+    nivel2 = {QPoint(475,920), QPoint(505,460), QPoint(1140,495), QPoint(1105,975), QPoint(1735,1305),
+              QPoint(1290,1620), QPoint(1140,1980), QPoint(1325,355)};
+    nivel3 = {QPoint(1540,1575), QPoint(1425,1950), QPoint(2170,1880), QPoint(1710,1195), QPoint(2070,1410),
+             QPoint(2230,975), QPoint(1860,595), QPoint(2230,435)};
+
     nombre = user;
-    pj2 = false; //Inicializacion de la variable del segundo jugador por defecto apagado
 
     ObjetivosCumplidos = false;
 
@@ -102,13 +107,12 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     enemigos.start(5000);
 
     if (num_jugadores == 2){ //Dos jugadores
-        pj2 = true; //Se activa la presencia de un jugador dos en mapa
 
         //Se crean los dos objetos Jugador en el mapa que van
         //a ser los jugadores 1 y 2
 
         jugador = new Jugador(this);
-        jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
+        jugador->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
         jugador->setPos(PosX0,PosY0);
         escena->addItem(jugador);
         jugador->box.setPos(x()-15,y()+12);
@@ -116,7 +120,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
         jugador->vida.setZValue(2);
 
         jugador2 = new Jugador(this);
-        jugador2->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER2.png");//Asignamos el determinado sprite al jugador
+        jugador2->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER2.png");//Asignamos el determinado sprite al jugador
         jugador2->setPos(PosX02,PosY02);
         escena->addItem(jugador2);
         jugador2->box.setPos(x()-15,y()+12);
@@ -125,7 +129,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     }
     else{
         jugador = new Jugador(this);
-        jugador->pixmap = QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
+        jugador->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
         jugador->setPos(PosX0,PosY0);
         escena->addItem(jugador);
         jugador->box.setPos(x()-15,y()+12);
@@ -157,12 +161,10 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     if(BossesMuertos==0 and nueva_partida){
         nivelActual = 0;
         tutorial=true;
-        freeze=true;
     }
     else{
         ui->Controles->hide();
         tutorial=false;
-        freeze=false;
     }
 
     //Añadir barras de vida
@@ -298,7 +300,12 @@ si no se escoge asi las teclas no van a tener ningun efecto cuando se este jugan
 void Mapa_GamePlay::keyPressEvent(QKeyEvent *event)
 {
     //Segun la tecla que se presione se habilita su respectiva bandera de movimiento
-    if(!freeze){
+    if(!tutorial){
+        //Tecla escape destinada para pausar el juego y ver las opciones
+        if(event->key() == Qt::Key_Escape){
+            on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
+        }
+        else if (!jugador->muerto){
             if (event->key() == Qt::Key_W){
                 jugador->setBanUp();
             }
@@ -314,35 +321,33 @@ void Mapa_GamePlay::keyPressEvent(QKeyEvent *event)
             else if (event->key() == Qt::Key_F){
                 jugador->setBanAttack();
             }
+        }
         //Estas son las teclas de movimiento para el jugador 2.
         //Solo estan habilitadas (o habilitadas) si asi lo quiere el usuario.
-            else if(pj2){
-                if(event->key()==Qt::Key_J){
-                    jugador2->setBanLeft();
-                }
-                else if(event->key()==Qt::Key_L){
-                     jugador2->setBanRight();
-                }
-                else if(event->key()==Qt::Key_I){
-                    jugador2->setBanUp();
-                }
-                else if(event->key()==Qt::Key_K){
-                    jugador2->setBanDown();
-                }
-                else if (event->key() == Qt::Key_H){
-                    jugador2->setBanAttack();
-                }
-        }
-        //Tecla escape destinada para pausar el juego y ver las opciones
-        if(event->key() == Qt::Key_Escape){
-            on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
+        if (num_jugadores == 2 and !jugador2->muerto){
+            if(event->key()==Qt::Key_I){
+                jugador2->setBanUp();
+            }
+            else if(event->key()==Qt::Key_K){
+                jugador2->setBanDown();
+            }
+            else if(event->key()==Qt::Key_J){
+                jugador2->setBanLeft();
+            }
+            else if(event->key()==Qt::Key_L){
+                jugador2->setBanRight();
+            }
+            else if (event->key() == Qt::Key_H){
+                jugador2->setBanAttack();
+            }
         }
     }
-    else if(tutorial){
+    else{
         if(event->key() == Qt::Key_Space){
             emit Tutorial();
         }
     }
+
 }
 
 /*Esta funcion tambien es para el movimiento pero en este caso detecta las teclas
@@ -371,22 +376,47 @@ void Mapa_GamePlay::keyReleaseEvent(QKeyEvent *event)
 
     //Estas son las teclas de movimiento para el jugador 2.
     //Solo estan habilitadas (o habilitadas) si asi lo quiere el usuario.
-    else if (pj2){
-        if(event->key()==Qt::Key_J){
-            jugador2->resetBanLeft();
-        }
-        else if(event->key()==Qt::Key_L){
-             jugador2->resetBanRight();
-        }
-        else if(event->key()==Qt::Key_I){
+    else if (num_jugadores == 2){
+        if(event->key()==Qt::Key_I){
             jugador2->resetBanUp();
         }
         else if(event->key()==Qt::Key_K){
             jugador2->resetBanDown();
         }
+        else if(event->key()==Qt::Key_J){
+            jugador2->resetBanLeft();
+        }
+        else if(event->key()==Qt::Key_L){
+            jugador2->resetBanRight();
+        }
         else if (event->key() == Qt::Key_H){
             jugador2->resetBanAttack();
         }
+    }
+}
+
+void Mapa_GamePlay::EliminarEnemigos(Enemigo *obj, bool v)
+{
+    if (v){
+        Enemigos_Asesinar--;
+        if (Enemigos_Asesinar == 0)
+            ObjetivosCumplidos = true;
+    }
+    else{
+        EnemigosCreados--;
+    }
+    listaEnemigos.removeOne(obj);
+}
+
+void Mapa_GamePlay::reanudarTimers()
+{
+    jugador->ReiniciarTimers();
+    if (num_jugadores == 2)
+        jugador2->ReiniciarTimers();
+    enemigos.start(5000);
+    QListIterator<Enemigo *>Iterador(listaEnemigos);
+    while(Iterador.hasNext()){
+        Iterador.next()->ReiniciarTimers();
     }
 }
 
@@ -398,7 +428,6 @@ void Mapa_GamePlay::Tutorial()
     else if(cont==2)
         ui->Controles->setPixmap(QPixmap(":/Imagenes/TECLASMAPA.png"));
     else if(cont==3){
-        freeze=false;
         tutorial=false;
         ui->Controles->hide();
     }
@@ -419,41 +448,33 @@ void Mapa_GamePlay::Nivel()
     //Se abre la ventana determinada para las batallas contra Bosses
     Niveles * batalla = new Niveles;
     batalla->show();
+    delete jugador;
+    if (num_jugadores == 2)
+        delete jugador2;
     delete this;
 }
 
 void Mapa_GamePlay::spawn()
 {
-    if (listaEnemigos.count() == 5 or nivelActual<=0 or EnemigosCreados==EnemigosTotales or Enemigos_Asesinar==0){ //Maximo 5 enemigos para no colapsar el programa
+    if (listaEnemigos.count() == 5 or nivelActual<=0 or EnemigosCreados>=EnemigosTotales or Enemigos_Asesinar==0){ //Maximo 5 enemigos para no colapsar el programa
         return;
     }
 
     //Estas son las posiciones donde va a aparecer los enemigos en el mapa
     Enemigo * enemigo = new Enemigo(this);
-    switch (cont) {
-    case 0:
-        enemigo->setPos(1095, 1830);
-//        cont++;
-        break;
+    int num;
+    switch (nivelActual) {
     case 1:
-        enemigo->setPos(510, 1495);
-        cont++;
+        num = 0 + (rand() % nivel1.length());
+        enemigo->setPos(nivel1[num]);
         break;
     case 2:
-        enemigo->setPos(85, 1700);
-        cont++;
+        num = 0 + (rand() % nivel2.length());
+        enemigo->setPos(nivel2[num]);
         break;
     case 3:
-        enemigo->setPos(1005, 660);
-        cont++;
-        break;
-    case 4:
-        enemigo->setPos(1875, 1795);
-        cont++;
-        break;
-    case 5:
-        enemigo->setPos(1645, 1210);
-        cont = 0;
+        num = 0 + (rand() % nivel3.length());
+        enemigo->setPos(nivel3[num]);
         break;
     default:
         break;
@@ -466,6 +487,7 @@ void Mapa_GamePlay::spawn()
     enemigo->vida.setZValue(2);
     listaEnemigos.append(enemigo); //Se añade a una lista el enemigo para controlar cuando enemigos hay
     EnemigosCreados++;
+    connect(enemigo, SIGNAL(EliminarDeLista(Enemigo *, bool)), this, SLOT(EliminarEnemigos(Enemigo *, bool)));
 }
 
 void Mapa_GamePlay::ingreso_batalla()
@@ -607,8 +629,9 @@ void Mapa_GamePlay::on_Opciones_clicked()
         Iterador.next()->PararTimers();
     }
     enemigos.stop();
-    MenuPausa *opciones = new MenuPausa(nullptr,0);
+    MenuPausa *opciones = new MenuPausa(nullptr);
     opciones->show();
+    connect(opciones, &MenuPausa::reanudar, this, &Mapa_GamePlay::reanudarTimers);
     connect(opciones,&MenuPausa::Cerrar_Sesion,this,&Mapa_GamePlay::Cerrar_Ventana);
 }
 
@@ -616,5 +639,8 @@ void Mapa_GamePlay::Cerrar_Ventana()
 {
     Muros.clear();
     close();
+    delete jugador;
+    if (num_jugadores == 2)
+        delete jugador2;
     delete this;
 }

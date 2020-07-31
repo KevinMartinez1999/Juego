@@ -39,8 +39,7 @@ private:
     QMediaPlayer musicaNivel, JugadorMuerto, victoria;
     QTimer timer;
     int cont=0;
-    bool pj2;
-    bool freeze,tutorial;
+    bool tutorial;
 
 private slots:
     void muerte();
@@ -49,6 +48,7 @@ private slots:
     void Level_Events();
     void on_Opciones_clicked();
     void Cerrar_Ventana();
+    void reanudarTimers();
 };
 
 #endif // NIVELES_H

@@ -6,8 +6,8 @@
 
 extern short int nivel, nivelActual;
 extern short int num_jugadores;
-extern QString user,pass;
 extern bool nueva_partida;
+extern QString user,pass;
 extern QList <QGraphicsPixmapItem *> Muros;
 JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
 QGraphicsRectItem *rectangulo;
@@ -19,8 +19,6 @@ Niveles::Niveles(QWidget *parent) :
     ui(new Ui::Niveles)
 {
     ui->setupUi(this);
-    pj2 = false;//Inicializacion de la variable del segundo jugador por defecto apagado
-    freeze=false;
     tutorial=false;
     srand(time(0));
 
@@ -57,7 +55,6 @@ Niveles::Niveles(QWidget *parent) :
         jugadorBatalla->pixmap = new QPixmap(":/Imagenes/SPRITEBATALLA.png");//Asignamos el determinado sprite al jugador
     }
     else if (num_jugadores == 2){ //Dos jugadores
-        pj2 = true;
         jugadorBatalla = new JugadorBatalla(this);
         jugadorBatalla->pixmap = new QPixmap(":/Imagenes/SPRITEBATALLA.png");//Asignamos el determinado sprite al jugador
 
@@ -110,7 +107,6 @@ void Niveles::NivelSetup()
         }
         ui->Controles->show(); //Se muestra la ayuda
         tutorial=true;
-        freeze=true;
     }
     else if(nivel==1){
         //Si el nivel==1 se prepararan en la escena los elementos del primer nivel
@@ -250,7 +246,6 @@ void Niveles::Tutorial()
     else if(cont==2){
         ui->Controles->hide();
         tutorial=false;
-        freeze=false;
         boss->ReiniciarTimers();
     }
 }
@@ -261,7 +256,8 @@ si no se escoge asi las teclas no van a tener ningun efecto cuando se este jugan
 
 void Niveles::keyPressEvent(QKeyEvent *event)
 {
-    if(!freeze){
+    if(!tutorial){
+        if (!jugadorBatalla->muerto){
             //Segun la tecla que se presione se habilita su respectiva bandera de movimiento
             if (event->key() == Qt::Key_A){
                 jugadorBatalla->setBanLeft();
@@ -278,9 +274,10 @@ void Niveles::keyPressEvent(QKeyEvent *event)
             else if (event->key() == Qt::Key_W){
                 jugadorBatalla->setBanJump();
             }
+        }
         /*Estas son las teclas de movimiento para el jugador 2. Solo estan habilitadas si asi
           lo quiere el usuario.*/
-        else if(pj2){
+        if(num_jugadores == 2 and !jugadorBatalla2->muerto){
             if(event->key()==Qt::Key_J){
                 jugadorBatalla2->setBanLeft();
             }
@@ -298,7 +295,7 @@ void Niveles::keyPressEvent(QKeyEvent *event)
             }
         }
     }
-    if(tutorial){
+    else if(tutorial){
         if(event->key() == Qt::Key_Space){
             emit Tutorial();
         }
@@ -324,19 +321,19 @@ void Niveles::keyReleaseEvent(QKeyEvent *event)
     else if (event->key() == Qt::Key_C){
         jugadorBatalla->resetBanSpell();
     }
-    else if(pj2){
-    if(event->key()==Qt::Key_J){
-        jugadorBatalla2->resetBanLeft();
-    }
-    else if(event->key()==Qt::Key_L){
-        jugadorBatalla2->resetBanRight();
-    }
-    else if (event->key() == Qt::Key_H){
-        jugadorBatalla2->resetBanAttack();
-    }
-    else if (event->key() == Qt::Key_N){
-        jugadorBatalla2->resetBanSpell();
-    }
+    else if(num_jugadores == 2){
+        if(event->key()==Qt::Key_J){
+            jugadorBatalla2->resetBanLeft();
+        }
+        else if(event->key()==Qt::Key_L){
+            jugadorBatalla2->resetBanRight();
+        }
+        else if (event->key() == Qt::Key_H){
+            jugadorBatalla2->resetBanAttack();
+        }
+        else if (event->key() == Qt::Key_N){
+            jugadorBatalla2->resetBanSpell();
+        }
     }
 }
 
@@ -399,9 +396,10 @@ void Niveles::on_Opciones_clicked()
         jugadorBatalla2->PararTimers();
     boss->PararTimers();
 
-    MenuPausa *opciones = new MenuPausa(nullptr,1);
+    MenuPausa *opciones = new MenuPausa(nullptr);
     opciones->show();
     connect(opciones,&MenuPausa::Cerrar_Sesion,this,&Niveles::Cerrar_Ventana);
+    connect(opciones,&MenuPausa::reanudar,this,&Niveles::Cerrar_Ventana);
 }
 
 void Niveles::Cerrar_Ventana()
@@ -409,4 +407,12 @@ void Niveles::Cerrar_Ventana()
     Muros.clear();
     close();
     delete this;
+}
+
+void Niveles::reanudarTimers()
+{
+    jugadorBatalla->ReiniciarTimers();
+    if (num_jugadores == 2)
+        jugadorBatalla2->ReiniciarTimers();
+    boss->ReiniciarTimers();
 }
