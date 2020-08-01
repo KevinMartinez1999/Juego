@@ -2,7 +2,7 @@
 #define WIDGET_H
 
 #include <QWidget>
-#include <QDebug>
+#include <QCloseEvent>
 #include <fstream>
 #include <iostream>
 #include <QRegExpValidator>

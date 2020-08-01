@@ -1,8 +1,6 @@
 #ifndef MENUPAUSA_H
 #define MENUPAUSA_H
 
-#include <QWidget>
-#include <QCloseEvent>
 #include "widget.h"
 
 namespace Ui {

@@ -25,7 +25,7 @@ class Niveles : public QWidget
     Q_OBJECT
 
 public:
-    explicit Niveles(QWidget *parent = nullptr);
+    explicit Niveles(QWidget *parent = nullptr, short int lvl = 0);
     ~Niveles();
     void NivelSetup();
     void keyPressEvent(QKeyEvent * event);
@@ -40,6 +40,10 @@ private:
     QTimer timer;
     int cont=0;
     bool tutorial;
+    short int nivel;
+
+signals:
+    void aumentar();
 
 private slots:
     void muerte();

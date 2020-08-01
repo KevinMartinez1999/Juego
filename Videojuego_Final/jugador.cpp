@@ -3,8 +3,6 @@
 
 #define X 5
 
-extern short int nivelActual;
-
 Jugador::Jugador(QObject *parent) : QObject(parent)
 {
     //Inicialzacion de las banderas de movimiento

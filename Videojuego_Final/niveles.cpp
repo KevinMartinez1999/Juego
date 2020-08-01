@@ -4,17 +4,14 @@
 #include "menupausa.h"
 #include <QGraphicsRectItem>
 
-extern short int nivel, nivelActual;
-extern short int num_jugadores;
-extern bool nueva_partida;
-extern QString user,pass;
 JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
-
 Boss *boss;
 
-Niveles::Niveles(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::Niveles)
+extern short int num_jugadores;
+extern QString user,pass;
+
+Niveles::Niveles(QWidget *parent, short int lvl) :
+    QWidget(parent), ui(new Ui::Niveles), nivel(lvl)
 {
     ui->setupUi(this);
     tutorial=false;
@@ -206,9 +203,8 @@ void Niveles::verificar_muerte()
             msgBox.setStyleSheet("background-color:#211b18;"
                                  "color:white;");
             msgBox.exec();
-            nueva_partida=false;
 
-            Mapa_GamePlay *mapa=new Mapa_GamePlay;
+            Mapa_GamePlay *mapa=new Mapa_GamePlay(nullptr, 0);
             mapa->show();
             close();
             delete this;
@@ -225,9 +221,8 @@ void Niveles::verificar_muerte()
             msgBox.setStyleSheet("background-color:#211b18;"
                                  "color:white;");
             msgBox.exec();
-            nueva_partida=false;
 
-            Mapa_GamePlay *mapa=new Mapa_GamePlay;
+            Mapa_GamePlay *mapa=new Mapa_GamePlay(nullptr, 0);
             mapa->show();
             close();
             delete this;
@@ -344,7 +339,7 @@ void Niveles::Level_Events()
         victoria.play();
         musicaNivel.stop();
 
-        nivelActual++;
+        emit aumentar();
 
         jugadorBatalla->PararTimers();
         if(num_jugadores==2)

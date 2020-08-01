@@ -4,8 +4,6 @@
 
 #define g 9.81
 
-extern Boss *boss;
-
 JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
 {
     //Variables fisicas

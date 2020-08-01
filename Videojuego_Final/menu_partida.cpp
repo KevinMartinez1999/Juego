@@ -3,7 +3,7 @@
 #include "mapa_gameplay.h"
 
 short int num_jugadores;
-bool nueva_partida;
+
 extern QString user, pass;
 extern QMediaPlayer * musica;
 
@@ -92,7 +92,6 @@ void Menu_partida::on_volver_clicked()
 void Menu_partida::on_nueva_partida_clicked()
 {
     boton.play();//Sonido del botón
-    nueva_partida = true;
     musica->pause();
     delete w;
     delete movie;
@@ -113,7 +112,7 @@ void Menu_partida::on_nueva_partida_clicked()
     file.flush();
     file.close();
 
-    Mapa_GamePlay *mapa = new Mapa_GamePlay();
+    Mapa_GamePlay *mapa = new Mapa_GamePlay(nullptr, 1);
     mapa->show();
     delete this;
 }
@@ -122,14 +121,13 @@ void Menu_partida::on_cargar_partida_clicked()
 {
     boton.play();//Sonido del botón
 
-    nueva_partida = false;
     /*Botón en el que se implementara la función que nos permitirá leer los datos guardados del
      jugador y así generar una partida exactamente igual a como se guardó.*/
     musica->pause();
     delete w;
     delete movie;
 
-    Mapa_GamePlay *mapa = new Mapa_GamePlay();
+    Mapa_GamePlay *mapa = new Mapa_GamePlay(nullptr, 0);
     mapa->show();
     delete this;
 }

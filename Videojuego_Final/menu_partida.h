@@ -1,7 +1,6 @@
 #ifndef MENU_PARTIDA_H
 #define MENU_PARTIDA_H
 
-#include <QWidget>
 #include "widget.h"
 
 using namespace std;

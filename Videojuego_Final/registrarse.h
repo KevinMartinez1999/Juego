@@ -1,7 +1,6 @@
 #ifndef REGISTRARSE_H
 #define REGISTRARSE_H
 
-#include <QWidget>
 #include "widget.h"
 
 using namespace std;

@@ -5,16 +5,13 @@
 #include "jugador.h"
 #include "menupausa.h"
 
+Jugador *jugador, *jugador2;
+
 extern short int num_jugadores;
 extern QString user, pass;
-extern bool nueva_partida;
 
-Jugador *jugador, *jugador2;
-short int nivel, nivelActual;
-
-Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
-    QWidget(parent),
-    ui(new Ui::Mapa_GamePlay)
+Mapa_GamePlay::Mapa_GamePlay(QWidget *parent, bool nuevaPartida) :
+    QWidget(parent), ui(new Ui::Mapa_GamePlay), nueva_partida(nuevaPartida)
 {
     ui->setupUi(this);
 
@@ -445,6 +442,11 @@ void Mapa_GamePlay::EliminarEnemigos(Enemigo *obj, bool v)
     listaEnemigos.removeOne(obj);
 }
 
+void Mapa_GamePlay::aumentarNivel()
+{
+    nivelActual++;
+}
+
 void Mapa_GamePlay::reanudarTimers()
 {
     jugador->ReiniciarTimers();
@@ -483,7 +485,8 @@ void Mapa_GamePlay::Nivel()
     EnemigosCreados=0;
 
     //Se abre la ventana determinada para las batallas contra Bosses
-    Niveles * batalla = new Niveles;
+    Niveles * batalla = new Niveles(nullptr, nivel);
+    connect(batalla, &Niveles::aumentar, this, &Mapa_GamePlay::aumentarNivel);
     batalla->show();
     delete jugador;
     if (num_jugadores == 2)
@@ -494,7 +497,6 @@ void Mapa_GamePlay::Nivel()
 
 void Mapa_GamePlay::spawn()
 {
-    qDebug()<<EnemigosCreados;
     if (listaEnemigos.count() == 5 or nivelActual<=0 or EnemigosCreados>=EnemigosTotales or Enemigos_Asesinar==0){ //Maximo 5 enemigos para no colapsar el programa
         return;
     }
