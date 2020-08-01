@@ -17,8 +17,8 @@ extern Boss *boss;
 extern JugadorBatalla *jugadorBatalla, *jugadorBatalla2;
 extern short int num_jugadores;
 
-bolaFuego::bolaFuego(QObject *parent, short int estado, short int tipo)
-    : QObject(parent), ultimoEstado(estado), Tipo(tipo)
+bolaFuego::bolaFuego(QObject *parent, short int estado, short int tipo, short int suelo)
+    : QObject(parent), ultimoEstado(estado), Tipo(tipo), SueloNivel(suelo)
 {
     //Inicializar constantes del mov
     t = 0;
@@ -72,7 +72,7 @@ bolaFuego::bolaFuego(QObject *parent, short int estado, short int tipo)
         limiteSprite=160;
         connect(&timer, SIGNAL(timeout()), this, SLOT(move5()));
         connect(&timer, SIGNAL(timeout()), this, SLOT(colision_con_jugador()));
-        dano = 20;
+        dano = 15;
         break;
     }
     timer.start(30);
@@ -132,8 +132,8 @@ void bolaFuego::move3() //Bolas del enemigo con MRUA
 
 void bolaFuego::move4() //Bolas parabolicas del enemigo
 {
-    if (y() > 530){
-        setY(529);
+    if (y() > SueloNivel){
+        setY(SueloNivel-1);
         t = 0.5;
         Vy *= e;
         Vx *= u;
@@ -158,7 +158,7 @@ void bolaFuego::move5() //Movimiento planetario al rededor del Boss
     X += Vx*T;
     Y += Vy*T;
     setPos(X,Y);
-    box.setPos(x()-5,y()-5);
+    box.setPos(x()-5, y()-5);
 
     /*Lo siguiente es para el caso que queramos que todos los planetas interactuen
     entre ellos*/

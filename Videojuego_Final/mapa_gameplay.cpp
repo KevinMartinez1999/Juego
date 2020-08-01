@@ -11,7 +11,6 @@ extern bool nueva_partida;
 
 Jugador *jugador, *jugador2;
 short int nivel, nivelActual;
-QList <QGraphicsPixmapItem *> Muros;
 
 Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     QWidget(parent),
@@ -80,13 +79,6 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     //NOTA: Para generar dicha sensasion es necesario crear al jugador justo despues de la capa dos, despues
     //del mapa completo y antes del mapa de las estructuras.
 
-    //Primera capa del mapa
-    muros = new QGraphicsPixmapItem;
-    muros->setPixmap(QPixmap(":/Imagenes/MUROS.png"));
-    muros->setPos(0,0);
-    escena->addItem(muros);
-    Muros.push_back(muros);
-
     //Segunda capa del mapa
     mapa = new QGraphicsPixmapItem;
     mapa->setPixmap(QPixmap(":/Imagenes/MAPA.png"));
@@ -100,11 +92,20 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     la partida, pj2 en true el programa sabe que debe habilitar las teclas de movimiento para
     un segundo jugador*/
 
-    CargarPartida();
-
     //Spawn de los enemigos
     connect(&enemigos,SIGNAL(timeout()),this,SLOT(spawn()));
     enemigos.start(5000);
+
+    string Usuario, password;
+    ifstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
+    if (!file.is_open()){
+        return;}
+    file>>Usuario;
+    file>>password;
+    file>>num_jugadores;
+    file>>BossesMuertos;
+    file>>ObjetivosCompletados;
+    file.close();
 
     if (num_jugadores == 2){ //Dos jugadores
 
@@ -113,16 +114,26 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
 
         jugador = new Jugador(this);
         jugador->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
+
+        jugador2 = new Jugador(this);
+        jugador2->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER2.png");//Asignamos el determinado sprite al jugador
+
+        CargarPartida();
+
         jugador->setPos(PosX0,PosY0);
         escena->addItem(jugador);
         jugador->box.setPos(x()-15,y()+12);
         jugador->vida.setPos(jugador->x()-30,jugador->y()-50);
         jugador->vida.setZValue(2);
 
-        jugador2 = new Jugador(this);
-        jugador2->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER2.png");//Asignamos el determinado sprite al jugador
         jugador2->setPos(PosX02,PosY02);
         escena->addItem(jugador2);
+
+        muros = new QGraphicsPixmapItem;
+        muros->setPixmap(QPixmap(":/Imagenes/MUROS.png"));
+        muros->setPos(0,0);
+        jugador2->Muros.push_back(muros);
+
         jugador2->box.setPos(x()-15,y()+12);
         jugador2->vida.setPos(jugador2->x()-30,jugador2->y()-50);
         jugador2->vida.setZValue(2);
@@ -130,12 +141,19 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent) :
     else{
         jugador = new Jugador(this);
         jugador->pixmap = new QPixmap(":/Imagenes/SPRITEPLAYER.png");//Asignamos el determinado sprite al jugador
+        CargarPartida();
         jugador->setPos(PosX0,PosY0);
         escena->addItem(jugador);
         jugador->box.setPos(x()-15,y()+12);
         jugador->vida.setPos(jugador->x()-30,jugador->y()-50);
         jugador->vida.setZValue(2);
     }
+
+    //Capa del mapa en la que se entran el png con las colisiones que seran analizadas por lo jugadores al moverse
+    muros = new QGraphicsPixmapItem;
+    muros->setPixmap(QPixmap(":/Imagenes/MUROS.png"));
+    muros->setPos(0,0);
+    jugador->Muros.push_back(muros);
 
     //Tercera capa del mapa
     objetos = new QGraphicsPixmapItem;
@@ -188,81 +206,96 @@ Mapa_GamePlay::~Mapa_GamePlay()
 
 void Mapa_GamePlay::CargarPartida()
 {
-    string Usuario, password;
-    bool ObjetivosCompletados;
-    ifstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
-    if (!file.is_open()){
-        return;}
-    file>>Usuario;
-    file>>password;
-    file>>num_jugadores;
-    file>>BossesMuertos;
-    file>>ObjetivosCompletados;
-    file.close();
     switch (BossesMuertos) {
     case 0:{
-        PosX0=770,PosY0=2155;
         nivelActual = 0;
-        if(num_jugadores==2)
-            PosX02=820,PosY02=2155;
-        ui->label_2->hide();
 
-        Enemigos_Asesinar=0;
-        EnemigosTotales=Enemigos_Asesinar;
-
+        //Se añadira el pixmap a los muros determinados con el que el jugador tendra que colisionar
         muros = new QGraphicsPixmapItem;
         muros->setPixmap(QPixmap(":/Imagenes/BLOQUEO1.png"));
         muros->setPos(0,0);
         escena->addItem(muros);
-        Muros.push_back(muros);
+
+        jugador->Muros.push_back(muros);
+
+        //Posiciones iniciales del jugador que tendra si se carga una nueva partida
+        PosX0=770,PosY0=2155;
+
+        if(num_jugadores==2){
+            PosX02=820,PosY02=2155;
+            jugador2->Muros.push_back(muros);
+        }
+        ui->label_2->hide();
+
+        Enemigos_Asesinar=0;
+        EnemigosTotales=Enemigos_Asesinar;
         break;
     }
+
     case 1:{
         nivelActual = 1;
-        if(ObjetivosCompletados==0){
-            PosX0=415,PosY0=2200;
-            if(num_jugadores==2)
-                PosX02=330,PosY02=2200;
-            Enemigos_Asesinar=5;
-        }
-        else{
-            PosX0=755,PosY0=1485;
-            if(num_jugadores==2)
-                PosX02=815,PosY02=1480;
-            Enemigos_Asesinar=0;
-        }
-        EnemigosTotales=Enemigos_Asesinar;
 
         muros = new QGraphicsPixmapItem;
         muros->setPixmap(QPixmap(":/Imagenes/BLOQUEO2.png"));
         muros->setPos(0,0);
         escena->addItem(muros);
-        Muros.push_back(muros);
-        break;
-    }
-    case 2:{
-        nivelActual = 2;
+
+        jugador->Muros.push_back(muros);
+
         if(ObjetivosCompletados==0){
-            PosX0=755,PosY0=1485;
-            if(num_jugadores==2)
-                PosX02=815,PosY02=1480;
-            Enemigos_Asesinar=10;
+            PosX0=415,PosY0=2200;
+
+            if(num_jugadores==2){
+                PosX02=330,PosY02=2200;
+                jugador2->Muros.push_back(muros);
+            }
+
+            Enemigos_Asesinar=5;
         }
         else{
-            PosX0=1625,PosY0=1765;
-            if(num_jugadores==2)
-                PosX02=1585,PosY02=1765;
-            Enemigos_Asesinar=0;
+            PosX0=755,PosY0=1485;
+
+            if(num_jugadores==2){
+
+                PosX02=815,PosY02=1480;
+                jugador2->Muros.push_back(muros);
+            }
+                Enemigos_Asesinar=0;
         }
         EnemigosTotales=Enemigos_Asesinar;
+        break;
+    }
+
+    case 2:{
+        nivelActual = 2;
 
         muros = new QGraphicsPixmapItem;
         muros->setPixmap(QPixmap(":/Imagenes/BLOQUEO3.png"));
         muros->setPos(0,0);
         escena->addItem(muros);
-        Muros.push_back(muros);
+
+        jugador->Muros.push_back(muros);
+
+        if(ObjetivosCompletados==0){
+            PosX0=755,PosY0=1485;
+            if(num_jugadores==2){
+                PosX02=815,PosY02=1480;
+                jugador2->Muros.push_back(muros);
+            }
+            Enemigos_Asesinar=10;
+        }
+        else{
+            PosX0=1625,PosY0=1765;
+            if(num_jugadores==2){
+                PosX02=1585,PosY02=1765;
+                jugador2->Muros.push_back(muros);
+            }
+            Enemigos_Asesinar=0;
+        }
+        EnemigosTotales=Enemigos_Asesinar;
         break;
     }
+
     case 3:{
         nivelActual = 3;
         if(ObjetivosCompletados==0){
@@ -280,6 +313,7 @@ void Mapa_GamePlay::CargarPartida()
         EnemigosTotales=Enemigos_Asesinar;
         break;
     }
+
     case 4:{
         nivelActual = 4;
         PosX0=2125,PosY0=600;
@@ -301,10 +335,11 @@ void Mapa_GamePlay::keyPressEvent(QKeyEvent *event)
 {
     //Segun la tecla que se presione se habilita su respectiva bandera de movimiento
     if(!tutorial){
-        //Tecla escape destinada para pausar el juego y ver las opciones
+
         if(event->key() == Qt::Key_Escape){
             on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
         }
+        //Tecla escape destinada para pausar el juego y ver las opciones
         else if (!jugador->muerto){
             if (event->key() == Qt::Key_W){
                 jugador->setBanUp();
@@ -358,25 +393,27 @@ void Mapa_GamePlay::keyReleaseEvent(QKeyEvent *event)
 {
     //Segun la tecla que se deja de presionar una bandera se baja y el movimiento ahi se detiene
 
-    if (event->key() == Qt::Key_W){
-        jugador->resetBanUp();
-    }
-    else if (event->key() == Qt::Key_S){
-        jugador->resetBanDown();
-    }
-    else if (event->key() == Qt::Key_A){
-        jugador->resetBanLeft();
-    }
-    else if (event->key() == Qt::Key_D){
-        jugador->resetBanRight();
-    }
-    else if (event->key() == Qt::Key_F){
-        jugador->resetBanAttack();
+    if (!jugador->muerto){
+        if (event->key() == Qt::Key_W){
+            jugador->resetBanUp();
+        }
+        else if (event->key() == Qt::Key_S){
+            jugador->resetBanDown();
+        }
+        else if (event->key() == Qt::Key_A){
+            jugador->resetBanLeft();
+        }
+        else if (event->key() == Qt::Key_D){
+            jugador->resetBanRight();
+        }
+        else if (event->key() == Qt::Key_F){
+            jugador->resetBanAttack();
+        }
     }
 
     //Estas son las teclas de movimiento para el jugador 2.
     //Solo estan habilitadas (o habilitadas) si asi lo quiere el usuario.
-    else if (num_jugadores == 2){
+    if (num_jugadores == 2 and !jugador2->muerto){
         if(event->key()==Qt::Key_I){
             jugador2->resetBanUp();
         }
@@ -451,11 +488,13 @@ void Mapa_GamePlay::Nivel()
     delete jugador;
     if (num_jugadores == 2)
         delete jugador2;
+    close();
     delete this;
 }
 
 void Mapa_GamePlay::spawn()
 {
+    qDebug()<<EnemigosCreados;
     if (listaEnemigos.count() == 5 or nivelActual<=0 or EnemigosCreados>=EnemigosTotales or Enemigos_Asesinar==0){ //Maximo 5 enemigos para no colapsar el programa
         return;
     }
@@ -585,7 +624,6 @@ void Mapa_GamePlay::verificar_muerte()
                                  "color:white;");
             msgBox.exec();
 
-            Muros.clear();
             Mapa_GamePlay *Mapa = new Mapa_GamePlay;
             Mapa->show();
 
@@ -604,7 +642,6 @@ void Mapa_GamePlay::verificar_muerte()
                                  "color:white;");
             msgBox.exec();
 
-            Muros.clear();
             Mapa_GamePlay *Mapa = new Mapa_GamePlay;
             Mapa->show();
 
@@ -637,7 +674,6 @@ void Mapa_GamePlay::on_Opciones_clicked()
 
 void Mapa_GamePlay::Cerrar_Ventana()
 {
-    Muros.clear();
     close();
     delete jugador;
     if (num_jugadores == 2)

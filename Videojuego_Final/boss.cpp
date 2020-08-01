@@ -36,13 +36,14 @@ Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
         connect(&timer,SIGNAL(timeout()),this,SLOT(AnimacionMuerte()));
     }
     else if(tipoBoss==1){
+        X=900,Y=490,r=15,w=7,t=0;
         tiempo_ataque = 15000;
         ancho = 192;
         alto  = 224;
         limiteSprite=1344;
         pixmap = new QPixmap(":/Imagenes/BOSS2.png");
         setPos(900,490);
-//        connect(&generar_ataque, SIGNAL(timeout()), this, SLOT(orbitas()));
+        connect(&timer, SIGNAL(timeout()), this, SLOT(MovimientoBoss1()));
     }
     else if(tipoBoss==2){
         tiempo_ataque = 10000;
@@ -53,12 +54,13 @@ Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
         setPos(875,363);
     }
     else if(tipoBoss==3){
-        tiempo_ataque = 5000;
+        tiempo_ataque = 10000;
         ancho = 320;
         alto  = 288;
         limiteSprite=1600;
         pixmap = new QPixmap(":/Imagenes/BOSS1.png");
         setPos(875,450);
+        connect(&Movimiento, SIGNAL(timeout()), this, SLOT(MovimientoBoss3()));
     }
 
     //Se añade la barra de vida
@@ -144,6 +146,26 @@ void Boss::AnimacionMuerte()
     else return;
 }
 
+void Boss::MovimientoBoss1()
+{
+    t+=0.1;
+    X+=r*cos(w*t);
+    Y+=-r*sin(w*t);
+    setPos(X,Y);
+}
+
+void Boss::MovimientoBoss3()
+{
+    t += 0.1;
+    X = (5*t);
+    Y = (17*t)-(0.5*g*t*t);
+    setPos(x()-X,y()-Y);
+    if(x()<=0)
+        Movimiento.stop();
+    else if(y()>600)
+        Movimiento.stop();
+}
+
 void Boss::ataque_jugador()
 {
     if (health <= 1)
@@ -223,7 +245,7 @@ void Boss::elegir_ataque()
     switch (tipoAtaque) {
     case 0:{
         bolaFuego * bola = new bolaFuego(this, 1, 2);
-        if(tipoBoss==0 or tipoBoss==4)
+        if(tipoBoss==0 or tipoBoss==3)
             bola->Pixmap = QPixmap(":/Imagenes/FUEGO2.png");
         else
             bola->Pixmap = QPixmap(":/Imagenes/FUEGO.png");
@@ -238,8 +260,14 @@ void Boss::elegir_ataque()
     case 1:{
         bolaFuego * bola = new bolaFuego(this, 1, 3);
         bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
-        bola->X = x() - 20;
-        bola->Y = y() + 60;
+        if(tipoBoss!=1){
+            bola->X = x() - 20;
+            bola->Y = y() + 60;
+        }
+        else{
+            bola->X = 910;
+            bola->Y = 550;
+        }
         bola->Vx = 1;
         bola->Vy = 1;
         bola->Ax = 0.8;
@@ -250,7 +278,12 @@ void Boss::elegir_ataque()
         break;
     }
     case 2:
-        bolaFuego * bola = new bolaFuego(this, 1, 4);
+        int suelo;
+        if(tipoBoss==2)
+            suelo=448;
+        else
+            suelo=530;
+        bolaFuego * bola = new bolaFuego(this, 1, 4, suelo);
         bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
         bola->X = x() - 20;
         bola->Y = y();
@@ -277,13 +310,13 @@ void Boss::cambiar_ataque()
         tipoAtaque = 0;
     else if(tipoAtaque>2 and tipoBoss==2)
         tipoAtaque=0;
-    else if (tipoAtaque>3 and tipoBoss>2)
+    else if(tipoAtaque>4 and tipoBoss==3)
         tipoAtaque=0;
-
     //Aqui se le da a acada ataque un tiempo de repeticion entre
     //un lanzamiento y otro
     switch (tipoAtaque) {
     case 0:
+        Movimiento.stop();
         generar_ataque.stop();
         generar_ataque.start(1000);
         break;
@@ -293,11 +326,15 @@ void Boss::cambiar_ataque()
         break;
     case 2:
         generar_ataque.stop();
-        generar_ataque.start(4000);
+        generar_ataque.start(2400);
         break;
     case 3:
         generar_ataque.stop();
         emit orbitas();
+        break;
+    case 4:
+        generar_ataque.stop();
+        Movimiento.start(30);
         break;
     }
 }

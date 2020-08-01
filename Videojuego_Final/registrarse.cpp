@@ -95,9 +95,10 @@ void Registrarse::on_registrarse_clicked()
         ui->clave->clear();
         return;
     }
-    //Se abre y se llevan los datos ingresados al archivo
 
+    //Se abre y se llevan los datos ingresados al archivo
     ofstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
+    //Se guardan el nombre de usuario y la contraseña
     file<<user.toStdString()<<"\n"<<pass.toStdString();
     file.flush();
     file.close();
@@ -109,6 +110,7 @@ void Registrarse::on_registrarse_clicked()
     msgBox.setStyleSheet("background-color:#211b18;"
                          "color:white;");
     msgBox.exec();
+    //Se abre un nuevo widget para poder iniciar sesion.
     Widget *w = new Widget;
     w->show();
     close();

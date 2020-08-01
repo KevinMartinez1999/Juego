@@ -54,7 +54,7 @@ private: //Atributos de la clase
     QGraphicsScene *escena;
     QGraphicsPixmapItem * muros;
     QGraphicsPixmapItem *mapa;
-    QGraphicsPixmapItem *objetos;  
+    QGraphicsPixmapItem *objetos;
     QLabel *aviso,*advertencia;
     int BossesMuertos;
     int PosX0,PosY0,PosX02,PosY02,cont=0;
@@ -63,6 +63,7 @@ private: //Atributos de la clase
     short int Enemigos_Asesinar, EnemigosCreados;
     bool tutorial, ObjetivosCumplidos;
     QList<QPoint> nivel1, nivel2, nivel3;
+    bool ObjetivosCompletados;
 
  private slots:
     void EliminarEnemigos(Enemigo *obj, bool v);

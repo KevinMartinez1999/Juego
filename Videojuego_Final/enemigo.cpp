@@ -47,10 +47,10 @@ Enemigo::Enemigo(QObject *parent) : QObject(parent)
 
     //Sonidos
     JugadorAtacado.setMedia(QUrl("qrc:/Musica/PAIN.wav"));
-    JugadorAtacado.setVolume(100);
+    JugadorAtacado.setVolume(80);
 
     fantasma.setMedia(QUrl("qrc:/Musica/FANTASMA.wav"));
-    fantasma.setVolume(100);
+    fantasma.setVolume(80);
 
     connect(&SonidosTimer, SIGNAL(timeout()), this, SLOT(sonidos()));
     SonidosTimer.start(5000);
