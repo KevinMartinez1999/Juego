@@ -7,6 +7,9 @@ Registrarse::Registrarse(Widget *parent) :
 {
     ui->setupUi(this);
 
+    connect(ui->registrarse, &QPushButton::clicked, this, &Registrarse::on_registrarse_clicked);
+    connect(ui->mostrar, &QCheckBox::stateChanged, this, &Registrarse::on_mostrar_stateChanged);
+
     //Sonido al presionar los botones
     boton.setMedia(QUrl("qrc:/Musica/ESPADA.mp3"));
     boton.setVolume(100);

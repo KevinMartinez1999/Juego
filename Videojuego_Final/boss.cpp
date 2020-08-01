@@ -1,6 +1,5 @@
 #include "boss.h"
 #include "niveles.h"
-#include "bolafuego.h"
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
 #include <QList>
@@ -8,8 +7,6 @@
 #define pi 3.14159265
 #define g 9.81
 #define e 0.0375
-
-QList<bolaFuego *> bolas;
 
 extern short int num_jugadores;
 extern JugadorBatalla *jugadorBatalla, *jugadorBatalla2;

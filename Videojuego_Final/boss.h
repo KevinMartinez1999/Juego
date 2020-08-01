@@ -7,6 +7,7 @@
 #include <QPainter>
 #include <QGraphicsTextItem>
 #include "jugadorbatalla.h"
+#include "bolafuego.h"
 
 class Boss: public QObject, public QGraphicsPixmapItem
 {
@@ -43,6 +44,8 @@ private slots:
 private:
     //Timers destinados para las determinadas funciones del bosss
     QTimer at_jugador, timer, ataques, generar_ataque, Movimiento;
+
+    QList<bolaFuego *> bolas;
 
     //Variables para el control del sprite del boss
     float columnas,fila,ancho,alto,limiteSprite;
