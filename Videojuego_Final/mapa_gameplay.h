@@ -37,6 +37,7 @@ public:
     QList <Enemigo *> listaEnemigos;
 
     void CargarPartida();
+    void Tutorial();
 
     //Funciones detectoras de del teclado
     void keyPressEvent(QKeyEvent *event);
@@ -67,16 +68,15 @@ private: //Atributos de la clase
 
  private slots:
     void EliminarEnemigos(Enemigo *obj, bool v);
+    void on_Opciones_clicked();
     void aumentarNivel();
     void reanudarTimers();
-    void Tutorial();
     void Nivel();
     void spawn();
     void ingreso_batalla();
     void Contador_Enemigos();
     void ActualizarEscena(); //Centra constantemente la grafica en el jugador
     void verificar_muerte();
-    void on_Opciones_clicked();
     void Cerrar_Ventana();
 
 };

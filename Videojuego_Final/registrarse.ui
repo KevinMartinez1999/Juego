@@ -64,7 +64,7 @@
     <string>Contraseña:</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="registrarse">
+  <widget class="QPushButton" name="registro">
    <property name="geometry">
     <rect>
      <x>440</x>
@@ -74,15 +74,15 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">#registrarse{
+    <string notr="true">#registro{
 color: rgb(255, 255, 255);
 border-image: url(:/Imagenes/Boton.png);
 }
-#registrarse:hover
+#registro:hover
 {
 border-image: url(:/Imagenes/BotonHover.png);
 }
-#registrarse:pressed
+#registro:pressed
 {
 border-image: url(:/Imagenes/BotonPush.png);
 }
@@ -172,7 +172,7 @@ border-image:url(:/Imagenes/TEXT-INPUT.png);
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QCheckBox" name="mostrar">
+  <widget class="QCheckBox" name="mirar">
    <property name="geometry">
     <rect>
      <x>660</x>
@@ -188,11 +188,11 @@ border-image:url(:/Imagenes/TEXT-INPUT.png);
   <zorder>Interfaz</zorder>
   <zorder>label</zorder>
   <zorder>label_2</zorder>
-  <zorder>registrarse</zorder>
+  <zorder>registro</zorder>
   <zorder>usuario</zorder>
   <zorder>volver</zorder>
   <zorder>clave</zorder>
-  <zorder>mostrar</zorder>
+  <zorder>mirar</zorder>
  </widget>
  <resources>
   <include location="Recursos.qrc"/>

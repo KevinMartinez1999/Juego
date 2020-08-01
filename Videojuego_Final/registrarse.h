@@ -18,10 +18,10 @@ public:
     ~Registrarse();
 
 private slots:
-    void on_registrarse_clicked();
+    void on_registro_clicked();
     void on_volver_clicked();
 
-    void on_mostrar_stateChanged(int arg1);
+    void on_mirar_stateChanged(int arg1);
 
 private:
     Ui::Registrarse *ui;

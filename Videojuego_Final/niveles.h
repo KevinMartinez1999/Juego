@@ -28,6 +28,7 @@ public:
     explicit Niveles(QWidget *parent = nullptr, short int lvl = 0);
     ~Niveles();
     void NivelSetup();
+    void Tutorial();
     void keyPressEvent(QKeyEvent * event);
     void keyReleaseEvent(QKeyEvent *event);
 
@@ -48,7 +49,6 @@ signals:
 private slots:
     void muerte();
     void verificar_muerte();
-    void Tutorial();
     void Level_Events();
     void on_Opciones_clicked();
     void Cerrar_Ventana();

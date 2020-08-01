@@ -7,9 +7,6 @@ Registrarse::Registrarse(Widget *parent) :
 {
     ui->setupUi(this);
 
-    connect(ui->registrarse, &QPushButton::clicked, this, &Registrarse::on_registrarse_clicked);
-    connect(ui->mostrar, &QCheckBox::stateChanged, this, &Registrarse::on_mostrar_stateChanged);
-
     //Sonido al presionar los botones
     boton.setMedia(QUrl("qrc:/Musica/ESPADA.mp3"));
     boton.setVolume(100);
@@ -35,8 +32,8 @@ Registrarse::Registrarse(Widget *parent) :
     ui->usuario->raise();
     ui->label->raise();
     ui->label_2->raise();
-    ui->registrarse->raise();
-    ui->mostrar->raise();
+    ui->registro->raise();
+    ui->mirar->raise();
     ui->volver->raise();
 
     /*Creacion del cursor del videojuego: con ayuda de QCursor podremos brindarle al cursor la imagen que deseamos.
@@ -73,9 +70,8 @@ Registrarse::~Registrarse()
     delete ui;
 }
 
-void Registrarse::on_registrarse_clicked()
+void Registrarse::on_registro_clicked()
 {
-
     boton.play(); //Sonido del botón
 
     /*En esta función el usuario llena unas casillas con sus datos para registrarlo
@@ -133,7 +129,7 @@ void Registrarse::on_volver_clicked()
     close();
 }
 
-void Registrarse::on_mostrar_stateChanged(int arg1)
+void Registrarse::on_mirar_stateChanged(int arg1)
 {
     /*Cuando la casilla esta marcada la contraseña se va mostrar y cuando
      la casilla está desmarcada la contraseña va a estar oculta, la fuente se

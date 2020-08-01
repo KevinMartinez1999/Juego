@@ -249,82 +249,88 @@ si no se escoge asi las teclas no van a tener ningun efecto cuando se este jugan
 void Niveles::keyPressEvent(QKeyEvent *event)
 {
     if(!tutorial){
-        if (!jugadorBatalla->muerto){
-            //Segun la tecla que se presione se habilita su respectiva bandera de movimiento
-            if (event->key() == Qt::Key_A){
-                jugadorBatalla->setBanLeft();
-            }
-            else if (event->key() == Qt::Key_D){
-                jugadorBatalla->setBanRight();
-            }
-            else if (event->key() == Qt::Key_F){
-                jugadorBatalla->setBanAttack();
-            }
-            else if (event->key() == Qt::Key_C){
-                jugadorBatalla->setBanSpell();
-            }
-            else if (event->key() == Qt::Key_W){
-                jugadorBatalla->setBanJump();
-            }
-        }
         /*Estas son las teclas de movimiento para el jugador 2. Solo estan habilitadas si asi
           lo quiere el usuario.*/
-        if(num_jugadores == 2 and !jugadorBatalla2->muerto){
-            if(event->key()==Qt::Key_J){
-                jugadorBatalla2->setBanLeft();
-            }
-            else if(event->key()==Qt::Key_L){
-                jugadorBatalla2->setBanRight();
-            }
-            else if (event->key() == Qt::Key_H){
-                jugadorBatalla2->setBanAttack();
-            }
-            else if (event->key() == Qt::Key_N){
-                jugadorBatalla2->setBanSpell();
-            }
-            else if (event->key() == Qt::Key_I){
-                jugadorBatalla2->setBanJump();
-            }
+        if (event->key() == Qt::Key_A){
+            if (!jugadorBatalla->muerto)
+                jugadorBatalla->setBanLeft();
+        }
+        else if (event->key() == Qt::Key_D){
+            if (!jugadorBatalla->muerto)
+                jugadorBatalla->setBanRight();
+        }
+        else if (event->key() == Qt::Key_W){
+            if (!jugadorBatalla->muerto)
+                jugadorBatalla->setBanJump();
+        }
+        else if (event->key() == Qt::Key_C){
+            if (!jugadorBatalla->muerto)
+                jugadorBatalla->setBanSpell();
+        }
+        else if (event->key() == Qt::Key_J){
+            if (num_jugadores == 2)
+                if (!jugadorBatalla2->muerto)
+                    jugadorBatalla2->setBanLeft();
+        }
+        else if (event->key() == Qt::Key_L){
+            if (num_jugadores == 2)
+                if (!jugadorBatalla2->muerto)
+                    jugadorBatalla2->setBanRight();
+        }
+        else if (event->key() == Qt::Key_I){
+            if (num_jugadores == 2)
+                if (!jugadorBatalla2->muerto)
+                    jugadorBatalla2->setBanJump();
+        }
+        else if (event->key() == Qt::Key_N){
+            if (num_jugadores == 2)
+                if (!jugadorBatalla2->muerto)
+                    jugadorBatalla2->setBanSpell();
+        }
+        //Tecla escape destinada para pausar el juego y ver las opciones
+        else if(event->key() == Qt::Key_Escape){
+            emit on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
         }
     }
     else if(tutorial){
         if(event->key() == Qt::Key_Space){
-            emit Tutorial();
+            Tutorial();
         }
-    }
-    //Tecla escape destinada para pausar el juego y ver las opciones
-    if(event->key() == Qt::Key_Escape){
-        on_Opciones_clicked();//Si presionamos Escape se activara la funcion del boton al ser clickeado
     }
 }
 
 void Niveles::keyReleaseEvent(QKeyEvent *event)
 {
     //Segun la tecla que se deja de presionar una bandera se baja y el movimiento ahi se detiene
-    if (event->key() == Qt::Key_A){
-            jugadorBatalla->resetBanLeft();
+    if(!tutorial){
+        /*Estas son las teclas de movimiento para el jugador 2. Solo estan habilitadas si asi
+          lo quiere el usuario.*/
+        if (event->key() == Qt::Key_A){
+            if (!jugadorBatalla->muerto)
+                jugadorBatalla->resetBanLeft();
         }
-    else if (event->key() == Qt::Key_D){
-        jugadorBatalla->resetBanRight();
-    }
-    else if (event->key() == Qt::Key_F){
-        jugadorBatalla->resetBanAttack();
-    }
-    else if (event->key() == Qt::Key_C){
-        jugadorBatalla->resetBanSpell();
-    }
-    else if(num_jugadores == 2){
-        if(event->key()==Qt::Key_J){
-            jugadorBatalla2->resetBanLeft();
+        else if (event->key() == Qt::Key_D){
+            if (!jugadorBatalla->muerto)
+                jugadorBatalla->resetBanRight();
         }
-        else if(event->key()==Qt::Key_L){
-            jugadorBatalla2->resetBanRight();
+        else if (event->key() == Qt::Key_C){
+            if (!jugadorBatalla->muerto)
+                jugadorBatalla->resetBanSpell();
         }
-        else if (event->key() == Qt::Key_H){
-            jugadorBatalla2->resetBanAttack();
+        else if (event->key() == Qt::Key_J){
+            if (num_jugadores == 2)
+                if (!jugadorBatalla2->muerto)
+                    jugadorBatalla2->resetBanLeft();
+        }
+        else if (event->key() == Qt::Key_L){
+            if (num_jugadores == 2)
+                if (!jugadorBatalla2->muerto)
+                    jugadorBatalla2->resetBanRight();
         }
         else if (event->key() == Qt::Key_N){
-            jugadorBatalla2->resetBanSpell();
+            if (num_jugadores == 2)
+                if (!jugadorBatalla2->muerto)
+                    jugadorBatalla2->resetBanSpell();
         }
     }
 }
