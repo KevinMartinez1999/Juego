@@ -73,7 +73,7 @@ border-image: url(:/Imagenes/BOTONGRISPUSH.png);
    <property name="geometry">
     <rect>
      <x>145</x>
-     <y>120</y>
+     <y>80</y>
      <width>150</width>
      <height>50</height>
     </rect>
@@ -86,7 +86,7 @@ border-image: url(:/Imagenes/BOTONGRISPUSH.png);
    <property name="geometry">
     <rect>
      <x>145</x>
-     <y>180</y>
+     <y>140</y>
      <width>150</width>
      <height>50</height>
     </rect>
@@ -99,15 +99,67 @@ border-image: url(:/Imagenes/BOTONGRISPUSH.png);
    <property name="geometry">
     <rect>
      <x>145</x>
-     <y>240</y>
+     <y>200</y>
      <width>150</width>
      <height>50</height>
     </rect>
    </property>
    <property name="text">
-    <string>SALIR</string>
+    <string>CERRAR SESION</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="Salir">
+   <property name="geometry">
+    <rect>
+     <x>145</x>
+     <y>260</y>
+     <width>150</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>SALIR DEL JUEGO</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="ControlesLabel">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>440</width>
+     <height>481</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="pixmap">
+    <pixmap resource="Recursos.qrc">:/Imagenes/TECLASMAPA.png</pixmap>
+   </property>
+   <property name="scaledContents">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Siguiente">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>390</y>
+     <width>150</width>
+     <height>50</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Siguiente</string>
+   </property>
+  </widget>
+  <zorder>ControlesLabel</zorder>
+  <zorder>Reanudar</zorder>
+  <zorder>Controles</zorder>
+  <zorder>Cerrar_Sesion</zorder>
+  <zorder>Salir</zorder>
+  <zorder>Siguiente</zorder>
+  <zorder>Marco</zorder>
  </widget>
  <resources>
   <include location="Recursos.qrc"/>

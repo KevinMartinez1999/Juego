@@ -39,7 +39,7 @@ Jugador::Jugador(QObject *parent) : QObject(parent)
     //Se crea el HitBox
     box.setRect(0,0,25,25);
 
-    //Barra de vida
+    //Barra de vida del jugador
     vida.setRect(0,0,health,5);
     vida.setBrush(Qt::red);
 

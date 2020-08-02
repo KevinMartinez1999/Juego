@@ -57,7 +57,6 @@ Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
         limiteSprite=1600;
         pixmap = new QPixmap(":/Imagenes/BOSS1.png");
         setPos(875,450);
-        connect(&Movimiento, SIGNAL(timeout()), this, SLOT(MovimientoBoss3()));
     }
 
     //Se añade la barra de vida
@@ -149,18 +148,6 @@ void Boss::MovimientoBoss1()
     X+=r*cos(w*t);
     Y+=-r*sin(w*t);
     setPos(X,Y);
-}
-
-void Boss::MovimientoBoss3()
-{
-    t += 0.1;
-    X = (5*t);
-    Y = (17*t)-(0.5*g*t*t);
-    setPos(x()-X,y()-Y);
-    if(x()<=0)
-        Movimiento.stop();
-    else if(y()>600)
-        Movimiento.stop();
 }
 
 void Boss::ataque_jugador()
@@ -313,7 +300,6 @@ void Boss::cambiar_ataque()
     //un lanzamiento y otro
     switch (tipoAtaque) {
     case 0:
-        Movimiento.stop();
         generar_ataque.stop();
         generar_ataque.start(1000);
         break;
@@ -328,10 +314,6 @@ void Boss::cambiar_ataque()
     case 3:
         generar_ataque.stop();
         emit orbitas();
-        break;
-    case 4:
-        generar_ataque.stop();
-        Movimiento.start(30);
         break;
     }
 }

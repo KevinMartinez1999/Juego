@@ -87,6 +87,7 @@ Widget::Widget(QWidget *parent)
     rx = QRegExp("^[\\w'\\-,.][^_!¡' '?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\\]]{2,}$"); //Expresion
     val = new QRegExpValidator(rx, this); //Validador
     ui->usuario->setValidator(val);
+    ui->clave->setValidator(val);
 
     /*Se inicializa la casilla de contraseña en forma de Password para que sea imposible saber
      cual es; hay una opcion en la misma casilla de ver contraseña*/
@@ -94,7 +95,7 @@ Widget::Widget(QWidget *parent)
 
     /*Se cambia la letra porque la fuente usada es grande y los circulos de la contraseña
     se ven mucho mas grandes*/
-    ui->clave->setFont(QFont("Arial", 10, 1));
+    ui->clave->setFont(QFont("Arial Black", 10, 1));
 }
 
 Widget::~Widget()

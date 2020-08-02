@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QGraphicsScene>
 #include <QKeyEvent>
+#include <QEvent>
 #include <fstream>
 #include <iostream>
 #include <ctime>
@@ -42,13 +43,14 @@ public:
     //Funciones detectoras de del teclado
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
+    void changeEvent(QEvent *event);
+
 
 private: //Atributos de la clase
     Ui::Mapa_GamePlay *ui;
     QMediaPlayer botonSound, ambiente, jugadorMuerto;
     QTimer timer, dead, enemigos;
     QPushButton boton;
-    QString nombre;
     QMediaPlaylist lista;
     QCursor cursor;
     QPixmap Pixmap_Cursor;
@@ -57,17 +59,17 @@ private: //Atributos de la clase
     QGraphicsPixmapItem *mapa;
     QGraphicsPixmapItem *objetos;
     QLabel *aviso,*advertencia;
-    int BossesMuertos;
-    int PosX0,PosY0,PosX02,PosY02,cont=0;
-    int Xpos,YPos;
-    int EnemigosTotales;
+    short int BossesMuertos;
+    short int PosX0,PosY0,PosX02,PosY02,cont=0;
+    short int Xpos,YPos;
+    short int EnemigosTotales;
     short int Enemigos_Asesinar, EnemigosCreados, nivel, nivelActual;
     bool tutorial, ObjetivosCumplidos, nueva_partida;
-    QList<QPoint> nivel1, nivel2, nivel3;
     bool ObjetivosCompletados;
+    QList<QPoint> nivel1, nivel2, nivel3;
 
  private slots:
-    void EliminarEnemigos(Enemigo *obj, bool v);
+    void EliminarEnemigos(Enemigo *obj, bool estado);
     void on_Opciones_clicked();
     void aumentarNivel();
     void reanudarTimers();

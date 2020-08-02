@@ -10,6 +10,8 @@ MenuPausa::MenuPausa(Widget *parent) : Widget(parent),
     ui(new Ui::MenuPausa)
 {
     ui->setupUi(this);
+
+    contador=0;
     cerrar_sesion=false;
 
     //Sonido al presionar los botones
@@ -32,6 +34,12 @@ MenuPausa::MenuPausa(Widget *parent) : Widget(parent),
     ui->Reanudar->raise();
     ui->Controles->raise();
     ui->Cerrar_Sesion->raise();
+    ui->Salir->raise();
+    ui->ControlesLabel->raise();
+    ui->Siguiente->raise();
+
+    ui->ControlesLabel->hide();
+    ui->Siguiente->hide();
 }
 
 MenuPausa::~MenuPausa()
@@ -50,12 +58,15 @@ void MenuPausa::on_Reanudar_clicked()
 {
     boton.play();
     emit reanudar();
+    close();
     delete this;
 }
 
 void MenuPausa::on_Controles_clicked()
 {
-
+    ui->Siguiente->show();
+    ui->ControlesLabel->show();
+    ui->ControlesLabel->setPixmap(QPixmap(":/Imagenes/TECLASMAPA.png"));
 }
 
 void MenuPausa::on_Cerrar_Sesion_clicked()
@@ -68,3 +79,21 @@ void MenuPausa::on_Cerrar_Sesion_clicked()
     delete this;
 }
 
+void MenuPausa::on_Salir_clicked()
+{
+    QCoreApplication::quit();
+}
+
+void MenuPausa::on_Siguiente_clicked()
+{
+    contador++;
+    if(contador==1){
+        ui->ControlesLabel->setPixmap(QPixmap(":/Imagenes/TECLAS.png"));
+        ui->Siguiente->setText("Volver");}
+    else if(contador==2){
+        ui->ControlesLabel->hide();
+        ui->Siguiente->setText("Siguiente");
+        ui->Siguiente->hide();
+        contador=0;
+    }
+}

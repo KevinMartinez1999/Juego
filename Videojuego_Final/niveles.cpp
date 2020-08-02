@@ -74,10 +74,12 @@ Niveles::Niveles(QWidget *parent, short int lvl) :
     JugadorMuerto.setMedia(QUrl("qrc:/Musica/MUERTO.mp3"));
     JugadorMuerto.setVolume(100);
 
+    //Sonido de victoria
     victoria.setMedia(QUrl("qrc:/Musica/GANAR.wav"));
     victoria.setVolume(100);
 
     if(tutorial)
+        //En el caso de que estemos en el tutorial los bosses no atacaran
         boss->PararTimers();
 }
 
@@ -234,8 +236,10 @@ void Niveles::Tutorial()
 {
     cont++;
     if(cont==1)
+        ui->Controles->setPixmap(QPixmap(":/Imagenes/TUTORIALBOSS1.png"));
+    else if(cont==2)
         ui->Controles->setPixmap(QPixmap(":/Imagenes/TECLAS.png"));
-    else if(cont==2){
+    else if(cont==3){
         ui->Controles->hide();
         tutorial=false;
         boss->ReiniciarTimers();
@@ -263,6 +267,10 @@ void Niveles::keyPressEvent(QKeyEvent *event)
             if (!jugadorBatalla->muerto)
                 jugadorBatalla->setBanJump();
         }
+        else if (event->key() == Qt::Key_F){
+            if(!jugadorBatalla->muerto)
+                jugadorBatalla->setBanAttack();
+        }
         else if (event->key() == Qt::Key_C){
             if (!jugadorBatalla->muerto)
                 jugadorBatalla->setBanSpell();
@@ -281,6 +289,10 @@ void Niveles::keyPressEvent(QKeyEvent *event)
             if (num_jugadores == 2)
                 if (!jugadorBatalla2->muerto)
                     jugadorBatalla2->setBanJump();
+        }
+        else if (event->key() == Qt::Key_H){
+            if(!jugadorBatalla2->muerto)
+                jugadorBatalla2->setBanAttack();
         }
         else if (event->key() == Qt::Key_N){
             if (num_jugadores == 2)
@@ -313,6 +325,10 @@ void Niveles::keyReleaseEvent(QKeyEvent *event)
             if (!jugadorBatalla->muerto)
                 jugadorBatalla->resetBanRight();
         }
+        else if (event->key() == Qt::Key_F){
+            if(!jugadorBatalla->muerto)
+                jugadorBatalla->resetBanAttack();
+        }
         else if (event->key() == Qt::Key_C){
             if (!jugadorBatalla->muerto)
                 jugadorBatalla->resetBanSpell();
@@ -331,6 +347,10 @@ void Niveles::keyReleaseEvent(QKeyEvent *event)
             if (num_jugadores == 2)
                 if (!jugadorBatalla2->muerto)
                     jugadorBatalla2->resetBanSpell();
+        }
+        else if (event->key() == Qt::Key_H){
+            if(!jugadorBatalla2->muerto)
+                jugadorBatalla2->resetBanAttack();
         }
     }
 }
@@ -406,6 +426,7 @@ void Niveles::Cerrar_Ventana()
 
 void Niveles::reanudarTimers()
 {
+    /*Este slot estara conectado al menu de pausa, al momento de emitir la señal en el boton de */
     jugadorBatalla->ReiniciarTimers();
     if (num_jugadores == 2)
         jugadorBatalla2->ReiniciarTimers();

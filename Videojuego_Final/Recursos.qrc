@@ -68,5 +68,8 @@
         <file>Imagenes/BLOQUEO1.png</file>
         <file>Imagenes/BLOQUEO2.png</file>
         <file>Imagenes/BLOQUEO3.png</file>
+        <file>Imagenes/FIN.png</file>
+        <file>Imagenes/TUTORIALBOSS1.png</file>
+        <file>Imagenes/TUTORIALMAPA1.png</file>
     </qresource>
 </RCC>

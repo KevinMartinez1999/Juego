@@ -55,6 +55,7 @@ Registrarse::Registrarse(Widget *parent) :
     rx = QRegExp("^[\\w'\\-,.][^_!¡' '?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\\]]{2,}$");
     val = new QRegExpValidator(rx, this);
     ui->usuario->setValidator(val);
+    ui->clave->setValidator(val);
 
     /*Se inicializa la casilla de contraseña en forma de Password para que sea imposible saber
      cual es; hay una opcion en la misma casilla de ver contraseña*/
@@ -62,7 +63,7 @@ Registrarse::Registrarse(Widget *parent) :
 
     /*Se cambia la letra porque la fuente usada es grande y los circulos de la contraseña
     se ven mucho mas grandes*/
-    ui->clave->setFont(QFont("Arial", 10, 1));
+    ui->clave->setFont(QFont("Arial Black", 10, 1));
 }
 
 Registrarse::~Registrarse()
@@ -90,6 +91,20 @@ void Registrarse::on_registro_clicked()
         msgBox.setStyleSheet("background-color:#211b18;"
                              "color:white;");
         msgBox.exec();
+        ui->usuario->clear();
+        ui->clave->clear();
+        return;
+    } 
+    ifstream Verificacion("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
+    if(Verificacion.is_open()){
+        QMessageBox msgBox;
+        msgBox.setText("Este usuario ya existe.");
+        msgBox.setWindowTitle("HellBurn");
+        msgBox.setWindowIcon(QIcon(":/Imagenes/ICONO.png"));
+        msgBox.setStyleSheet("background-color:#211b18;"
+                             "color:white;");
+        msgBox.exec();
+
         ui->usuario->clear();
         ui->clave->clear();
         return;

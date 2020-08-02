@@ -48,9 +48,9 @@ QPushButton:pressed{
   <widget class="QRadioButton" name="un_jugador">
    <property name="geometry">
     <rect>
-     <x>310</x>
+     <x>290</x>
      <y>30</y>
-     <width>110</width>
+     <width>130</width>
      <height>35</height>
     </rect>
    </property>
@@ -76,7 +76,7 @@ border-image:url(:/Imagenes/RADIOCHECKED.png);
     <rect>
      <x>580</x>
      <y>30</y>
-     <width>131</width>
+     <width>130</width>
      <height>35</height>
     </rect>
    </property>

@@ -60,6 +60,8 @@ Menu_partida::Menu_partida(Widget *parent) :
     if (!file.is_open())
         return;
 
+    /*En el caso de que sea una nueva cuenta solo habra en el archivo .txt el nombre y contraseña, por lo cual solo habra
+    dos lineas en el archivo, si ese es el caso no estara habilitado el boton de cargar partida.*/
     while(file.good())
         if(file.get()=='\n')
             cont++;
@@ -104,6 +106,8 @@ void Menu_partida::on_nueva_partida_clicked()
     else if(ui->dos_jugadores->isChecked())
         num_jugadores = 2;
 
+    /*Se escribe en el archivo la informacion de la partida creada: usuario, contraseña, numjugadores y por defecto
+    no ha matado ningun boss y a ningun enemigo del mapa*/
     fstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
     if (!file.is_open())
         return;
@@ -112,6 +116,7 @@ void Menu_partida::on_nueva_partida_clicked()
     file.flush();
     file.close();
 
+    //Se crea un mapagameplay con un 1 indicando que es una nueva partida y se necesita mostrar el tutorial
     Mapa_GamePlay *mapa = new Mapa_GamePlay(nullptr, 1);
     mapa->show();
     delete this;

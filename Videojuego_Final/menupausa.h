@@ -29,8 +29,13 @@ private slots:
 
     void on_Reanudar_clicked();
 
+    void on_Salir_clicked();
+
+    void on_Siguiente_clicked();
+
 private:
     Ui::MenuPausa *ui;
+    int contador;
 };
 
 #endif // MENUPAUSA_H

@@ -36,14 +36,13 @@ private slots:
     void Actualizacion();
     void AnimacionMuerte();
     void MovimientoBoss1();
-    void MovimientoBoss3();
     void elegir_ataque();
     void cambiar_ataque();
     void orbitas();
 
 private:
     //Timers destinados para las determinadas funciones del bosss
-    QTimer at_jugador, timer, ataques, generar_ataque, Movimiento;
+    QTimer at_jugador, timer, ataques, generar_ataque;
 
     QList<bolaFuego *> bolas;
 
