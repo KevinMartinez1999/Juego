@@ -7,6 +7,9 @@ Registrarse::Registrarse(Widget *parent) :
 {
     ui->setupUi(this);
 
+    ruta = "../Videojuego_Final/Partidas/"; //Modo Debug
+    //ruta = "Partidas/"; //Ejecutable
+
     //Sonido al presionar los botones
     boton.setMedia(QUrl("qrc:/Musica/ESPADA.mp3"));
     boton.setVolume(100);
@@ -95,7 +98,7 @@ void Registrarse::on_registro_clicked()
         ui->clave->clear();
         return;
     } 
-    ifstream Verificacion("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
+    ifstream Verificacion(ruta+user.toUtf8()+".txt");
     if(Verificacion.is_open()){
         QMessageBox msgBox;
         msgBox.setText("Este usuario ya existe.");
@@ -111,7 +114,7 @@ void Registrarse::on_registro_clicked()
     }
 
     //Se abre y se llevan los datos ingresados al archivo
-    ofstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
+    ofstream file(ruta+user.toUtf8()+".txt");
     //Se guardan el nombre de usuario y la contraseña
     file<<user.toStdString()<<"\n"<<pass.toStdString();
     file.flush();

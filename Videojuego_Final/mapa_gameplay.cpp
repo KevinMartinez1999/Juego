@@ -15,6 +15,9 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent, bool nuevaPartida) :
 {
     ui->setupUi(this);
 
+    ruta = "../Videojuego_Final/Partidas/"; //Modo Debug
+    //ruta = "Partidas/"; //Ejecutable
+
     srand(time(0));//Inicializamos el srand para poder hacer uso de el luego.
 
     //Se inicializa la variable enemigos creados, esta variables no servira para limitar cuantos enemigos se crearan.
@@ -109,7 +112,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent, bool nuevaPartida) :
     el jugador aun tiene que matar todos los enemigos necesarios.*/
     string Usuario, password;
     //Se abre el archivo
-    ifstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
+    ifstream file(ruta+user.toUtf8()+".txt");
     if (!file.is_open()){
         return;}
     //Se pasan los datos y se cierra el archivo
@@ -313,9 +316,11 @@ void Mapa_GamePlay::CargarPartida()
 
             if(num_jugadores==2){
                 PosX02=330,PosY02=2200;
+                Enemigos_Asesinar=10;
                 jugador2->Muros.push_back(muros);//Se añadira las colisiones a la lista del jugador
             }
-            Enemigos_Asesinar=5;
+            else
+                Enemigos_Asesinar=5;
         }
         else{
             /*3.BossesMuertos = 1 Y ObjetivosCumplidos = 1
@@ -324,11 +329,10 @@ void Mapa_GamePlay::CargarPartida()
             PosX0=755,PosY0=1485;
 
             if(num_jugadores==2){
-
                 PosX02=815,PosY02=1480;
                 jugador2->Muros.push_back(muros);//Se añadira las colisiones a la lista del jugador
             }
-                Enemigos_Asesinar=0;//En este caso no tiene que eliminar ningun enemigo
+            Enemigos_Asesinar=0;//En este caso no tiene que eliminar ningun enemigo
         }
         /*La variable enemigosTotales nos permite tener una copia del numero de los enemigos que hay que matar antes de
         que la variable Enemigos_Asesinar sea descontada.*/
@@ -355,9 +359,11 @@ void Mapa_GamePlay::CargarPartida()
             PosX0=755,PosY0=1485;
             if(num_jugadores==2){
                 PosX02=815,PosY02=1480;
+                Enemigos_Asesinar=15;
                 jugador2->Muros.push_back(muros);//Se añadira las colisiones a la lista del jugador
             }
-            Enemigos_Asesinar=10;
+            else
+                Enemigos_Asesinar=10;
         }
         else{
             /* 5.BossesMuertos = 2 Y ObjetivosCumplidos = 1
@@ -383,9 +389,12 @@ void Mapa_GamePlay::CargarPartida()
             El boss del nivel 2 fue derrotado pero no se han matado a los enemigos del mapa
             */
             PosX0=1625,PosY0=1765;
-            if(num_jugadores==2)
+            if(num_jugadores==2){
                 PosX02=1585,PosY02=1765;
-            Enemigos_Asesinar=15;
+                Enemigos_Asesinar=20;
+            }
+            else
+                Enemigos_Asesinar=15;
         }
         else{
             /*7..BossesMuertos = 3 Y ObjetivosCumplidos = 1
@@ -751,7 +760,7 @@ void Mapa_GamePlay::Contador_Enemigos()
     if(ObjetivosCumplidos==true){
         /*En el caso en el que ya se haya cumplido, se guardara la partida, para que en el caso de que el jugador se
         salga su proceso quede guardado y pueda ingresar directamente al nivel al entrar.*/
-        fstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
+        fstream file(ruta+user.toUtf8()+".txt");
         if (!file.is_open())
             return;
         file<<user.toStdString()<<"\n"<<pass.toStdString();

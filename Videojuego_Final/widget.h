@@ -29,6 +29,7 @@ public:
 
     QPixmap Pixmap_Cursor;
     QCursor cursor;
+    QByteArray ruta;
     QMovie *movie;
     QMediaPlayer boton;
     QLabel *w;

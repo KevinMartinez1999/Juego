@@ -31,6 +31,7 @@ public:
     void Tutorial();
     void keyPressEvent(QKeyEvent * event);
     void keyReleaseEvent(QKeyEvent *event);
+    void changeEvent(QEvent *event);
 
 private:
     Ui::Niveles *ui;
@@ -42,6 +43,7 @@ private:
     int cont=0;
     bool tutorial;
     short int nivel;
+    QByteArray ruta;
 
 signals:
     void aumentar();

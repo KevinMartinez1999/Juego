@@ -13,6 +13,9 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
 
+    ruta = "../Videojuego_Final/Partidas/"; //Modo Debug
+    //ruta = "Partidas/"; //Ejecutable
+
     //Si por alguna razon al volver con el boton cerrar sesion y la musica se de menu se encuentra parada esta se volvera a reproducir.
     if (musica->state() == QMediaPlayer::StoppedState)
         musica->play();
@@ -22,7 +25,7 @@ Widget::Widget(QWidget *parent)
     QStringList lista;
     QCompleter *cmpt;
     QDir directorio;
-    directorio.setPath("../Videojuego_Final/Partidas");
+    directorio.setPath(ruta);
     int len = directorio.count();
     for (int i = 2; i < len; i++){
         for (int j = 0; j < directorio[i].length(); j++){
@@ -115,7 +118,7 @@ void Widget::on_login_clicked()
     /*Aqui se busca en la base de datos el archivo que contiene el usuario y
      cntraseña que el usuario digtó; Si dichi usuario no existe se va a saltar un
      error*/
-    ifstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
+    ifstream file(ruta+user.toUtf8()+".txt");
     if (!file.is_open())
     {
         //En el caso de que no se encuentre el usuario se indicara que es incorrecto y se pedira que se ingrese otra vez.,

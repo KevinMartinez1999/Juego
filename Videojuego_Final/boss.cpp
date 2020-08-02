@@ -196,7 +196,38 @@ void Boss::ataque_jugador()
     if (num_jugadores == 2){ //En caso de tener dos jugadores
         if (abs(this->x()-jugadorBatalla2->x()) < 184 and jugadorBatalla2->banAttack){
             if (verificar_golpe(jugadorBatalla2)){
-                health -= 2;
+                vida_real++;
+
+                /*este switch se usa para, dependiendo del Boss, los ataques tengan cada vez menos efecto sobre
+                  los Bosses dando la sensacion de dificultad*/
+                switch (tipoBoss) {
+                case 0:
+                    if (vida_real == 1){
+                        health -= 2;
+                        vida_real = 0;
+                    }
+                    break;
+                case 1:
+                    if (vida_real == 2){
+                        health -= 2;
+                        vida_real = 0;
+                    }
+                    break;
+                case 2:
+                    if (vida_real == 3){
+                        health -= 2;
+                        vida_real = 0;
+                    }
+                    break;
+                case 3:
+                    if (vida_real == 4){
+                        health -= 2;
+                        vida_real = 0;
+                    }
+                    break;
+                default:
+                    break;
+                }
                 vida.setRect(0,0,health,40);
             }
         }
@@ -271,7 +302,13 @@ void Boss::elegir_ataque()
         bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
         bola->X = x() - 20;
         bola->Y = y();
-        double V = pow(0.03*g*(x() - jugadorBatalla->x()),0.5);
+        double V;
+        if (num_jugadores == 2 and jugadorBatalla->muerto){
+            V = pow(0.03*g*(x() - jugadorBatalla2->x()),0.5);
+        }
+        else{
+            V = pow(0.03*g*(x() - jugadorBatalla->x()),0.5);
+        }
         bola->Vx = V*cos(pi/4);
         bola->Vy = V*sin(pi/4);
         bola->setPos(bola->X, bola->Y);
@@ -288,14 +325,16 @@ void Boss::elegir_ataque()
 void Boss::cambiar_ataque()
 {
     tipoAtaque++;
-    if (tipoAtaque > 0 and tipoBoss==0)
+
+    if (tipoAtaque > 0 and tipoBoss == 0)
         tipoAtaque = 0;
-    else if(tipoAtaque>1 and tipoBoss==1)
+    else if (tipoAtaque > 1 and tipoBoss == 1)
         tipoAtaque = 0;
-    else if(tipoAtaque>2 and tipoBoss==2)
-        tipoAtaque=0;
-    else if(tipoAtaque>4 and tipoBoss==3)
-        tipoAtaque=0;
+    else if (tipoAtaque > 2 and tipoBoss ==2)
+        tipoAtaque = 0;
+    else if (tipoAtaque > 3 and tipoBoss == 3)
+        tipoAtaque = 0;
+
     //Aqui se le da a acada ataque un tiempo de repeticion entre
     //un lanzamiento y otro
     switch (tipoAtaque) {
@@ -314,6 +353,8 @@ void Boss::cambiar_ataque()
     case 3:
         generar_ataque.stop();
         emit orbitas();
+        break;
+    default:
         break;
     }
 }

@@ -17,6 +17,9 @@ Niveles::Niveles(QWidget *parent, short int lvl) :
     tutorial=false;
     srand(time(0));
 
+    ruta = "../Videojuego_Final/Partidas/"; //Modo Debug
+    //ruta = "Partidas/"; //Ejecutabl
+
     //Esconde el cursor
     QCursor cursor = QCursor(Qt::BlankCursor);
     setCursor(cursor); 
@@ -355,6 +358,17 @@ void Niveles::keyReleaseEvent(QKeyEvent *event)
     }
 }
 
+void Niveles::changeEvent(QEvent *event)
+{
+    /*Esta funcion nos permite tener control de si el jugador por alguna razon minimiza la ventana, al minimizarla se
+        activara el menu de pausa para evitar algun error.*/
+    if(event->type() == QEvent::WindowStateChange){
+        if(windowState() == Qt::WindowMinimized){
+            on_Opciones_clicked();
+        }
+    }
+}
+
 void Niveles::Level_Events()
 {
     /*Esta funcion se encarga de verificar si el boss ya ha sido derrotado.
@@ -371,7 +385,7 @@ void Niveles::Level_Events()
         if(num_jugadores==2)
             jugadorBatalla2->PararTimers();
 
-        fstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
+        fstream file(ruta+user.toUtf8()+".txt");
         if (!file.is_open())
             return;
         file<<user.toStdString()<<"\n"<<pass.toStdString();

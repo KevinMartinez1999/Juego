@@ -59,6 +59,7 @@ private: //Atributos de la clase
     QGraphicsPixmapItem *mapa;
     QGraphicsPixmapItem *objetos;
     QLabel *aviso,*advertencia;
+    QByteArray ruta;
     short int BossesMuertos;
     short int PosX0,PosY0,PosX02,PosY02,cont=0;
     short int Xpos,YPos;

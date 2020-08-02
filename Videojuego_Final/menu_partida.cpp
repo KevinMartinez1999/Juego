@@ -13,6 +13,9 @@ Menu_partida::Menu_partida(Widget *parent) :
 {
     ui->setupUi(this);
 
+    ruta = "../Videojuego_Final/Partidas/"; //Modo Debug
+    //ruta = "Partidas/"; //Ejecutabl
+
     //Sonido al presionar los botones
     boton.setMedia(QUrl("qrc:/Musica/ESPADA.mp3"));
     boton.setVolume(100);
@@ -56,7 +59,7 @@ Menu_partida::Menu_partida(Widget *parent) :
      de tener mas saltos de linea es porque ya lleva un progreso en la partida*/
     int cont = 0;
 
-    ifstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
+    ifstream file(ruta+user.toUtf8()+".txt");
     if (!file.is_open())
         return;
 
@@ -108,7 +111,7 @@ void Menu_partida::on_nueva_partida_clicked()
 
     /*Se escribe en el archivo la informacion de la partida creada: usuario, contraseña, numjugadores y por defecto
     no ha matado ningun boss y a ningun enemigo del mapa*/
-    fstream file("../Videojuego_Final/Partidas/"+user.toUtf8()+".txt");
+    fstream file(ruta+user.toUtf8()+".txt");
     if (!file.is_open())
         return;
     file<<user.toStdString()<<"\n"<<pass.toStdString();
