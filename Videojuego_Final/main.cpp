@@ -22,7 +22,8 @@ int main(int argc, char *argv[])
     musica->setVolume(80);
     musica->play();
 
-    //Esta es la fuente que se usara en el juego, es incluida desde el main para que asi este incluida en todas las ventanas de la aplicacion
+    /*Esta es la fuente que se usara en el juego, es incluida desde el main para que asi este incluida en
+    todas las ventanas de la aplicacion*/
     QFontDatabase::addApplicationFont(":/Font/Red Right Hand.ttf");
     QFont *font = new QFont("Red Right Hand", 14, 1);
     a.setFont(*font);

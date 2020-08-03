@@ -65,6 +65,7 @@ JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
 
 void JugadorBatalla::PararTimers()
 {
+    /*En caso que se pause la partida se deben desactivar todas las banderas y parar los timers*/
     reset_golpe();
     resetBanLeft();
     resetBanRight();
@@ -76,12 +77,14 @@ void JugadorBatalla::PararTimers()
 
 void JugadorBatalla::ReiniciarTimers()
 {
+    //En caso de reanudar la partida se deben reactivar todos los timers del jugador
     mov.start(30);
     timer.start(150);
 }
 
 void JugadorBatalla::reset_golpe()
 {
+    //En caso del jugador moverse se deben resetear las banderas de ataque
     Ataque.stop();
     golpe_izq = false;
     golpe_der = false;
@@ -137,7 +140,7 @@ void JugadorBatalla::Actualizacion()
     origen siempre sea la mitad de la imagen actual.*/
 }
 
-void JugadorBatalla::moveLeft()
+void JugadorBatalla::   moveLeft()
 {
     if (banLeft)
     {
@@ -219,12 +222,14 @@ void JugadorBatalla::Attack()
 }
 
 void JugadorBatalla::Spell()
-{
-    if(TiempoHechizo){
+{   /*Funcion para poder lanzar un hechizo cada 5 segundos*/
+    if(TiempoHechizo){//Si ya han pasado los 5 segundos del ultimo ataque
         if(banSpell and !banAttack){
+            //Si el jugador no se encuentra atacando con la espada y si presiono la tecla del hechizo
             if (fila != 1008 and fila != 1176)
                 columnas = 0;
             switch (ultimoEstado) {
+            //Dependiendo de a donde se encontraba mirando el jugador se ejecutara la animacion al cambiar fila
             case 1:
                 fila = 1008;
                 break;
@@ -235,9 +240,11 @@ void JugadorBatalla::Spell()
                 break;
             }
             if (columnas==672){
+                /*Si se llega hasta el final de la animacion se creara una bola de fuego con movimiento circular
+                uniforme que colisionara contra el boss y le infligira daño.*/
                 Hechizo.play();
 
-                //Añadir bola de fuego
+                //Se crea la bola de fuego y se le añaden sus posiciones iniciales
                 bolaFuego *bola = new bolaFuego(this, ultimoEstado, 1);
                 bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
                 bola->X = this->x();
@@ -258,10 +265,11 @@ void JugadorBatalla::Spell()
 
 void JugadorBatalla::pos()
 {
+    /*Funcion para reiniciar las animaciones del jugador cuando este sin moverse*/
     if (banAttack or banSpell) //Cuando este atacando no debe hacer la animacion de estar quieto
         return;
     if (posAnterior == QPoint(x(),y())){ //Si se cumple es porque el jugador está quieto
-        switch (ultimoEstado) {
+        switch (ultimoEstado) {//Se analiza a que lado se estaba moviendo anteriormente el jugador
         case 1:
             fila=0;
             break;

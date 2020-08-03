@@ -237,6 +237,7 @@ void Jugador::Attack()
 {
     if (banAttack){
         if (fila != 672 and fila != 840 and fila != 756 and fila != 924)
+            //Si el jugador no se encuentra atacando se reiniciaran las columnas para que se realize la animacion completa
             columnas = 0;
         switch (ultimoEstado) {
         case 1: //abajo

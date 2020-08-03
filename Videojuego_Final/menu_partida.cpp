@@ -13,8 +13,9 @@ Menu_partida::Menu_partida(Widget *parent) :
 {
     ui->setupUi(this);
 
-    ruta = "../Videojuego_Final/Partidas/"; //Modo Debug
-    //ruta = "Partidas/"; //Ejecutabl
+    //Rutas que se manejaran dependiendo de si trabajamos el juego por qt o por el ejecutable
+    ruta = "../Videojuego_Final/Partidas/"; //Ruta de los archivos en modo Debug
+    //ruta = "Partidas/"; //Ruta de los archivos para modo release o ejecutable
 
     //Sonido al presionar los botones
     boton.setMedia(QUrl("qrc:/Musica/ESPADA.mp3"));
@@ -71,6 +72,7 @@ Menu_partida::Menu_partida(Widget *parent) :
     file.close();
 
     if (cont <= 1)
+        //Si hay mas de 1 salto del linea significa que ya hay partidas guardadas por lo que podremos cargarlas
         ui->cargar_partida->setEnabled(false);
     else
         ui->cargar_partida->setEnabled(true);

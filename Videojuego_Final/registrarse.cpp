@@ -7,8 +7,9 @@ Registrarse::Registrarse(Widget *parent) :
 {
     ui->setupUi(this);
 
-    ruta = "../Videojuego_Final/Partidas/"; //Modo Debug
-    //ruta = "Partidas/"; //Ejecutable
+    //Rutas que se manejaran dependiendo de si trabajamos el juego por qt o por el ejecutable
+    ruta = "../Videojuego_Final/Partidas/"; //Ruta de los archivos en modo Debug
+    //ruta = "Partidas/"; //Ruta de los archivos para modo release o ejecutable
 
     //Sonido al presionar los botones
     boton.setMedia(QUrl("qrc:/Musica/ESPADA.mp3"));
@@ -87,6 +88,7 @@ void Registrarse::on_registro_clicked()
     user = ui->usuario->text();
     pass = ui->clave->text();
     if(user==NULL || pass==NULL){
+        //En el caso de que el usuario no haya ingresado nada simplemente se le indicara que es un ingreso invalido
         QMessageBox msgBox;
         msgBox.setText("Registro Invalido.");
         msgBox.setWindowTitle("HellBurn");

@@ -13,8 +13,9 @@ Widget::Widget(QWidget *parent)
 {
     ui->setupUi(this);
 
-    ruta = "../Videojuego_Final/Partidas/"; //Modo Debug
-    //ruta = "Partidas/"; //Ejecutable
+    //Rutas que se manejaran dependiendo de si trabajamos el juego por qt o por el ejecutable
+    ruta = "../Videojuego_Final/Partidas/"; //Ruta de los archivos en modo Debug
+    //ruta = "Partidas/"; //Ruta de los archivos para modo release o ejecutable
 
     //Si por alguna razon al volver con el boton cerrar sesion y la musica se de menu se encuentra parada esta se volvera a reproducir.
     if (musica->state() == QMediaPlayer::StoppedState)
@@ -83,7 +84,7 @@ Widget::Widget(QWidget *parent)
 
     /*Aqui se valida la informacion que el usuario entra en la casilla de nombre de usuario;
     El QRegExp o registro de expresion es una cadena de caracteres que contiene los caracteres
-    que no debeen ser usados en un nombre de usuario o cualquier otra cosa commo una contraseña,
+    que no debeen ser usados en un nombre de usuario o cualquier otra cosa como una contraseña,
     e-mail, numero de telefono, etcétera. Luego de tener esta expresion el QRegExpValidator la toma
     y no deja que en esa casilla de nombre de usuario aparezcan esos caracteres aunque el usuario
     los presione*/
@@ -116,7 +117,7 @@ void Widget::on_login_clicked()
     pass = ui->clave->text();
 
     /*Aqui se busca en la base de datos el archivo que contiene el usuario y
-     cntraseña que el usuario digtó; Si dichi usuario no existe se va a saltar un
+     cntraseña que el usuario digtó; Si dicho usuario no existe se va a saltar a un mensaje de
      error*/
     ifstream file(ruta+user.toUtf8()+".txt");
     if (!file.is_open())

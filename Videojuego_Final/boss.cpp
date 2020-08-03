@@ -274,7 +274,10 @@ void Boss::elegir_ataque()
     }
     case 1:{
         bolaFuego * bola = new bolaFuego(this, 1, 3);
-        bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
+        if(tipoBoss==3)
+            bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO2.png");
+        else
+            bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
         if(tipoBoss!=1){
             bola->X = x() - 20;
             bola->Y = y() + 60;
@@ -299,7 +302,10 @@ void Boss::elegir_ataque()
         else
             suelo=530;
         bolaFuego * bola = new bolaFuego(this, 1, 4, suelo);
-        bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
+        if(tipoBoss==3)
+            bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO2.png");
+        else
+            bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
         bola->X = x() - 20;
         bola->Y = y();
         double V;
@@ -367,7 +373,7 @@ void Boss::orbitas()
         return;
 
     bolaFuego * bola = new bolaFuego(this, 1, 5);
-    bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
+    bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO2.png");
     switch (cont) {
     case 0:
         bola->X = x();

@@ -15,8 +15,9 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent, bool nuevaPartida) :
 {
     ui->setupUi(this);
 
-    ruta = "../Videojuego_Final/Partidas/"; //Modo Debug
-    //ruta = "Partidas/"; //Ejecutable
+    //Rutas que se manejaran dependiendo de si trabajamos el juego por qt o por el ejecutable
+    ruta = "../Videojuego_Final/Partidas/"; //Ruta de los archivos en modo Debug
+    //ruta = "Partidas/"; //Ruta de los archivos para modo release o ejecutable
 
     srand(time(0));//Inicializamos el srand para poder hacer uso de el luego.
 
@@ -76,7 +77,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent, bool nuevaPartida) :
 
     //Timer para el spawn de los enemigos del mapa
     connect(&enemigos,SIGNAL(timeout()),this,SLOT(spawn()));
-    enemigos.start(5000);
+    enemigos.start(6000);
 
 
     /*El diseño del mapa esta divido en tres capas; la primera es la de los muros que es MUROS.png
@@ -253,7 +254,7 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent, bool nuevaPartida) :
     jugadorMuerto.setVolume(100);
 
     //Se inicia el timer que se encarga de centrar la escena en los jugadores
-    timer.start(25);
+    timer.start(30);
 }
 
 Mapa_GamePlay::~Mapa_GamePlay()
@@ -399,7 +400,7 @@ void Mapa_GamePlay::CargarPartida()
         else{
             /*7..BossesMuertos = 3 Y ObjetivosCumplidos = 1
     El boss del nivel 2 fue derrotado y ya se han matado a los enemigos del mapa por lo que podremos ingresar al sig nivel*/
-            PosX0=2015,PosY0=585;
+            PosX0=2135,PosY0=600;
             if(num_jugadores==2)
                 PosX02=2175,PosY02=600;
             Enemigos_Asesinar=0;//En este caso no tiene que eliminar ningun enemigo
@@ -414,7 +415,7 @@ void Mapa_GamePlay::CargarPartida()
         /*8.BossesMuertos = 4
         El boss final fue derrotado por lo cual el juego se ha acabado*/
         nivelActual = 4;
-        PosX0=2155,PosY0=600;
+        PosX0=2135,PosY0=600;
         if(num_jugadores==2)
             PosX02=2175,PosY02=600;
         Enemigos_Asesinar=0;//En este caso no tiene que eliminar ningun enemigo 
@@ -559,7 +560,7 @@ void Mapa_GamePlay::changeEvent(QEvent *event)
     activara el menu de pausa para evitar algun error.*/
     if(event->type() == QEvent::WindowStateChange){
         if(windowState() == Qt::WindowMinimized){
-            on_Opciones_clicked();
+            emit on_Opciones_clicked();
         }
     }
 }
@@ -602,7 +603,7 @@ void Mapa_GamePlay::reanudarTimers()
         //Si hay dos jugadores se activa los timers del jugador 2
         jugador2->ReiniciarTimers();
     //Se activa el timer de spawneo de enemigos
-    enemigos.start(5000);
+    enemigos.start(6000);
     //ITeraremos sobre toda la lista para asegurarnos que a cada enemigo existente se le activen sus timers
     QListIterator<Enemigo *>Iterador(listaEnemigos);
     while(Iterador.hasNext()){
@@ -632,6 +633,9 @@ void Mapa_GamePlay::Tutorial()
 
 void Mapa_GamePlay::Nivel()
 {
+    /*Al presionar el boton de entrar, se analizara en cual de todas las entradas a los niveles estamos y se
+    abrira una nueva ventana niveles que se creara diferente dependiendo del nivel.*/
+
     //Sonidos del boton
     botonSound.play();
     ambiente.stop();
@@ -659,6 +663,7 @@ void Mapa_GamePlay::Nivel()
 
 void Mapa_GamePlay::spawn()
 {
+    /*Funcion que permite la generacion continua de enemigos en el mapa.*/
     if (listaEnemigos.count() == 5 or nivelActual<=0 or EnemigosCreados>=EnemigosTotales or Enemigos_Asesinar==0){ //Maximo 5 enemigos para no colapsar el programa
         /*En el caso en el que ya hayan 5 enemigos a la vez en el mapa no se crearan mas para evitar sobrecargar el mapa
         tambien si se han creado ya los enemigos exactos del nivel no se crearan mas, tambien si el nivel es el tutorial

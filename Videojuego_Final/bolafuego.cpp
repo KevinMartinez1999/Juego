@@ -48,7 +48,7 @@ bolaFuego::bolaFuego(QObject *parent, short int estado, short int tipo, short in
         limiteSprite=180;
         connect(&timer, SIGNAL(timeout()), this, SLOT(move2()));
         connect(&timer, SIGNAL(timeout()), this, SLOT(colision_con_jugador()));
-        dano = 6;
+        dano = 5;
         break;
     case 3:
         ancho = 40;
@@ -56,7 +56,7 @@ bolaFuego::bolaFuego(QObject *parent, short int estado, short int tipo, short in
         limiteSprite=160;
         connect(&timer, SIGNAL(timeout()), this, SLOT(move3()));
         connect(&timer, SIGNAL(timeout()), this, SLOT(colision_con_jugador()));
-        dano = 10;
+        dano = 6;
         break;
     case 4:
         ancho = 40;
@@ -64,7 +64,7 @@ bolaFuego::bolaFuego(QObject *parent, short int estado, short int tipo, short in
         limiteSprite=160;
         connect(&timer, SIGNAL(timeout()), this, SLOT(move4()));
         connect(&timer, SIGNAL(timeout()), this, SLOT(colision_con_jugador()));
-        dano = 10;
+        dano = 8;
         break;
     case 5:
         ancho = 40;
@@ -72,7 +72,7 @@ bolaFuego::bolaFuego(QObject *parent, short int estado, short int tipo, short in
         limiteSprite=160;
         connect(&timer, SIGNAL(timeout()), this, SLOT(move5()));
         connect(&timer, SIGNAL(timeout()), this, SLOT(colision_con_jugador()));
-        dano = 15;
+        dano = 10;
         break;
     }
     timer.start(30);

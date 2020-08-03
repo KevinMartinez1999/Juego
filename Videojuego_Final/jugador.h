@@ -57,23 +57,32 @@ public slots:
     void Actualizacion(); //Actualiza el sprite
 
     //Señales para el movimiento del jugador
-
     void moveLeft();
     void moveRight();
     void moveUp();
     void moveDown();
+
+    //Slots que se usaran para poder atacar
     void Attack();
     void pos();
 
 
 private:
-    QMediaPlayer *Ataque;
+    QMediaPlayer *Ataque;//Sonido de ataque con espada
+
+    //Banderas de movimiento que se activaran con los keyEvent
     bool banLeft;
     bool banRight;
     bool banUp;
     bool banDown;
+
+
     short int ultimoEstado, cont = 0;
+
+    //Variable QPoint que nos permitira verificar si el jugador se encuentra quieto para poder atacar
     QPoint posAnterior;
+
+    //Variables destinadas para el manejo del sprite y animaciones
     float columnas,fila,ancho,alto;
 };
 
