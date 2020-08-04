@@ -297,25 +297,24 @@ void Enemigo::muerte()
     if (num_jugadores == 2){
         if (jugador->health <= 1){
             jugador->muerto = true;
+            jugador->PararTimers();
             jugador->hide();
             jugador->vida.hide();
         }
         if (jugador2->health <= 1){
             jugador2->muerto = true;
+            jugador2->PararTimers();
             jugador2->hide();
             jugador2->vida.hide();
         }
-        if(jugador->muerto and jugador2->muerto)
-            PararTimers();
     }
     else{
         if (jugador->health <= 1){
             jugador->muerto = true;
+            jugador->PararTimers();
             jugador->hide();
             jugador->vida.hide();
         }
-        if(jugador->muerto)
-            PararTimers();
     }
 }
 

@@ -187,14 +187,15 @@ void Niveles::muerte()
         /*En el caso de dos jugadores se analizara a los dos jugadores por separado*/
         if (jugadorBatalla->health <= 1){
             //jugador1
+            jugadorBatalla->PararTimers();
             jugadorBatalla->muerto=true;
             jugadorBatalla->hide();//Se esconde al jugador junto con su barra de vida
             jugadorBatalla->vida.hide();//Se esconde al jugador junto con su barra de vida
         }
         if (jugadorBatalla2->health <= 1){
             //jugador2
+            jugadorBatalla2->PararTimers();
             jugadorBatalla2->muerto=true;
-            JugadorMuerto.play();
             jugadorBatalla2->hide();//Se esconde al jugador junto con su barra de vida
             jugadorBatalla2->vida.hide();//Se esconde al jugador junto con su barra de vida
         }
@@ -202,6 +203,7 @@ void Niveles::muerte()
     else{
         if (jugadorBatalla->health <= 1){
             //En el caso de que solo haya un solo jugador en la partida solamente se analizara al jugador 1
+            jugadorBatalla->PararTimers();
             jugadorBatalla->muerto=true;
             jugadorBatalla->hide();//Se esconde al jugador junto con su barra de vida
             jugadorBatalla->vida.hide();//Se esconde al jugador junto con su barra de vida
