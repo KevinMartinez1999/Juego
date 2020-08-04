@@ -40,6 +40,7 @@ Niveles::Niveles(QWidget *parent, short int lvl) :
     escena->setSceneRect(0, 0,982,632);
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphicsView->resize(982,632);
     ui->graphicsView->setScene(escena);
 
     //Pixmap fondo que sera modificado dependiendo a que nivel se esta entrando
@@ -48,14 +49,14 @@ Niveles::Niveles(QWidget *parent, short int lvl) :
 
     //Añadir a los jugadores
     if (num_jugadores == 1){ //Solo un jugador
-        jugadorBatalla = new JugadorBatalla(this);
+        jugadorBatalla = new JugadorBatalla(nullptr);
         jugadorBatalla->pixmap = new QPixmap(":/Imagenes/SPRITEBATALLA.png");//Asignamos el determinado sprite al jugador
     }
     else if (num_jugadores == 2){ //Dos jugadores
-        jugadorBatalla = new JugadorBatalla(this);
+        jugadorBatalla = new JugadorBatalla(nullptr);
         jugadorBatalla->pixmap = new QPixmap(":/Imagenes/SPRITEBATALLA.png");//Asignamos el determinado sprite al jugador
 
-        jugadorBatalla2 = new JugadorBatalla(jugadorBatalla);
+        jugadorBatalla2 = new JugadorBatalla(nullptr);
         jugadorBatalla2->pixmap = new QPixmap(":/Imagenes/SPRITEBATALLA2.png");//Asignamos el determinado sprite al jugador
     }
 

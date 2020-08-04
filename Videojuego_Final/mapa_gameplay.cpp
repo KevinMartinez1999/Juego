@@ -5,6 +5,8 @@
 #include "jugador.h"
 #include "menupausa.h"
 
+#define actualizar 30
+
 Jugador *jugador, *jugador2;
 
 extern short int num_jugadores;
@@ -66,6 +68,8 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent, bool nuevaPartida) :
 
     //Timer para actualizar la escena y centrarla en el jugador
     connect(&timer,SIGNAL(timeout()),this,SLOT(ActualizarEscena()));
+    //Se inicia el timer que se encarga de centrar la escena en los jugadores
+    timer.start(actualizar);
 
     //Verificar la muerte del jugador
     connect(&dead,SIGNAL(timeout()),this,SLOT(verificar_muerte()));
@@ -252,9 +256,6 @@ Mapa_GamePlay::Mapa_GamePlay(QWidget *parent, bool nuevaPartida) :
     //Sonido de derrota.
     jugadorMuerto.setMedia(QUrl("qrc:/Musica/MUERTO.mp3"));
     jugadorMuerto.setVolume(100);
-
-    //Se inicia el timer que se encarga de centrar la escena en los jugadores
-    timer.start(30);
 }
 
 Mapa_GamePlay::~Mapa_GamePlay()
@@ -598,18 +599,19 @@ void Mapa_GamePlay::reanudarTimers()
     la  señal desde menupausa se activara este slot que activara primero los timers de los dos jugadores, y posteriormente
     activara el timer de spawneo de enemigos y los timers de los enemigos que haya en el mapa actualmente.*/
     //Se activan los timers del jugador 1
+    timer.start(actualizar);
+    enemigos.start(6000);
+
     jugador->ReiniciarTimers();
     if (num_jugadores == 2)
         //Si hay dos jugadores se activa los timers del jugador 2
         jugador2->ReiniciarTimers();
     //Se activa el timer de spawneo de enemigos
-    enemigos.start(6000);
     //ITeraremos sobre toda la lista para asegurarnos que a cada enemigo existente se le activen sus timers
     QListIterator<Enemigo *>Iterador(listaEnemigos);
     while(Iterador.hasNext()){
         Iterador.next()->ReiniciarTimers();
     }
-    timer.start(25);
 }
 
 void Mapa_GamePlay::Tutorial()
@@ -868,6 +870,7 @@ void Mapa_GamePlay::on_Opciones_clicked()
     faz de nivel primero se debe cerrar la ventana de pausa.*/
     //Pararemos todos los timers activos para evitar que se sigan ejecutando procesos en el fondo
     timer.stop();
+    enemigos.stop();
 
     jugador->PararTimers();
     if (num_jugadores == 2)
@@ -876,7 +879,7 @@ void Mapa_GamePlay::on_Opciones_clicked()
     while(Iterador.hasNext()){
         Iterador.next()->PararTimers();
     }
-    enemigos.stop();
+
     //Abriremos un nuevo menu de pausa
     MenuPausa *opciones = new MenuPausa(nullptr);
     opciones->show();

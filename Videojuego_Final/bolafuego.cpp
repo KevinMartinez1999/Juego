@@ -298,11 +298,9 @@ bool bolaFuego::colision(JugadorBatalla *obj)
         obj->vida.setRect(0,0,obj->health,40);
         if(!obj->muerto)
             return true;
-        else
-            return false;
-    }
-    else
         return false;
+    }
+    return false;
 }
 
 //Actualiza el Sprite de la bola

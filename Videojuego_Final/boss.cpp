@@ -127,7 +127,19 @@ void Boss::ReiniciarTimers()
     at_jugador.start(450);
     timer.start(100);
     ataques.start(tiempo_ataque);
-    generar_ataque.start(1000);
+    switch (tipoAtaque) {
+    case 0:
+        generar_ataque.start(1000);
+        break;
+    case 1:
+        generar_ataque.start(2000);
+        break;
+    case 2:
+        generar_ataque.start(2400);
+        break;
+    default:
+        break;
+    }
 }
 
 /*Se implemeenta la animacion de muerte del Boss */
@@ -286,13 +298,13 @@ void Boss::elegir_ataque()
             bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO2.png");
         else
             bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO.png");
-        if(tipoBoss!=1){
-            bola->X = x() - 20;
-            bola->Y = y() + 60;
-        }
-        else{
+        if (tipoBoss == 1){
             bola->X = 910;
             bola->Y = 550;
+        }
+        else{
+            bola->X = x() - 20;
+            bola->Y = y() + 60;
         }
         bola->Vx = 1;
         bola->Vy = 1;
@@ -305,10 +317,12 @@ void Boss::elegir_ataque()
     }
     case 2:
         int suelo;
-        if(tipoBoss==2)
-            suelo=448;
+        if(tipoBoss == 2)
+            suelo = 448;
+        else if (tipoBoss == 3)
+            suelo = 550;
         else
-            suelo=530;
+            suelo = 530;
         bolaFuego * bola = new bolaFuego(this, 1, 4, suelo);
         if(tipoBoss==3)
             bola->Pixmap = QPixmap(":/Imagenes/BOLAFUEGO2.png");

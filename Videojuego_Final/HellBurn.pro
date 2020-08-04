@@ -57,3 +57,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     Recursos.qrc
+
+RC_ICONS = HellBurn.ico
