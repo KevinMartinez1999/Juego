@@ -57,51 +57,45 @@ Enemigo::Enemigo(QObject *parent) : QObject(parent)
 
 }
 
-/*Verifica cuando los enemigos atacan al jugador por la espalda o de frente
- cuando se ataca de frente y su respectiva bandera esta activa entonces el enemigo muere
- pero si lo ataca por la espalda el jugador muere*/
-bool Enemigo::verificar_golpe(Jugador *obj)
-{
-    if (obj->golpe_izq and x() <= obj->x())
-        return true;
-    else if (obj->golpe_der and x() >= obj->x())
-        return true;
-    else if (obj->golpe_arr and y() <= obj->y())
-        return true;
-    else if (obj->golpe_aba and y() >= obj->y())
-        return true;
-    else
-        return false;
-}
-
 /*Dependiendo de la posicion del jugador los fantasmas van a seguirlo por todo el mapa*/
 void Enemigo::follow(Jugador *obj)
 {
+    /*Si vemos la pantalla como un plano cartesiano con centro en el Jugador y sin
+        el eje Y invertido*/
+
+    //Estaria en el cuadrante IV
     if (box.x() > obj->box.x() and box.y() > obj->box.y()){
         pixmap = QPixmap(":/Imagenes/ENEMIGOS.png");
         setPos(x()-paso, y()-paso);
     }
+    //Estaria en el cuadrante I
     else if  (box.x() > obj->box.x() and box.y() < obj->box.y()){
         pixmap = QPixmap(":/Imagenes/ENEMIGOS.png");
         setPos(x()-paso, y()+paso);
     }
+    //Estaria en el cuadrante III
     else if  (box.x() < obj->box.x() and box.y() > obj->box.y()){
         pixmap = QPixmap(":/Imagenes/ENEMIGOS2.png");
         setPos(x()+paso, y()-paso);
     }
+    //Estaria en el cuadrante II
     else if  (box.x() < obj->box.x() and box.y() < obj->box.y()){
         pixmap = QPixmap(":/Imagenes/ENEMIGOS2.png");
         setPos(x()+paso, y()+paso);
     }
+    //Estaria en el eje +X
     else if (box.x() > obj->box.x()){
         setPos(x()-paso, y());
     }
+    //Estaria en el eje -X
     else if (box.x() < obj->box.x()){
         setPos(x()+paso, y());
     }
+    //Estaria en el eje -Y
     else if (box.y() > obj->box.y()){
         setPos(x(), y()-paso);
     }
+    //Estaria en el eje +Y
     else if (box.y() < obj->box.y()){
         setPos(x(), y()+paso);
     }
@@ -109,6 +103,7 @@ void Enemigo::follow(Jugador *obj)
     vida.setPos(x()-10, y()-30);
 }
 
+//Reanuda todos los timers cuando el jugador sale del menú de pausa
 void Enemigo::ReiniciarTimers()
 {
     mov_enemigo.start(60);
@@ -117,6 +112,7 @@ void Enemigo::ReiniciarTimers()
     timer.start(200);
 }
 
+//Para todos los timers cuando el jugador entra al menú de pausa
 void Enemigo::PararTimers()
 {
     mov_enemigo.stop();
@@ -126,11 +122,20 @@ void Enemigo::PararTimers()
     SonidosTimer.stop();
 }
 
+/*La funcion propia de qt bodingRect, crea y retorna el rectangulo que conforma la
+ figura del jugador y en el cual pintaremos nuestra
+imagen. -ancho/2,-alto/2 permite que el punto de origen del rectangulo siempre
+sea le centro de la imagen y no la esquina superior.*/
 QRectF Enemigo::boundingRect() const
 {
     return QRectF(-ancho/2,-alto/2,ancho,alto);
 }
 
+/*Funcion propia de Qt que nos permite dibujar dentro del boundingRect la imagen que queramos, para hacer esto debemos introducirle
+al drawPixmap algunos datos como el punto en el que queremos que empiece a dibujar, el pixmap a dibujar, el ancho y alto de
+lo que se dibujara y tambien, se le pasara constantemente en la funcion actualizar la columna que representara el cuadro 84x84
+que se dibujara en el momento. La variable fila representa el grupo de frames que se quiere realizar dependiendo a las acciones del
+jugador, esta variable cambia cuando el usuario activa un KeyEvent.*/
 void Enemigo::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option);
@@ -208,7 +213,8 @@ void Enemigo::ataque_enemigo()
 }
 
 /*Cuando el enemigo esta muy lejos de la vista del jugador de elimina ya que ya
- no es necesario*/
+ no es necesario, prrimero se verifica que el jugador si esté vivo y luego con un valor absoluto
+si estas lo bastante lejos de el y si es si elimina al enemigo*/
 void Enemigo::detectar_enemigos()
 {
     if (num_jugadores == 2){
@@ -235,6 +241,23 @@ void Enemigo::detectar_enemigos()
             return;
         }
     }
+}
+
+/*Verifica cuando los enemigos atacan al jugador por la espalda o de frente
+ cuando se ataca de frente y su respectiva bandera esta activa entonces el enemigo muere
+ pero si lo ataca por la espalda el jugador muere*/
+bool Enemigo::verificar_golpe(Jugador *obj)
+{
+    if (obj->golpe_izq and x() <= obj->x())
+        return true;
+    else if (obj->golpe_der and x() >= obj->x())
+        return true;
+    else if (obj->golpe_arr and y() <= obj->y())
+        return true;
+    else if (obj->golpe_aba and y() >= obj->y())
+        return true;
+    else
+        return false;
 }
 
 /*Aqui es la funcion de ataque del enemigo:
@@ -265,6 +288,10 @@ void Enemigo::ataque_jugador()
     }
 }
 
+/*Cuando los jugadores tiene menos de 1 de vida entonces se declara como muerto y se alza una bandera
+para asi en la clase Mapa_GamePlay cuando use la funcion para verificar si el jugador esta muerto entra y borra
+al jugador de la escena; si el jugador esta solo acaba la partida pero si esta en modo cooperativo queda su
+compañero*/
 void Enemigo::muerte()
 {
     if (num_jugadores == 2){
@@ -292,6 +319,11 @@ void Enemigo::muerte()
     }
 }
 
+/*cada 30 ms se llama a esta funcion que llama a su vex a la funcion follow que lo que hace es que recibe
+como parametro un objeto Jugador, se hizo de esta forma para hacerlo mas general y no llenar mucho
+esta funcion move. Esta funcion detecta cuando el enemigo esta mas cerca de un jugador que de otro en
+caso de estar jugando cooperativo, en caso de estar mas cerca entonces el enemigo va a seguir  esae jugador
+que está mas cerca y si el otro jugador se acerca lo sufuciente ya va a dejar de seguir al otro y lo seguirá a él.*/
 void Enemigo::move()
 {
     if (num_jugadores == 2){

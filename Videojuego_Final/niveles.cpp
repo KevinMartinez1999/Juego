@@ -156,6 +156,7 @@ void Niveles::NivelSetup()
 
     //Se añade a la escena al jugador con las posiciones previamente seleccionadas
     jugadorBatalla->setPos(jugadorBatalla->GetX0(),jugadorBatalla->GetY0());
+    jugadorBatalla->lim = boss->x()-84;
     escena->addItem(jugadorBatalla);
     jugadorBatalla->box.setPos(jugadorBatalla->x()-25, jugadorBatalla->y()-50);
     jugadorBatalla->vida.setPos(90,28);
@@ -164,6 +165,7 @@ void Niveles::NivelSetup()
     if(num_jugadores==2){
         //En el caso de que haya dos jugadores se añade al jugador2 con las posiciones previamente seleccionadas
         jugadorBatalla2->setPos(jugadorBatalla2->GetX0(),jugadorBatalla2->GetY0());
+        jugadorBatalla2->lim = boss->x()-84;
         escena->addItem(jugadorBatalla2);
         jugadorBatalla2->box.setPos(jugadorBatalla2->x()-25, jugadorBatalla2->y()-50);
         jugadorBatalla2->vida.setPos(146,96);

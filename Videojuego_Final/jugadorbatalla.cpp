@@ -10,6 +10,7 @@ JugadorBatalla::JugadorBatalla(QObject *parent) : QObject(parent)
     vx=5;
     xFinal = 0;
     t = 0;
+    lim = 930;
 
     //Variables para la animacion del personaje
     columnas = 0;
@@ -109,6 +110,10 @@ void JugadorBatalla::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
     painter->drawPixmap(-ancho/2,-alto/2,*pixmap,columnas,fila,ancho,alto);
 }
 
+/*Este moviemnto es un mov rectilineo uniformemente acelerado y a=dv/dt => v=a*t
+derivando la velocidad dx/dt=at:
+X=X0+v*t+(1/2)*a*t^2 y esta es la ecacion de moviemnto del jugador; no hay ecuacion para Y porque
+no hay moviento en ese eje Y=0*/
 void JugadorBatalla::setX(){
     if(fila==0 or fila==168){
         t = 0.3;
@@ -140,6 +145,9 @@ void JugadorBatalla::Actualizacion()
     origen siempre sea la mitad de la imagen actual.*/
 }
 
+/*LAS SIGUIENTES SON LAS FUNCIONES DE MOVIMIENTO DEL JUGADOR */
+
+//Movimiento hacia la izquierda restringido hasta el borde de la ventana
 void JugadorBatalla::   moveLeft()
 {
     if (banLeft)
@@ -158,6 +166,8 @@ void JugadorBatalla::   moveLeft()
     }
 }
 
+//Movimiento hacia la derecha restringido hasta que llega dond eel Boss y no lo puede atravesar
+//ya que el boss no es intangible
 void JugadorBatalla::moveRight()
 {
     if (banRight)
@@ -169,34 +179,41 @@ void JugadorBatalla::moveRight()
             columnas = 0;
         }
         fila = 504;
-        if(x()<930){
-        setPos(x()+xFinal,y());
-        box.setPos(x()-25, y()-50);
-    }
+        if(x()<lim){
+            setPos(x()+xFinal,y());
+            box.setPos(x()-25, y()-50);
+        }
     }
 }
 
+/*Para el salto del jugador lo que se hizo fue un movimiento parabolico con un angulo de 90°
+asi cuando el jugador esta quieto va a saltar y solo se va a move en el eje Y; asi el jugador va a tener
+la libertad de moverse en el aire para facilitar la jugabilidad*/
 void JugadorBatalla::Jump()
 {
     if(banJump){
-    tsalto+=0.3;
-    double X, Y;
-    //Salto con un angulo de 90°
-    X = (15*0*tsalto); //0 => cos(90°)
-    Y = (15*1*tsalto)-(0.5*g*pow(tsalto,2)); //1 => sen(90°)
+        tsalto+=0.3;
+        double X, Y;
+        //Salto con un angulo de 90°
+        X = (15*0*tsalto); //0 => cos(90°)
+        Y = (15*1*tsalto)-(0.5*g*pow(tsalto,2)); //1 => sen(90°)
 
-    setPos(x()+X, y()-Y);
+        setPos(x()+X, y()-Y);
 
-    box.setPos(x()-25, y()-50);
-    if(y()>=y0){
-        setPos(x(),y0);
         box.setPos(x()-25, y()-50);
-        banJump=false;
-        tsalto=0;
-    }
+        if(y()>=y0){
+            setPos(x(),y0);
+            box.setPos(x()-25, y()-50);
+            banJump=false;
+            tsalto=0;
+        }
     }
 }
 
+/*ependiendo de la posicion anterior el jugador va a hacer una animacion de ataque y tambien
+va a poner en alto una bandera, en total son 2 banderas, una para cada lado del jugador;
+para asi verificar cuando el jugador ataca por un lado especifico y el Boss le pueda golpear por la espalda
+sin ser heridos dandole realidad al golpe*/
 void JugadorBatalla::Attack()
 {
     if (banAttack){
@@ -221,6 +238,7 @@ void JugadorBatalla::Attack()
         Ataque.stop();
 }
 
+//cuando el jugador presiona la tecla especial va a lanzar una bola de fuego con mov. circular que va hacia el Boss
 void JugadorBatalla::Spell()
 {   /*Funcion para poder lanzar un hechizo cada 5 segundos*/
     if(TiempoHechizo){//Si ya han pasado los 5 segundos del ultimo ataque
@@ -253,6 +271,9 @@ void JugadorBatalla::Spell()
                 scene()->addItem(bola);
 
                 TiempoHechizo=false;
+
+                /*Pasados 5 segundos desde que se lanza la habilidad va a poder ser lanzada de nuevo;
+                  dentro de ese intervalo de tiempo sera imposible lanzarla.*/
                 QTimer::singleShot(5000,this,SLOT(tiempo()));
                 if (ultimoEstado == 1)
                     fila = 0;
@@ -263,6 +284,7 @@ void JugadorBatalla::Spell()
     }
 }
 
+/*Esta función determina la posicion anterior del personaje para saber si el jugador está quieto o no*/
 void JugadorBatalla::pos()
 {
     /*Funcion para reiniciar las animaciones del jugador cuando este sin moverse*/

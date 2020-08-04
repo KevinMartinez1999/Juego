@@ -8,6 +8,8 @@
 #include <cmath>
 #include "jugador.h"
 
+/*Es clase es para los enemigos que aparecen por el mapa principal*/
+
 class Enemigo : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
@@ -29,6 +31,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 signals:
+    //Sirve para eliminar los enemigos que ya no son necesarios en el mapa
     void EliminarDeLista(Enemigo *, bool);
 
 public slots:
@@ -37,8 +40,8 @@ public slots:
     void ataque_enemigo();
     void detectar_enemigos();
     void ataque_jugador();
-    void muerte();
-    void move();
+    void muerte(); //Se verifica cuando muere el jugador
+    void move(); //Movimiento del enemigo que sigue al jugador
 
 private:
     QMediaPlayer JugadorAtacado, JugadorMuerto, fantasma;

@@ -8,6 +8,8 @@
 #include <QPainter>
 #include <cmath>
 
+/*Aqui esta el jugador que se muestra en el mapa*/
+
 class Jugador : public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
@@ -27,6 +29,7 @@ public:
     inline void resetBanDown() {banDown = false;}
     inline void resetBanAttack() {banAttack = false;}
 
+    //Banderas de movimiento y de los golpes
     void reset_golpe();
     bool golpe_izq = false;
     bool golpe_der = false;

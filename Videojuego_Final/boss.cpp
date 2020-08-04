@@ -76,6 +76,7 @@ Boss::Boss(QObject *parent,int tipo) : QObject(parent), tipoBoss(tipo)
     ataques.start(tiempo_ataque);
 
     connect(&generar_ataque, SIGNAL(timeout()), this, SLOT(elegir_ataque()));
+    connect(&generar_ataque, SIGNAL(timeout()), this, SLOT(regenerarse()));
     generar_ataque.start(1000);
 }
 
@@ -111,6 +112,7 @@ void Boss::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     painter->drawPixmap(-ancho/2,-alto/2,*pixmap,columnas,fila,ancho,alto);
 }
 
+//Para todos los timers cuando el jugador entra al menú de pausa
 void Boss::PararTimers()
 {
     timer.stop();
@@ -119,6 +121,7 @@ void Boss::PararTimers()
     generar_ataque.stop();
 }
 
+//Reanuda todos los timers cuando el jugador sale del menú de pausa
 void Boss::ReiniciarTimers()
 {
     at_jugador.start(450);
@@ -127,6 +130,7 @@ void Boss::ReiniciarTimers()
     generar_ataque.start(1000);
 }
 
+/*Se implemeenta la animacion de muerte del Boss */
 void Boss::AnimacionMuerte()
 {
     if(Boss_Derrotado){
@@ -142,6 +146,8 @@ void Boss::AnimacionMuerte()
     else return;
 }
 
+//El boss dos tiene por defecto un movimiento circulas todo el tiempo
+//que se rigen con las escuaciones de mov. circular descritas anteriormente en la clase bolaFuego
 void Boss::MovimientoBoss1()
 {
     t+=0.1;
@@ -150,6 +156,8 @@ void Boss::MovimientoBoss1()
     setPos(X,Y);
 }
 
+/*Es funcion es la del ataque del jugador hacia el Boss; cuando el Boss tiene 1 o menos de vida se considera
+que el boss ya esta muerto y alza una bandera de Boss derrotado para acabar la pelea*/
 void Boss::ataque_jugador()
 {
     if (health <= 1)
@@ -411,4 +419,26 @@ void Boss::orbitas()
     scene()->addItem(bola);
     bola->box.setPos(bola->x(), bola->y());
     bolas.append(bola);
+}
+
+/*Con el fin de ayudar un poco al jugador, esta funcion hace que cuando el jugador tenga menos de la mitad
+de la vida esta se le vaya regenerarndo poco a poco cada segundo.*/
+void Boss::regenerarse()
+{
+    if (num_jugadores == 2){
+        if (jugadorBatalla->health < 40){
+            jugadorBatalla->health++;
+            jugadorBatalla->vida.setRect(0,0,jugadorBatalla->health,40);
+        }
+        if (jugadorBatalla2->health < 40){
+            jugadorBatalla2->health++;
+            jugadorBatalla2->vida.setRect(0,0,jugadorBatalla2->health,40);
+        }
+    }
+    else{
+        if (jugadorBatalla->health < 40){
+            jugadorBatalla->health++;
+            jugadorBatalla->vida.setRect(0,0,jugadorBatalla->health,40);
+        }
+    }
 }

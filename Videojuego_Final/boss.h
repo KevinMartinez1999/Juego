@@ -9,6 +9,9 @@
 #include "jugadorbatalla.h"
 #include "bolafuego.h"
 
+/*La clase Boss contiene todos sobre los enemigos que nos vamos  enfrentar en cada nivel
+su animacion, poderes, vida, etc... segun el nivel actual cada una de estas cosas cambia.*/
+
 class Boss: public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
@@ -39,6 +42,7 @@ private slots:
     void elegir_ataque();
     void cambiar_ataque();
     void orbitas();
+    void regenerarse();
 
 private:
     //Timers destinados para las determinadas funciones del bosss

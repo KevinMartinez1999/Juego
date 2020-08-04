@@ -9,6 +9,8 @@
 #include <cmath>
 #include <QMediaPlayer>
 
+/*Es clase es para los enemigos que aparecen por el mapa principal*/
+
 class JugadorBatalla: public QObject, public QGraphicsPixmapItem
 {
     Q_OBJECT
@@ -31,6 +33,7 @@ public:
     void setY0(double Y){y0=Y;}
     double GetX0(){return x0;}
     double GetY0(){return y0;}
+    int lim;
 
     //Funciones para parar o reiniciar los timers en caso de pausar el juego
     void PararTimers();

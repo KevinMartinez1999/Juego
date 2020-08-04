@@ -119,16 +119,16 @@ void Jugador::ReiniciarTimers()
     timer1.start(30);
 }
 
-//Las siguientes son las señales de movimiento que funcionan con un timer;
-//El jugador únicamente se va a mover cuando se respectiva bandera esté activada, por ejemplo,
-//para moverse a la izquierda, banLeft debe ser true.
+/*Las siguientes son las señales de movimiento que funcionan con un timer;
+El jugador únicamente se va a mover cuando se respectiva bandera esté activada, por ejemplo,
+para moverse a la izquierda, banLeft debe ser true.
 
-//una vez se verifica que la respectiva bandera esté activa se le da un valor a Fila que es donde
-//debe ubicarse en la imagen SPRITEPLAYER.png para hacer las animaciones correctamente.
+una vez se verifica que la respectiva bandera esté activa se le da un valor a Fila que es donde
+debe ubicarse en la imagen SPRITEPLAYER.png para hacer las animaciones correctamente.
 
-// Las definiciones de cada función son similares en el resto de funciones de movimiento;
-// cambian en los limites de la escena donde el jugador puede moverse en la funcion setPos()
-// que se le suma o se le resta dependiendo de hacia donde es el movimiento.
+Las definiciones de cada función son similares en el resto de funciones de movimiento;
+cambian en los limites de la escena donde el jugador puede moverse en la funcion setPos()
+que se le suma o se le resta dependiendo de hacia donde es el movimiento.*/
 
 void Jugador::moveLeft()
 {
@@ -232,7 +232,10 @@ void Jugador::moveDown()
     }
 }
 
-//Dependiendo de la posicion anterior el jugador va a hacer una animacion de ataque
+/*ependiendo de la posicion anterior el jugador va a hacer una animacion de ataque y tambien
+va a poner en alto una bandera, en total son 4 banderas, una para cada lado del jugador;
+para asi verificar cuando el jugador ataca por un lado especifico y los enemigos le puedan golpear por la espalda
+sin ser heridos dandole realidad al golpe*/
 void Jugador::Attack()
 {
     if (banAttack){
